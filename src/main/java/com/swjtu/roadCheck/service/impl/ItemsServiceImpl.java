@@ -1,5 +1,12 @@
 package com.swjtu.roadCheck.service.impl;
 
+import com.swjtu.roadCheck.entity.Items;
+import com.swjtu.roadCheck.entity.ItemsCustom;
+import com.swjtu.roadCheck.entity.ItemsQueryVo;
+import com.swjtu.roadCheck.mapper.ItemsMapper;
+import com.swjtu.roadCheck.mapper.ItemsMapperCustom;
+import com.swjtu.roadCheck.service.ItemsService;
+import com.swjtu.roadCheck.web.exception.CustomException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 

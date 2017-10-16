@@ -1,5 +1,8 @@
 package com.swjtu.roadCheck.service;
 
+import com.swjtu.roadCheck.entity.ItemsCustom;
+import com.swjtu.roadCheck.entity.ItemsQueryVo;
+
 import java.util.List;
 
 
