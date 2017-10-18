@@ -1,0 +1,560 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.swjtu.roadCheck.mapper.EmdataMapper">
+  <resultMap id="BaseResultMap" type="com.swjtu.roadCheck.entity.Emdata">
+    <id column="_id" jdbcType="INTEGER" property="id" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.swjtu.roadCheck.entity.Emdata">
+    <result column="emnumber" jdbcType="LONGVARCHAR" property="emnumber" />
+    <result column="Routeposition" jdbcType="LONGVARCHAR" property="routeposition" />
+    <result column="pengzhuangleixing" jdbcType="LONGVARCHAR" property="pengzhuangleixing" />
+    <result column="liJiaoQuYu" jdbcType="LONGVARCHAR" property="lijiaoquyu" />
+    <result column="Jcktype" jdbcType="LONGVARCHAR" property="jcktype" />
+    <result column="Teshuposition" jdbcType="LONGVARCHAR" property="teshuposition" />
+    <result column="Tianqicondition" jdbcType="LONGVARCHAR" property="tianqicondition" />
+    <result column="zhaomingcondition" jdbcType="LONGVARCHAR" property="zhaomingcondition" />
+    <result column="luMianCondition" jdbcType="LONGVARCHAR" property="lumiancondition" />
+    <result column="luMianLev" jdbcType="LONGVARCHAR" property="lumianlev" />
+    <result column="limitSpeed" jdbcType="LONGVARCHAR" property="limitspeed" />
+    <result column="chedaowidth" jdbcType="LONGVARCHAR" property="chedaowidth" />
+    <result column="luJianWidth" jdbcType="LONGVARCHAR" property="lujianwidth" />
+    <result column="bianYuanXianle" jdbcType="LONGVARCHAR" property="bianyuanxianle" />
+    <result column="zhongyanwidht" jdbcType="LONGVARCHAR" property="zhongyanwidht" />
+    <result column="zhongXinXian" jdbcType="LONGVARCHAR" property="zhongxinxian" />
+    <result column="chedaoxianbj" jdbcType="LONGVARCHAR" property="chedaoxianbj" />
+    <result column="jiaotongkzlx" jdbcType="LONGVARCHAR" property="jiaotongkzlx" />
+    <result column="zhuchedaoshu" jdbcType="LONGVARCHAR" property="zhuchedaoshu" />
+    <result column="jiaochajiedaoshu" jdbcType="LONGVARCHAR" property="jiaochajiedaoshu" />
+    <result column="WorkPlaceR" jdbcType="LONGVARCHAR" property="workplacer" />
+    <result column="Worktype" jdbcType="LONGVARCHAR" property="worktype" />
+    <result column="havepeople" jdbcType="LONGVARCHAR" property="havepeople" />
+    <result column="xianChangZhifa" jdbcType="LONGVARCHAR" property="xianchangzhifa" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    _id
+  </sql>
+  <sql id="Blob_Column_List">
+    emnumber, Routeposition, pengzhuangleixing, liJiaoQuYu, Jcktype, Teshuposition, Tianqicondition, 
+    zhaomingcondition, luMianCondition, luMianLev, limitSpeed, chedaowidth, luJianWidth, 
+    bianYuanXianle, zhongyanwidht, zhongXinXian, chedaoxianbj, jiaotongkzlx, zhuchedaoshu, 
+    jiaochajiedaoshu, WorkPlaceR, Worktype, havepeople, xianChangZhifa
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.swjtu.roadCheck.entity.EmdataExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from emdata
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.swjtu.roadCheck.entity.EmdataExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from emdata
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from emdata
+    where _id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from emdata
+    where _id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.swjtu.roadCheck.entity.EmdataExample">
+    delete from emdata
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.swjtu.roadCheck.entity.Emdata">
+    insert into emdata (_id, emnumber, Routeposition, 
+      pengzhuangleixing, liJiaoQuYu, 
+      Jcktype, Teshuposition, Tianqicondition, 
+      zhaomingcondition, luMianCondition, 
+      luMianLev, limitSpeed, chedaowidth, 
+      luJianWidth, bianYuanXianle, zhongyanwidht, 
+      zhongXinXian, chedaoxianbj, jiaotongkzlx, 
+      zhuchedaoshu, jiaochajiedaoshu, 
+      WorkPlaceR, Worktype, havepeople, 
+      xianChangZhifa)
+    values (#{id,jdbcType=INTEGER}, #{emnumber,jdbcType=LONGVARCHAR}, #{routeposition,jdbcType=LONGVARCHAR}, 
+      #{pengzhuangleixing,jdbcType=LONGVARCHAR}, #{lijiaoquyu,jdbcType=LONGVARCHAR}, 
+      #{jcktype,jdbcType=LONGVARCHAR}, #{teshuposition,jdbcType=LONGVARCHAR}, #{tianqicondition,jdbcType=LONGVARCHAR}, 
+      #{zhaomingcondition,jdbcType=LONGVARCHAR}, #{lumiancondition,jdbcType=LONGVARCHAR}, 
+      #{lumianlev,jdbcType=LONGVARCHAR}, #{limitspeed,jdbcType=LONGVARCHAR}, #{chedaowidth,jdbcType=LONGVARCHAR}, 
+      #{lujianwidth,jdbcType=LONGVARCHAR}, #{bianyuanxianle,jdbcType=LONGVARCHAR}, #{zhongyanwidht,jdbcType=LONGVARCHAR}, 
+      #{zhongxinxian,jdbcType=LONGVARCHAR}, #{chedaoxianbj,jdbcType=LONGVARCHAR}, #{jiaotongkzlx,jdbcType=LONGVARCHAR}, 
+      #{zhuchedaoshu,jdbcType=LONGVARCHAR}, #{jiaochajiedaoshu,jdbcType=LONGVARCHAR}, 
+      #{workplacer,jdbcType=LONGVARCHAR}, #{worktype,jdbcType=LONGVARCHAR}, #{havepeople,jdbcType=LONGVARCHAR}, 
+      #{xianchangzhifa,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.swjtu.roadCheck.entity.Emdata">
+    insert into emdata
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        _id,
+      </if>
+      <if test="emnumber != null">
+        emnumber,
+      </if>
+      <if test="routeposition != null">
+        Routeposition,
+      </if>
+      <if test="pengzhuangleixing != null">
+        pengzhuangleixing,
+      </if>
+      <if test="lijiaoquyu != null">
+        liJiaoQuYu,
+      </if>
+      <if test="jcktype != null">
+        Jcktype,
+      </if>
+      <if test="teshuposition != null">
+        Teshuposition,
+      </if>
+      <if test="tianqicondition != null">
+        Tianqicondition,
+      </if>
+      <if test="zhaomingcondition != null">
+        zhaomingcondition,
+      </if>
+      <if test="lumiancondition != null">
+        luMianCondition,
+      </if>
+      <if test="lumianlev != null">
+        luMianLev,
+      </if>
+      <if test="limitspeed != null">
+        limitSpeed,
+      </if>
+      <if test="chedaowidth != null">
+        chedaowidth,
+      </if>
+      <if test="lujianwidth != null">
+        luJianWidth,
+      </if>
+      <if test="bianyuanxianle != null">
+        bianYuanXianle,
+      </if>
+      <if test="zhongyanwidht != null">
+        zhongyanwidht,
+      </if>
+      <if test="zhongxinxian != null">
+        zhongXinXian,
+      </if>
+      <if test="chedaoxianbj != null">
+        chedaoxianbj,
+      </if>
+      <if test="jiaotongkzlx != null">
+        jiaotongkzlx,
+      </if>
+      <if test="zhuchedaoshu != null">
+        zhuchedaoshu,
+      </if>
+      <if test="jiaochajiedaoshu != null">
+        jiaochajiedaoshu,
+      </if>
+      <if test="workplacer != null">
+        WorkPlaceR,
+      </if>
+      <if test="worktype != null">
+        Worktype,
+      </if>
+      <if test="havepeople != null">
+        havepeople,
+      </if>
+      <if test="xianchangzhifa != null">
+        xianChangZhifa,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="emnumber != null">
+        #{emnumber,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="routeposition != null">
+        #{routeposition,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="pengzhuangleixing != null">
+        #{pengzhuangleixing,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="lijiaoquyu != null">
+        #{lijiaoquyu,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="jcktype != null">
+        #{jcktype,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="teshuposition != null">
+        #{teshuposition,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="tianqicondition != null">
+        #{tianqicondition,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="zhaomingcondition != null">
+        #{zhaomingcondition,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="lumiancondition != null">
+        #{lumiancondition,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="lumianlev != null">
+        #{lumianlev,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="limitspeed != null">
+        #{limitspeed,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="chedaowidth != null">
+        #{chedaowidth,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="lujianwidth != null">
+        #{lujianwidth,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="bianyuanxianle != null">
+        #{bianyuanxianle,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="zhongyanwidht != null">
+        #{zhongyanwidht,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="zhongxinxian != null">
+        #{zhongxinxian,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="chedaoxianbj != null">
+        #{chedaoxianbj,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="jiaotongkzlx != null">
+        #{jiaotongkzlx,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="zhuchedaoshu != null">
+        #{zhuchedaoshu,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="jiaochajiedaoshu != null">
+        #{jiaochajiedaoshu,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="workplacer != null">
+        #{workplacer,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="worktype != null">
+        #{worktype,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="havepeople != null">
+        #{havepeople,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="xianchangzhifa != null">
+        #{xianchangzhifa,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.swjtu.roadCheck.entity.EmdataExample" resultType="java.lang.Integer">
+    select count(*) from emdata
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update emdata
+    <set>
+      <if test="record.id != null">
+        _id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.emnumber != null">
+        emnumber = #{record.emnumber,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.routeposition != null">
+        Routeposition = #{record.routeposition,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.pengzhuangleixing != null">
+        pengzhuangleixing = #{record.pengzhuangleixing,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.lijiaoquyu != null">
+        liJiaoQuYu = #{record.lijiaoquyu,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.jcktype != null">
+        Jcktype = #{record.jcktype,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.teshuposition != null">
+        Teshuposition = #{record.teshuposition,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.tianqicondition != null">
+        Tianqicondition = #{record.tianqicondition,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.zhaomingcondition != null">
+        zhaomingcondition = #{record.zhaomingcondition,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.lumiancondition != null">
+        luMianCondition = #{record.lumiancondition,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.lumianlev != null">
+        luMianLev = #{record.lumianlev,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.limitspeed != null">
+        limitSpeed = #{record.limitspeed,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.chedaowidth != null">
+        chedaowidth = #{record.chedaowidth,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.lujianwidth != null">
+        luJianWidth = #{record.lujianwidth,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.bianyuanxianle != null">
+        bianYuanXianle = #{record.bianyuanxianle,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.zhongyanwidht != null">
+        zhongyanwidht = #{record.zhongyanwidht,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.zhongxinxian != null">
+        zhongXinXian = #{record.zhongxinxian,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.chedaoxianbj != null">
+        chedaoxianbj = #{record.chedaoxianbj,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.jiaotongkzlx != null">
+        jiaotongkzlx = #{record.jiaotongkzlx,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.zhuchedaoshu != null">
+        zhuchedaoshu = #{record.zhuchedaoshu,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.jiaochajiedaoshu != null">
+        jiaochajiedaoshu = #{record.jiaochajiedaoshu,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.workplacer != null">
+        WorkPlaceR = #{record.workplacer,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.worktype != null">
+        Worktype = #{record.worktype,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.havepeople != null">
+        havepeople = #{record.havepeople,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.xianchangzhifa != null">
+        xianChangZhifa = #{record.xianchangzhifa,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update emdata
+    set _id = #{record.id,jdbcType=INTEGER},
+      emnumber = #{record.emnumber,jdbcType=LONGVARCHAR},
+      Routeposition = #{record.routeposition,jdbcType=LONGVARCHAR},
+      pengzhuangleixing = #{record.pengzhuangleixing,jdbcType=LONGVARCHAR},
+      liJiaoQuYu = #{record.lijiaoquyu,jdbcType=LONGVARCHAR},
+      Jcktype = #{record.jcktype,jdbcType=LONGVARCHAR},
+      Teshuposition = #{record.teshuposition,jdbcType=LONGVARCHAR},
+      Tianqicondition = #{record.tianqicondition,jdbcType=LONGVARCHAR},
+      zhaomingcondition = #{record.zhaomingcondition,jdbcType=LONGVARCHAR},
+      luMianCondition = #{record.lumiancondition,jdbcType=LONGVARCHAR},
+      luMianLev = #{record.lumianlev,jdbcType=LONGVARCHAR},
+      limitSpeed = #{record.limitspeed,jdbcType=LONGVARCHAR},
+      chedaowidth = #{record.chedaowidth,jdbcType=LONGVARCHAR},
+      luJianWidth = #{record.lujianwidth,jdbcType=LONGVARCHAR},
+      bianYuanXianle = #{record.bianyuanxianle,jdbcType=LONGVARCHAR},
+      zhongyanwidht = #{record.zhongyanwidht,jdbcType=LONGVARCHAR},
+      zhongXinXian = #{record.zhongxinxian,jdbcType=LONGVARCHAR},
+      chedaoxianbj = #{record.chedaoxianbj,jdbcType=LONGVARCHAR},
+      jiaotongkzlx = #{record.jiaotongkzlx,jdbcType=LONGVARCHAR},
+      zhuchedaoshu = #{record.zhuchedaoshu,jdbcType=LONGVARCHAR},
+      jiaochajiedaoshu = #{record.jiaochajiedaoshu,jdbcType=LONGVARCHAR},
+      WorkPlaceR = #{record.workplacer,jdbcType=LONGVARCHAR},
+      Worktype = #{record.worktype,jdbcType=LONGVARCHAR},
+      havepeople = #{record.havepeople,jdbcType=LONGVARCHAR},
+      xianChangZhifa = #{record.xianchangzhifa,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update emdata
+    set _id = #{record.id,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.swjtu.roadCheck.entity.Emdata">
+    update emdata
+    <set>
+      <if test="emnumber != null">
+        emnumber = #{emnumber,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="routeposition != null">
+        Routeposition = #{routeposition,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="pengzhuangleixing != null">
+        pengzhuangleixing = #{pengzhuangleixing,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="lijiaoquyu != null">
+        liJiaoQuYu = #{lijiaoquyu,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="jcktype != null">
+        Jcktype = #{jcktype,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="teshuposition != null">
+        Teshuposition = #{teshuposition,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="tianqicondition != null">
+        Tianqicondition = #{tianqicondition,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="zhaomingcondition != null">
+        zhaomingcondition = #{zhaomingcondition,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="lumiancondition != null">
+        luMianCondition = #{lumiancondition,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="lumianlev != null">
+        luMianLev = #{lumianlev,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="limitspeed != null">
+        limitSpeed = #{limitspeed,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="chedaowidth != null">
+        chedaowidth = #{chedaowidth,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="lujianwidth != null">
+        luJianWidth = #{lujianwidth,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="bianyuanxianle != null">
+        bianYuanXianle = #{bianyuanxianle,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="zhongyanwidht != null">
+        zhongyanwidht = #{zhongyanwidht,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="zhongxinxian != null">
+        zhongXinXian = #{zhongxinxian,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="chedaoxianbj != null">
+        chedaoxianbj = #{chedaoxianbj,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="jiaotongkzlx != null">
+        jiaotongkzlx = #{jiaotongkzlx,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="zhuchedaoshu != null">
+        zhuchedaoshu = #{zhuchedaoshu,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="jiaochajiedaoshu != null">
+        jiaochajiedaoshu = #{jiaochajiedaoshu,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="workplacer != null">
+        WorkPlaceR = #{workplacer,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="worktype != null">
+        Worktype = #{worktype,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="havepeople != null">
+        havepeople = #{havepeople,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="xianchangzhifa != null">
+        xianChangZhifa = #{xianchangzhifa,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where _id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.swjtu.roadCheck.entity.Emdata">
+    update emdata
+    set emnumber = #{emnumber,jdbcType=LONGVARCHAR},
+      Routeposition = #{routeposition,jdbcType=LONGVARCHAR},
+      pengzhuangleixing = #{pengzhuangleixing,jdbcType=LONGVARCHAR},
+      liJiaoQuYu = #{lijiaoquyu,jdbcType=LONGVARCHAR},
+      Jcktype = #{jcktype,jdbcType=LONGVARCHAR},
+      Teshuposition = #{teshuposition,jdbcType=LONGVARCHAR},
+      Tianqicondition = #{tianqicondition,jdbcType=LONGVARCHAR},
+      zhaomingcondition = #{zhaomingcondition,jdbcType=LONGVARCHAR},
+      luMianCondition = #{lumiancondition,jdbcType=LONGVARCHAR},
+      luMianLev = #{lumianlev,jdbcType=LONGVARCHAR},
+      limitSpeed = #{limitspeed,jdbcType=LONGVARCHAR},
+      chedaowidth = #{chedaowidth,jdbcType=LONGVARCHAR},
+      luJianWidth = #{lujianwidth,jdbcType=LONGVARCHAR},
+      bianYuanXianle = #{bianyuanxianle,jdbcType=LONGVARCHAR},
+      zhongyanwidht = #{zhongyanwidht,jdbcType=LONGVARCHAR},
+      zhongXinXian = #{zhongxinxian,jdbcType=LONGVARCHAR},
+      chedaoxianbj = #{chedaoxianbj,jdbcType=LONGVARCHAR},
+      jiaotongkzlx = #{jiaotongkzlx,jdbcType=LONGVARCHAR},
+      zhuchedaoshu = #{zhuchedaoshu,jdbcType=LONGVARCHAR},
+      jiaochajiedaoshu = #{jiaochajiedaoshu,jdbcType=LONGVARCHAR},
+      WorkPlaceR = #{workplacer,jdbcType=LONGVARCHAR},
+      Worktype = #{worktype,jdbcType=LONGVARCHAR},
+      havepeople = #{havepeople,jdbcType=LONGVARCHAR},
+      xianChangZhifa = #{xianchangzhifa,jdbcType=LONGVARCHAR}
+    where _id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
