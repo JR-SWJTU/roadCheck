@@ -1,46 +1,103 @@
 package com.swjtu.roadCheck.web.exception;
 
+import com.swjtu.roadCheck.util.JsonResult;
+import com.swjtu.roadCheck.util.enums.StatusCode;
+import com.swjtu.roadCheck.web.exception.base.*;
+import org.slf4j.Logger;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.servlet.HandlerExceptionResolver;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
 
 /**
  * Created by Administrator on 2017/10/15.
  */
 
 @ControllerAdvice
-public class GlobalExceptionHandler implements HandlerExceptionResolver{
+public class GlobalExceptionHandler {
 
-    //前端控制器DispatcherServlet在进行HandlerMapping、调用HandlerAdapter执行Handler过程中，如果遇到异常就会执行此方法
-    //handler最终要执行的Handler，它的真实身份是HandlerMethod
-    //Exception ex就是接收到异常信息
-    public ModelAndView resolveException(HttpServletRequest request,
-                                         HttpServletResponse response, Object handler, Exception ex) {
-        //输出异常
-        ex.printStackTrace();
+    private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-        //统一异常处理代码
-        //针对系统自定义的CustomException异常，就可以直接从异常类中获取异常信息，将异常处理在错误页面展示
-        //异常信息
-        String message = null;
-        CustomException customException = null;
-        //如果ex是系统 自定义的异常，直接取出异常信息
-        if(ex instanceof CustomException){
-            customException = (CustomException)ex;
-        }else{
-            //针对非CustomException异常，对这类重新构造成一个CustomException，异常信息为“未知错误”
+    @ExceptionHandler(value = AccountNotExistException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public JsonResult handUserNotFountException(AccountNotExistException e) {
+        return JsonResult.build(StatusCode.FAIL_ACCOUNT_NOT_EXIST);
+    }
 
-            customException = new CustomException("未知错误");
-        }
+    @ExceptionHandler(value = NotAuthException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public JsonResult handNotAuthException(NotAuthException e) {
+        return JsonResult.build(StatusCode.FAIL_NOT_AUTH);
+    }
 
-        //错误 信息
-        message = customException.getMessage();
+    @ExceptionHandler(value = PasswdIncorException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public JsonResult handPasswdIncorException(PasswdIncorException e) {
+        return JsonResult.build(StatusCode.FAIL_PASSWD_INCOR);
+    }
 
-        request.setAttribute("message", message);
-        request.setAttribute("code", 400004);
-        return new ModelAndView();
+    @ExceptionHandler(value = PicValiIncorException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public JsonResult handPicValiIncorException(PicValiIncorException e) {
+        return JsonResult.build(StatusCode.FAIL_PIC_VALI_INCOR);
+    }
+
+    @ExceptionHandler(value = ReqParmIncorException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public JsonResult handReqParmIncorException(ReqParmIncorException e) {
+        return JsonResult.build(StatusCode.FAIL_REQ_PRAM_INCOR);
+    }
+
+    @ExceptionHandler(value = ServerException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public JsonResult handServerException(ServerException e) {
+
+        return JsonResult.build(StatusCode.FAIL_SERVER_EXCEPT);
+    }
+
+    @ExceptionHandler(value = TokenInvaException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public JsonResult handTokenInvaException(TokenInvaException e) {
+        return JsonResult.build(StatusCode.FAIL_TOKEN_INVA);
+    }
+
+    @ExceptionHandler(value = UserExistException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public JsonResult handUserExistException(UserExistException e) {
+        return JsonResult.build(StatusCode.FAIL_USER_EXIST);
+    }
+
+    @ExceptionHandler(value = ServletRequestBindingException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public JsonResult handServletRequestBindingException(ServletRequestBindingException e) {
+        return JsonResult.build(StatusCode.FAIL_TOKEN_INVALID);
+    }
+
+    @ExceptionHandler(value = SQLException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public JsonResult handSQLException(Exception e) {
+        LOGGER.error(e.getMessage(), e);
+        return JsonResult.customBuild("数据库异常");
+    }
+    
+    @ExceptionHandler(value = Exception.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public JsonResult handException(Exception e) {
+        LOGGER.error(e.getMessage(), e);
+        return JsonResult.customBuild("服务器异常");
     }
 }

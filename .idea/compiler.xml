@@ -26,5 +26,8 @@
         <module name="roadCheck" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="roadCheck" target="1.5" />
+    </bytecodeTargetLevel>
   </component>
 </project>
