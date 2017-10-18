@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.swjtu.roadCheck.mapper.ChenzuoPeopelDataMapper">
+  <resultMap id="BaseResultMap" type="com.swjtu.roadCheck.entity.ChenzuoPeopelData">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="aqqnzt" jdbcType="VARCHAR" property="aqqnzt" />
+    <result column="ceshiresult" jdbcType="VARCHAR" property="ceshiresult" />
+    <result column="ceshitype" jdbcType="VARCHAR" property="ceshitype" />
+    <result column="ceshizhuangtai" jdbcType="VARCHAR" property="ceshizhuangtai" />
+    <result column="cheliangxunhao" jdbcType="VARCHAR" property="cheliangxunhao" />
+    <result column="du_ping_lei_xing" jdbcType="VARCHAR" property="duPingLeiXing" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="paochuzhuangta" jdbcType="VARCHAR" property="paochuzhuangta" />
+    <result column="phonenum" jdbcType="VARCHAR" property="phonenum" />
+    <result column="renyuantype" jdbcType="VARCHAR" property="renyuantype" />
+    <result column="sgfsszhuangtai" jdbcType="VARCHAR" property="sgfsszhuangtai" />
+    <result column="shenfentype" jdbcType="VARCHAR" property="shenfentype" />
+    <result column="sschengdu" jdbcType="VARCHAR" property="sschengdu" />
+    <result column="tuokuishiyong" jdbcType="VARCHAR" property="tuokuishiyong" />
+    <result column="xingbie" jdbcType="VARCHAR" property="xingbie" />
+    <result column="yinjiu" jdbcType="VARCHAR" property="yinjiu" />
+    <result column="ysxitong" jdbcType="VARCHAR" property="ysxitong" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, aqqnzt, ceshiresult, ceshitype, ceshizhuangtai, cheliangxunhao, du_ping_lei_xing, 
+    name, paochuzhuangta, phonenum, renyuantype, sgfsszhuangtai, shenfentype, sschengdu, 
+    tuokuishiyong, xingbie, yinjiu, ysxitong
+  </sql>
+  <select id="selectByExample" parameterType="com.swjtu.roadCheck.entity.ChenzuoPeopelDataExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from chenzuo_peopel_data
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from chenzuo_peopel_data
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from chenzuo_peopel_data
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.swjtu.roadCheck.entity.ChenzuoPeopelDataExample">
+    delete from chenzuo_peopel_data
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.swjtu.roadCheck.entity.ChenzuoPeopelData">
+    insert into chenzuo_peopel_data (id, aqqnzt, ceshiresult, 
+      ceshitype, ceshizhuangtai, cheliangxunhao, 
+      du_ping_lei_xing, name, paochuzhuangta, 
+      phonenum, renyuantype, sgfsszhuangtai, 
+      shenfentype, sschengdu, tuokuishiyong, 
+      xingbie, yinjiu, ysxitong
+      )
+    values (#{id,jdbcType=INTEGER}, #{aqqnzt,jdbcType=VARCHAR}, #{ceshiresult,jdbcType=VARCHAR}, 
+      #{ceshitype,jdbcType=VARCHAR}, #{ceshizhuangtai,jdbcType=VARCHAR}, #{cheliangxunhao,jdbcType=VARCHAR}, 
+      #{duPingLeiXing,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{paochuzhuangta,jdbcType=VARCHAR}, 
+      #{phonenum,jdbcType=VARCHAR}, #{renyuantype,jdbcType=VARCHAR}, #{sgfsszhuangtai,jdbcType=VARCHAR}, 
+      #{shenfentype,jdbcType=VARCHAR}, #{sschengdu,jdbcType=VARCHAR}, #{tuokuishiyong,jdbcType=VARCHAR}, 
+      #{xingbie,jdbcType=VARCHAR}, #{yinjiu,jdbcType=VARCHAR}, #{ysxitong,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.swjtu.roadCheck.entity.ChenzuoPeopelData">
+    insert into chenzuo_peopel_data
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="aqqnzt != null">
+        aqqnzt,
+      </if>
+      <if test="ceshiresult != null">
+        ceshiresult,
+      </if>
+      <if test="ceshitype != null">
+        ceshitype,
+      </if>
+      <if test="ceshizhuangtai != null">
+        ceshizhuangtai,
+      </if>
+      <if test="cheliangxunhao != null">
+        cheliangxunhao,
+      </if>
+      <if test="duPingLeiXing != null">
+        du_ping_lei_xing,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="paochuzhuangta != null">
+        paochuzhuangta,
+      </if>
+      <if test="phonenum != null">
+        phonenum,
+      </if>
+      <if test="renyuantype != null">
+        renyuantype,
+      </if>
+      <if test="sgfsszhuangtai != null">
+        sgfsszhuangtai,
+      </if>
+      <if test="shenfentype != null">
+        shenfentype,
+      </if>
+      <if test="sschengdu != null">
+        sschengdu,
+      </if>
+      <if test="tuokuishiyong != null">
+        tuokuishiyong,
+      </if>
+      <if test="xingbie != null">
+        xingbie,
+      </if>
+      <if test="yinjiu != null">
+        yinjiu,
+      </if>
+      <if test="ysxitong != null">
+        ysxitong,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="aqqnzt != null">
+        #{aqqnzt,jdbcType=VARCHAR},
+      </if>
+      <if test="ceshiresult != null">
+        #{ceshiresult,jdbcType=VARCHAR},
+      </if>
+      <if test="ceshitype != null">
+        #{ceshitype,jdbcType=VARCHAR},
+      </if>
+      <if test="ceshizhuangtai != null">
+        #{ceshizhuangtai,jdbcType=VARCHAR},
+      </if>
+      <if test="cheliangxunhao != null">
+        #{cheliangxunhao,jdbcType=VARCHAR},
+      </if>
+      <if test="duPingLeiXing != null">
+        #{duPingLeiXing,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="paochuzhuangta != null">
+        #{paochuzhuangta,jdbcType=VARCHAR},
+      </if>
+      <if test="phonenum != null">
+        #{phonenum,jdbcType=VARCHAR},
+      </if>
+      <if test="renyuantype != null">
+        #{renyuantype,jdbcType=VARCHAR},
+      </if>
+      <if test="sgfsszhuangtai != null">
+        #{sgfsszhuangtai,jdbcType=VARCHAR},
+      </if>
+      <if test="shenfentype != null">
+        #{shenfentype,jdbcType=VARCHAR},
+      </if>
+      <if test="sschengdu != null">
+        #{sschengdu,jdbcType=VARCHAR},
+      </if>
+      <if test="tuokuishiyong != null">
+        #{tuokuishiyong,jdbcType=VARCHAR},
+      </if>
+      <if test="xingbie != null">
+        #{xingbie,jdbcType=VARCHAR},
+      </if>
+      <if test="yinjiu != null">
+        #{yinjiu,jdbcType=VARCHAR},
+      </if>
+      <if test="ysxitong != null">
+        #{ysxitong,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.swjtu.roadCheck.entity.ChenzuoPeopelDataExample" resultType="java.lang.Integer">
+    select count(*) from chenzuo_peopel_data
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update chenzuo_peopel_data
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.aqqnzt != null">
+        aqqnzt = #{record.aqqnzt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ceshiresult != null">
+        ceshiresult = #{record.ceshiresult,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ceshitype != null">
+        ceshitype = #{record.ceshitype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ceshizhuangtai != null">
+        ceshizhuangtai = #{record.ceshizhuangtai,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cheliangxunhao != null">
+        cheliangxunhao = #{record.cheliangxunhao,jdbcType=VARCHAR},
+      </if>
+      <if test="record.duPingLeiXing != null">
+        du_ping_lei_xing = #{record.duPingLeiXing,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paochuzhuangta != null">
+        paochuzhuangta = #{record.paochuzhuangta,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phonenum != null">
+        phonenum = #{record.phonenum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.renyuantype != null">
+        renyuantype = #{record.renyuantype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sgfsszhuangtai != null">
+        sgfsszhuangtai = #{record.sgfsszhuangtai,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shenfentype != null">
+        shenfentype = #{record.shenfentype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sschengdu != null">
+        sschengdu = #{record.sschengdu,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tuokuishiyong != null">
+        tuokuishiyong = #{record.tuokuishiyong,jdbcType=VARCHAR},
+      </if>
+      <if test="record.xingbie != null">
+        xingbie = #{record.xingbie,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yinjiu != null">
+        yinjiu = #{record.yinjiu,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ysxitong != null">
+        ysxitong = #{record.ysxitong,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update chenzuo_peopel_data
+    set id = #{record.id,jdbcType=INTEGER},
+      aqqnzt = #{record.aqqnzt,jdbcType=VARCHAR},
+      ceshiresult = #{record.ceshiresult,jdbcType=VARCHAR},
+      ceshitype = #{record.ceshitype,jdbcType=VARCHAR},
+      ceshizhuangtai = #{record.ceshizhuangtai,jdbcType=VARCHAR},
+      cheliangxunhao = #{record.cheliangxunhao,jdbcType=VARCHAR},
+      du_ping_lei_xing = #{record.duPingLeiXing,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      paochuzhuangta = #{record.paochuzhuangta,jdbcType=VARCHAR},
+      phonenum = #{record.phonenum,jdbcType=VARCHAR},
+      renyuantype = #{record.renyuantype,jdbcType=VARCHAR},
+      sgfsszhuangtai = #{record.sgfsszhuangtai,jdbcType=VARCHAR},
+      shenfentype = #{record.shenfentype,jdbcType=VARCHAR},
+      sschengdu = #{record.sschengdu,jdbcType=VARCHAR},
+      tuokuishiyong = #{record.tuokuishiyong,jdbcType=VARCHAR},
+      xingbie = #{record.xingbie,jdbcType=VARCHAR},
+      yinjiu = #{record.yinjiu,jdbcType=VARCHAR},
+      ysxitong = #{record.ysxitong,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.swjtu.roadCheck.entity.ChenzuoPeopelData">
+    update chenzuo_peopel_data
+    <set>
+      <if test="aqqnzt != null">
+        aqqnzt = #{aqqnzt,jdbcType=VARCHAR},
+      </if>
+      <if test="ceshiresult != null">
+        ceshiresult = #{ceshiresult,jdbcType=VARCHAR},
+      </if>
+      <if test="ceshitype != null">
+        ceshitype = #{ceshitype,jdbcType=VARCHAR},
+      </if>
+      <if test="ceshizhuangtai != null">
+        ceshizhuangtai = #{ceshizhuangtai,jdbcType=VARCHAR},
+      </if>
+      <if test="cheliangxunhao != null">
+        cheliangxunhao = #{cheliangxunhao,jdbcType=VARCHAR},
+      </if>
+      <if test="duPingLeiXing != null">
+        du_ping_lei_xing = #{duPingLeiXing,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="paochuzhuangta != null">
+        paochuzhuangta = #{paochuzhuangta,jdbcType=VARCHAR},
+      </if>
+      <if test="phonenum != null">
+        phonenum = #{phonenum,jdbcType=VARCHAR},
+      </if>
+      <if test="renyuantype != null">
+        renyuantype = #{renyuantype,jdbcType=VARCHAR},
+      </if>
+      <if test="sgfsszhuangtai != null">
+        sgfsszhuangtai = #{sgfsszhuangtai,jdbcType=VARCHAR},
+      </if>
+      <if test="shenfentype != null">
+        shenfentype = #{shenfentype,jdbcType=VARCHAR},
+      </if>
+      <if test="sschengdu != null">
+        sschengdu = #{sschengdu,jdbcType=VARCHAR},
+      </if>
+      <if test="tuokuishiyong != null">
+        tuokuishiyong = #{tuokuishiyong,jdbcType=VARCHAR},
+      </if>
+      <if test="xingbie != null">
+        xingbie = #{xingbie,jdbcType=VARCHAR},
+      </if>
+      <if test="yinjiu != null">
+        yinjiu = #{yinjiu,jdbcType=VARCHAR},
+      </if>
+      <if test="ysxitong != null">
+        ysxitong = #{ysxitong,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.swjtu.roadCheck.entity.ChenzuoPeopelData">
+    update chenzuo_peopel_data
+    set aqqnzt = #{aqqnzt,jdbcType=VARCHAR},
+      ceshiresult = #{ceshiresult,jdbcType=VARCHAR},
+      ceshitype = #{ceshitype,jdbcType=VARCHAR},
+      ceshizhuangtai = #{ceshizhuangtai,jdbcType=VARCHAR},
+      cheliangxunhao = #{cheliangxunhao,jdbcType=VARCHAR},
+      du_ping_lei_xing = #{duPingLeiXing,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      paochuzhuangta = #{paochuzhuangta,jdbcType=VARCHAR},
+      phonenum = #{phonenum,jdbcType=VARCHAR},
+      renyuantype = #{renyuantype,jdbcType=VARCHAR},
+      sgfsszhuangtai = #{sgfsszhuangtai,jdbcType=VARCHAR},
+      shenfentype = #{shenfentype,jdbcType=VARCHAR},
+      sschengdu = #{sschengdu,jdbcType=VARCHAR},
+      tuokuishiyong = #{tuokuishiyong,jdbcType=VARCHAR},
+      xingbie = #{xingbie,jdbcType=VARCHAR},
+      yinjiu = #{yinjiu,jdbcType=VARCHAR},
+      ysxitong = #{ysxitong,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
