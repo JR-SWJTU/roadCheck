@@ -17,7 +17,7 @@ import javax.annotation.Resource;
  * Created by Administrator on 2017/10/18.
  */
 @Controller
-@RequestMapping("admin")
+@RequestMapping("admins")
 @ResponseBody
 public class AdminController {
 
