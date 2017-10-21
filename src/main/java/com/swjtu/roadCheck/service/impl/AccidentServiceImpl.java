@@ -12,6 +12,4 @@ import javax.annotation.Resource;
 @Service
 public class AccidentServiceImpl implements IAccidentService {
 
-    @Resource
-
 }
