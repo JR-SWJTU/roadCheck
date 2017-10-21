@@ -1,5 +1,6 @@
 package com.swjtu.roadCheck.web.controller;
 
+import com.swjtu.roadCheck.entityCustom.AccidentQueryCondition;
 import com.swjtu.roadCheck.entity.Accidentdata;
 import com.swjtu.roadCheck.mapper.AccidentdataMapper;
 import com.swjtu.roadCheck.service.IAccidentService;
@@ -26,8 +27,9 @@ public class AccidentController {
     @Resource
     IAccidentService accidentService;
 
-    @RequestMapping(value = "/analyseData/multiConditionQuery", method = RequestMethod.POST)
-    public JsonResult anlMultiConditionQuery(@RequestBody Map map) throws Exception{
+    @RequestMapping(value = "/analyseData/areaMultiConditionQuery", method = RequestMethod.POST)
+    public JsonResult areaMultiConditionQuery(@RequestBody AccidentQueryCondition condition) throws Exception{
+
 
         return JsonResult.build(StatusCode.SUCCESS);
     }
