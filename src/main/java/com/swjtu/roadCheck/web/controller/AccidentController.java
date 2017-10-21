@@ -51,7 +51,6 @@ public class AccidentController {
     public JsonResult analyseBlackPoint(@RequestBody Map map) throws Exception{
 
 
-
         return JsonResult.build(StatusCode.SUCCESS);
     }
 }

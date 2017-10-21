@@ -4,12 +4,17 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.swjtu.roadCheck.mapper.AccidentdataMapperCustom">
 
-    <sql id="query_accident_where">
-        <if test="accidentQueryCondition != null">
-            <if test="accidentQueryCondition.teanName!=null"
-                and
-        </if>
-    </sql>
+    <!--<sql id="query_accident_where" >-->
+        <!--<if test="accidentQueryCondition != null">-->
+            <!--<if test="teanName!=null"-->
+                <!--and teamName =-->
+        <!--</if>-->
+    <!--</sql>-->
+
+    <select id="multiConditionQueryAccident" parameterType="com.swjtu.roadCheck.entityCustom.AccidentQueryCondition"  resultType="com.swjtu.roadCheck.dto.Accident">
+
+      SELECT  * from accidentdata
+    </select>
     
     <!-- 商品查询的sql片段
     建议是以单表为单位定义查询条件

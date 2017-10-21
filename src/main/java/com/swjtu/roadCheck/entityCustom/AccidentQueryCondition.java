@@ -35,7 +35,9 @@ public class AccidentQueryCondition {
 
     private String carType;     //车辆类型
 
-    private boolean troEscape;   //是否肇事逃逸
+    private String troEscape;   //是否肇事逃逸
+
+
 
     public String getTeanName() {
         return teanName;
@@ -109,11 +111,11 @@ public class AccidentQueryCondition {
         this.weather = weather;
     }
 
-    public String getWorkPlaceRel() {
+    public boolean isWorkPlaceRel() {
         return workPlaceRel;
     }
 
-    public void setWorkPlaceRel(String workPlaceRel) {
+    public void setWorkPlaceRel(boolean workPlaceRel) {
         this.workPlaceRel = workPlaceRel;
     }
 
