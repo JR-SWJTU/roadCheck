@@ -2,6 +2,7 @@ package com.swjtu.roadCheck.web.controller;
 
 import com.google.gson.Gson;
 import com.swjtu.roadCheck.entity.Admin;
+import com.swjtu.roadCheck.mapper.AccidentdataMapper;
 import com.swjtu.roadCheck.service.IAdminService;
 import com.swjtu.roadCheck.util.JsonResult;
 import com.swjtu.roadCheck.util.enums.StatusCode;
@@ -17,7 +18,7 @@ import javax.annotation.Resource;
  * Created by Administrator on 2017/10/18.
  */
 @Controller
-@RequestMapping("admins")
+@RequestMapping("admin")
 @ResponseBody
 public class AdminController {
 
@@ -34,6 +35,13 @@ public class AdminController {
     @RequestMapping(value="/login", method = RequestMethod.POST)
     public JsonResult login(@RequestBody Admin admin) throws  Exception{
         adminService.login(admin);
+        return JsonResult.build(StatusCode.SUCCESS);
+    }
+
+    @RequestMapping(value = "/testlogin",method = RequestMethod.POST)
+    public JsonResult testLogin( @RequestBody Admin admin){
+       System.out.println("admin:"+admin.toString());
+        adminService.register(admin);
         return JsonResult.build(StatusCode.SUCCESS);
     }
 
