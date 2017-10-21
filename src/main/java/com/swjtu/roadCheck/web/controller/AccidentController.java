@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -40,4 +41,17 @@ public class AccidentController {
         return JsonResult.build(StatusCode.SUCCESS);
     }
 
+    @RequestMapping(value = "/blackPointDiagnosis/regions", method = RequestMethod.POST)
+    public JsonResult getAllRegions() throws Exception{
+        List<String> regions = accidentService.getRegions();
+        return JsonResult.build(StatusCode.SUCCESS,regions);
+    }
+
+    @RequestMapping(value = "/blackPointDiagnosis/results", method = RequestMethod.POST)
+    public JsonResult analyseBlackPoint(@RequestBody Map map) throws Exception{
+
+
+
+        return JsonResult.build(StatusCode.SUCCESS);
+    }
 }

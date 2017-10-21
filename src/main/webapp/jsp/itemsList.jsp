@@ -35,12 +35,11 @@
 				<option value="${item.key}">${item.value}</option>
 
 			</c:forEach>
-
 		</select>
 	</td>
-<td><input type="submit" value="查询"/>
-<input type="button" value="批量删除" onclick="deleteItems()">
-</td>
+	<td><input type="submit" value="查询"/>
+		<input type="button" value="批量删除" onclick="deleteItems()">
+	</td>
 </tr>
 </table>
 商品列表：
