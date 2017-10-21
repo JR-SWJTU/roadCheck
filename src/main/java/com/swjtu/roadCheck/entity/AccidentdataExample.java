@@ -1,6 +1,7 @@
 package com.swjtu.roadCheck.entity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class AccidentdataExample {
@@ -251,6 +252,66 @@ public class AccidentdataExample {
 
         public Criteria andIdNotBetween(Integer value1, Integer value2) {
             addCriterion("_id not between", value1, value2, "id");
+            return (Criteria) this;
+        }
+
+        public Criteria andRiqiIsNull() {
+            addCriterion("riQI is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRiqiIsNotNull() {
+            addCriterion("riQI is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRiqiEqualTo(Date value) {
+            addCriterion("riQI =", value, "riqi");
+            return (Criteria) this;
+        }
+
+        public Criteria andRiqiNotEqualTo(Date value) {
+            addCriterion("riQI <>", value, "riqi");
+            return (Criteria) this;
+        }
+
+        public Criteria andRiqiGreaterThan(Date value) {
+            addCriterion("riQI >", value, "riqi");
+            return (Criteria) this;
+        }
+
+        public Criteria andRiqiGreaterThanOrEqualTo(Date value) {
+            addCriterion("riQI >=", value, "riqi");
+            return (Criteria) this;
+        }
+
+        public Criteria andRiqiLessThan(Date value) {
+            addCriterion("riQI <", value, "riqi");
+            return (Criteria) this;
+        }
+
+        public Criteria andRiqiLessThanOrEqualTo(Date value) {
+            addCriterion("riQI <=", value, "riqi");
+            return (Criteria) this;
+        }
+
+        public Criteria andRiqiIn(List<Date> values) {
+            addCriterion("riQI in", values, "riqi");
+            return (Criteria) this;
+        }
+
+        public Criteria andRiqiNotIn(List<Date> values) {
+            addCriterion("riQI not in", values, "riqi");
+            return (Criteria) this;
+        }
+
+        public Criteria andRiqiBetween(Date value1, Date value2) {
+            addCriterion("riQI between", value1, value2, "riqi");
+            return (Criteria) this;
+        }
+
+        public Criteria andRiqiNotBetween(Date value1, Date value2) {
+            addCriterion("riQI not between", value1, value2, "riqi");
             return (Criteria) this;
         }
 

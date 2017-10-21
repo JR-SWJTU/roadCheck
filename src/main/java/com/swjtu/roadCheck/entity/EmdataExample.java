@@ -253,6 +253,76 @@ public class EmdataExample {
             addCriterion("_id not between", value1, value2, "id");
             return (Criteria) this;
         }
+
+        public Criteria andWorkplacerelIsNull() {
+            addCriterion("workPlaceRel is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkplacerelIsNotNull() {
+            addCriterion("workPlaceRel is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkplacerelEqualTo(String value) {
+            addCriterion("workPlaceRel =", value, "workplacerel");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkplacerelNotEqualTo(String value) {
+            addCriterion("workPlaceRel <>", value, "workplacerel");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkplacerelGreaterThan(String value) {
+            addCriterion("workPlaceRel >", value, "workplacerel");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkplacerelGreaterThanOrEqualTo(String value) {
+            addCriterion("workPlaceRel >=", value, "workplacerel");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkplacerelLessThan(String value) {
+            addCriterion("workPlaceRel <", value, "workplacerel");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkplacerelLessThanOrEqualTo(String value) {
+            addCriterion("workPlaceRel <=", value, "workplacerel");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkplacerelLike(String value) {
+            addCriterion("workPlaceRel like", value, "workplacerel");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkplacerelNotLike(String value) {
+            addCriterion("workPlaceRel not like", value, "workplacerel");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkplacerelIn(List<String> values) {
+            addCriterion("workPlaceRel in", values, "workplacerel");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkplacerelNotIn(List<String> values) {
+            addCriterion("workPlaceRel not in", values, "workplacerel");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkplacerelBetween(String value1, String value2) {
+            addCriterion("workPlaceRel between", value1, value2, "workplacerel");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkplacerelNotBetween(String value1, String value2) {
+            addCriterion("workPlaceRel not between", value1, value2, "workplacerel");
+            return (Criteria) this;
+        }
     }
 
     /**
