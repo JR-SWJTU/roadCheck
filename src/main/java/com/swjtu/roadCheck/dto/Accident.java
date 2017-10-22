@@ -5,97 +5,43 @@ package com.swjtu.roadCheck.dto;
  */
 public class Accident {
 
-    private Integer id;
+    private int num;  //总的事故数量
 
-    private Double lat;
+    private String yanZhongCd;   //事故严重程度
 
-    private Double lng;
+    private String diMingBeiZhu;   //事故发生所在的地名
 
-    private int total;  //总的事故数量
+    private String time;    //时间分析中的时间，最多精确到日
 
-    private int propertyLossOnly;   //仅财产损失事故数
-
-    private int slightInjury;    //轻伤事故数
-
-    private int seriousInjury;  //重伤事故数
-
-    private int dead;   //死亡事故数
-
-    public Integer getId() {
-        return id;
+    public int getNum() {
+        return num;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setNum(int num) {
+        this.num = num;
     }
 
-    public Double getLat() {
-        return lat;
+    public String getYanZhongCd() {
+        return yanZhongCd;
     }
 
-    public void setLat(Double lat) {
-        this.lat = lat;
+    public void setYanZhongCd(String yanZhongCd) {
+        this.yanZhongCd = yanZhongCd;
     }
 
-    public Double getLng() {
-        return lng;
+    public String getDiMingBeiZhu() {
+        return diMingBeiZhu;
     }
 
-    public void setLng(Double lng) {
-        this.lng = lng;
+    public void setDiMingBeiZhu(String diMingBeiZhu) {
+        this.diMingBeiZhu = diMingBeiZhu;
     }
 
-    public int getTotal() {
-        return total;
+    public String getTime() {
+        return time;
     }
 
-    public void setTotal(int total) {
-        this.total = total;
-    }
-
-    public int getPropertyLossOnly() {
-        return propertyLossOnly;
-    }
-
-    public void setPropertyLossOnly(int propertyLossOnly) {
-        this.propertyLossOnly = propertyLossOnly;
-    }
-
-    public int getSlightInjury() {
-        return slightInjury;
-    }
-
-    public void setSlightInjury(int slightInjury) {
-        this.slightInjury = slightInjury;
-    }
-
-    public int getSeriousInjury() {
-        return seriousInjury;
-    }
-
-    public void setSeriousInjury(int seriousInjury) {
-        this.seriousInjury = seriousInjury;
-    }
-
-    public int getDead() {
-        return dead;
-    }
-
-    public void setDead(int dead) {
-        this.dead = dead;
-    }
-
-    @Override
-    public String toString() {
-        return "accident{" +
-                "id=" + id +
-                ", lat=" + lat +
-                ", lng=" + lng +
-                ", total=" + total +
-                ", propertyLossOnly=" + propertyLossOnly +
-                ", slightInjury=" + slightInjury +
-                ", seriousInjury=" + seriousInjury +
-                ", dead=" + dead +
-                '}';
+    public void setTime(String time) {
+        this.time = time;
     }
 }

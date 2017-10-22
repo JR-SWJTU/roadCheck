@@ -2,47 +2,371 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.swjtu.roadCheck.mapper.AccidentdataMapperCustom">
+<mapper namespace="com.swjtu.roadCheck.mapper.AccidentMapperCustom">
 
-    <!--<sql id="query_accident_where" >-->
-        <!--<if test="accidentQueryCondition != null">-->
-            <!--<if test="teanName!=null"-->
-                <!--and teamName =-->
-        <!--</if>-->
-    <!--</sql>-->
 
-    <select id="multiConditionQueryAccident" parameterType="com.swjtu.roadCheck.entityCustom.AccidentQueryCondition"  resultType="com.swjtu.roadCheck.dto.Accident">
+    <!--多重搜索条件下某路段发生的事故数量搜索-->
+    <select id="multiConditionQueryAccidentForSGS" parameterType="com.swjtu.roadCheck.entityCustom.AccidentQueryCondition"
+            resultType="com.swjtu.roadCheck.dto.Accident">
 
-      SELECT  * from accidentdata
-    </select>
-    
-    <!-- 商品查询的sql片段
-    建议是以单表为单位定义查询条件
-    建议将常用的查询条件都写出来
-     -->
-    <sql id="query_items_where">
-        <if test="itemsCustom!=null">
-            <if test="itemsCustom.name!=null and itemsCustom.name!=''">
-                and  name like '%${itemsCustom.name}%'
-            </if>
-            <if test="itemsCustom.id!=null">
-                and  id = #{itemsCustom.id}
-            </if>
+        SELECT
+        count(*) AS num,diMingBeiZhu
+        FROM
 
+        (
+        SELECT
+        *
+        FROM
+        <if test="roadLevel!=null || weather!=null || workPlaceRel != null || intersectionType != null">
+            (
+            SELECT
+            *
+            FROM
+            (
+            SELECT
+            e.emnumber
+            FROM
+            emdata e
+            <where>
+                <if test="roadLevel!=null">
+                    e.luMianLev = #{roadLevel}
+                </if>
+                <if test="weather!=null">
+                    AND e.Tianqicondition = #{weather}
+                </if>
+                <if test="workPlaceRel != null">
+                    AND e.workPlaceRel = #{workPlaceRel}
+                </if>
+                <if test="intersectionType != null">
+                    AND e.Jcktype = #{intersectionType}
+                </if>
+            </where>
+            ) eResult INNER JOIN
         </if>
 
-    </sql>
+        <if test="teamName!=null || startTime!=null || endTime!=null">
+            (
+            SELECT
+            *
+            FROM
+            accidencecollectiondata
+            <where>
+                <if test="teamName!=null">
+                    team_name = #{teanName}
+                </if>
+                <if test="startTime!=null">
+                    AND riqi <![CDATA[ >= ]]> #{startTime}
+                </if>
+                <if test="endTime!=null">
+                    AND riqi <![CDATA[ <= ]]> #{endTime}
+                </if>
+            </where>
+            ) acd
+        </if>
 
-    <!-- 商品查询
-    parameterType：输入 查询条件
-    -->
 
-    <select id="findItemsList" parameterType="com.swjtu.roadCheck.entity.ItemsQueryVo"
-            resultType="com.swjtu.roadCheck.entity.ItemsCustom">
-        SELECT * FROM items
+        <if test="roadLevel!=null || weather!=null || workPlaceRel != null || intersectionType != null">
+            ON eResult.emnumber = acd.environmentnumber
+            ) acdResult
+        </if>
+
+
+        <if test="teamName!=null || startTime!=null || endTime!=null">
+            INNER JOIN
+        </if>
+
+        (
+        SELECT
+        accidencnumber,
+        diMingBeiZhu
+        FROM
+        accidentdata
         <where>
-            <include refid="query_items_where"/>
+            <if test="carCollisionType!=null">
+                accidentdata.shiguType = #{carCollisionType}
+            </if>
+            <if test="troEscape!=null">
+                AND accidentdata.taoYi = #{troEscape}
+            </if>
+            <if test="areaName!=null">
+                AND accidentdata.xianQu = #{areaName}
+            </if>
+            <if test="isWorkDay!=null">
+                AND accidentdata.is_workday = #{isWorkDay}
+            </if>
         </where>
+        ) aResult
+
+        <if test="teamName!=null || startTime!=null || endTime!=null">
+            ON acdResult.shigunumber = aResult.accidencnumber
+            ) res1
+        </if>
+
+        <if test="carType!= null">
+            INNER JOIN (
+            SELECT
+            carnumber
+            FROM
+            cardata
+            <where>
+                <if test="carType!= null">
+                    Leixing = #{carType}
+                </if>
+            </where>
+            ) carResult ON res1.carnumber = carResult.carnumber
+        </if>
+        GROUP BY diMingBeiZhu
+    </select>
+
+
+
+    <!--事故分析中的空间分析，多重搜索条件下某路段发生的不同事故严重程度的事故的统计-->
+    <select id="multiConditionQueryAccidentForYZCD" parameterType="com.swjtu.roadCheck.entityCustom.AccidentQueryCondition"
+            resultType="com.swjtu.roadCheck.dto.Accident">
+
+        SELECT
+        count(*) as num,diMingBeiZhu,yanZhongCd
+        FROM
+
+        (
+        SELECT
+        *
+        FROM
+        <if test="roadLevel!=null || weather!=null || workPlaceRel != null || intersectionType != null">
+            (
+            SELECT
+            *
+            FROM
+            (
+            SELECT
+            e.emnumber
+            FROM
+            emdata e
+            <where>
+                <if test="roadLevel!=null">
+                    e.luMianLev = #{roadLevel}
+                </if>
+                <if test="weather!=null">
+                    AND e.Tianqicondition = #{weather}
+                </if>
+                <if test="workPlaceRel != null">
+                    AND e.workPlaceRel = #{workPlaceRel}
+                </if>
+                <if test="intersectionType != null">
+                    AND e.Jcktype = #{intersectionType}
+                </if>
+            </where>
+            ) eResult INNER JOIN
+        </if>
+
+        <if test="teamName!=null || startTime!=null || endTime!=null">
+            (
+            SELECT
+            *
+            FROM
+            accidencecollectiondata
+            <where>
+                <if test="teamName!=null">
+                    team_name = #{teanName}
+                </if>
+                <if test="startTime!=null">
+                    AND riqi <![CDATA[ >= ]]> #{startTime}
+                </if>
+                <if test="endTime!=null">
+                    AND riqi <![CDATA[ <= ]]> #{endTime}
+                </if>
+            </where>
+            ) acd
+        </if>
+
+
+        <if test="roadLevel!=null || weather!=null || workPlaceRel != null || intersectionType != null">
+            ON eResult.emnumber = acd.environmentnumber
+            ) acdResult
+        </if>
+
+
+        <if test="teamName!=null || startTime!=null || endTime!=null">
+            INNER JOIN
+        </if>
+
+        (
+        SELECT
+        accidencnumber,
+        diMingBeiZhu,
+        yanZhongCd
+        FROM
+        accidentdata
+        <where>
+            <if test="carCollisionType!=null">
+                accidentdata.shiguType = #{carCollisionType}
+            </if>
+            <if test="troEscape!=null">
+                AND accidentdata.taoYi = #{troEscape}
+            </if>
+            <if test="areaName!=null">
+                AND accidentdata.xianQu = #{areaName}
+            </if>
+            <if test="isWorkDay!=null">
+                AND accidentdata.is_workday = #{isWorkDay}
+            </if>
+        </where>
+        ) aResult
+
+        <if test="teamName!=null || startTime!=null || endTime!=null">
+            ON acdResult.shigunumber = aResult.accidencnumber
+            ) res1
+        </if>
+
+        <if test="carType!= null">
+            INNER JOIN (
+            SELECT
+            carnumber
+            FROM
+            cardata
+            <where>
+                <if test="carType!= null">
+                    Leixing = #{carType}
+                </if>
+            </where>
+            ) carResult ON res1.carnumber = carResult.carnumber
+        </if>
+        GROUP BY diMingBeiZhu,yanZhongCd
+    </select>
+
+
+    <!--事故分析中的时间分析，多重搜索条件下某路段发生的不同事故严重程度的事故的统计-->
+    <select id="multiConditionQueryAccidentForTimeYZCD" parameterType="com.swjtu.roadCheck.entityCustom.AccidentQueryCondition"
+            resultType="com.swjtu.roadCheck.dto.Accident">
+
+        SELECT
+        count(*) as num,diMingBeiZhu,yanZhongCd
+        <if test="timePrecision==null || timePrecision>=1">
+            ,YEAR (riqi)
+        </if>
+        <if test="timePrecision>=2">
+            ,MONTH (riqi)
+        </if>
+        <if test="timePrecision>=3">
+            ,DAY(riqi)
+        </if>
+        FROM
+
+        (
+        SELECT
+        *
+        FROM
+        <if test="roadLevel!=null || weather!=null || workPlaceRel != null || intersectionType != null">
+            (
+            SELECT
+            *
+            FROM
+            (
+            SELECT
+            e.emnumber
+            FROM
+            emdata e
+            <where>
+                <if test="roadLevel!=null">
+                    e.luMianLev = #{roadLevel}
+                </if>
+                <if test="weather!=null">
+                    AND e.Tianqicondition = #{weather}
+                </if>
+                <if test="workPlaceRel != null">
+                    AND e.workPlaceRel = #{workPlaceRel}
+                </if>
+                <if test="intersectionType != null">
+                    AND e.Jcktype = #{intersectionType}
+                </if>
+            </where>
+            ) eResult INNER JOIN
+        </if>
+
+        <if test="teamName!=null || startTime!=null || endTime!=null">
+            (
+            SELECT
+            *
+            FROM
+            accidencecollectiondata
+            <where>
+                <if test="teamName!=null">
+                    team_name = #{teanName}
+                </if>
+                <if test="startTime!=null">
+                    AND riqi <![CDATA[ >= ]]> #{startTime}
+                </if>
+                <if test="endTime!=null">
+                    AND riqi <![CDATA[ <= ]]> #{endTime}
+                </if>
+            </where>
+            ) acd
+        </if>
+
+
+        <if test="roadLevel!=null || weather!=null || workPlaceRel != null || intersectionType != null">
+            ON eResult.emnumber = acd.environmentnumber
+            ) acdResult
+        </if>
+
+
+        <if test="teamName!=null || startTime!=null || endTime!=null">
+            INNER JOIN
+        </if>
+
+        (
+        SELECT
+        accidencnumber,
+        diMingBeiZhu,
+        yanZhongCd
+        FROM
+        accidentdata
+        <where>
+            <if test="carCollisionType!=null">
+                accidentdata.shiguType = #{carCollisionType}
+            </if>
+            <if test="troEscape!=null">
+                AND accidentdata.taoYi = #{troEscape}
+            </if>
+            <if test="areaName!=null">
+                AND accidentdata.xianQu = #{areaName}
+            </if>
+            <if test="isWorkDay!=null">
+                AND accidentdata.is_workday = #{isWorkDay}
+            </if>
+        </where>
+        ) aResult
+
+        <if test="teamName!=null || startTime!=null || endTime!=null">
+            ON acdResult.shigunumber = aResult.accidencnumber
+            ) res1
+        </if>
+
+        <if test="carType!= null">
+            INNER JOIN (
+            SELECT
+            carnumber
+            FROM
+            cardata
+            <where>
+                <if test="carType!= null">
+                    Leixing = #{carType}
+                </if>
+            </where>
+            ) carResult ON res1.carnumber = carResult.carnumber
+        </if>
+
+        GROUP BY diMingBeiZhu,yanZhongCd
+        <if test="timePrecision==null || timePrecision>=1">
+            ,YEAR (riqi)
+        </if>
+        <if test="timePrecision>=2">
+            ,MONTH (riqi)
+        </if>
+        <if test="timePrecision>=3">
+            ,DAY(riqi)
+        </if>
+
     </select>
 
 

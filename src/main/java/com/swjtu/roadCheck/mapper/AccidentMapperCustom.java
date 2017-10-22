@@ -10,6 +10,12 @@ import java.util.List;
  */
 public interface AccidentMapperCustom {
 
-    List<Accident> multiConditionQueryAccident(AccidentQueryCondition condition);
+    List<Accident> multiConditionQueryAccidentForSGS(AccidentQueryCondition condition);
+
+    List<Accident> multiConditionQueryAccidentForYZCD(AccidentQueryCondition condition);
+
+    List<Accident> multiConditionQueryAccidentForTimeSGS(AccidentQueryCondition condition);
+
+    List<Accident> multiConditionQueryAccidentForTimeYZCD(AccidentQueryCondition condition);
 
 }

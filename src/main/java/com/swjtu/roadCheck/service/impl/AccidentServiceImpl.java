@@ -46,7 +46,9 @@ public class AccidentServiceImpl implements IAccidentService {
      * @return
      */
     public List<Accident> areaMultiConditionQuery(AccidentQueryCondition condition) {
-
-        return accidentMapperCustom.multiConditionQueryAccident(condition);
+        if ( condition.isyType() )
+            return accidentMapperCustom.multiConditionQueryAccidentForSGS(condition);
+        else
+            return accidentMapperCustom.multiConditionQueryAccidentForYZCD(condition);
     }
 }

@@ -9,16 +9,16 @@ import java.util.Date;
  */
 public class AccidentQueryCondition {
 
-    private String teanName;    //大队名称
+    private String teamName;    //大队名称
 
     private String areaName;    //行政区名称
 
     private String roadType;    //道路类型，交叉口还是路段
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date startTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date endTime;
 
     private boolean yType;   //true为以事故数为纵轴，false为以事故严重程度为纵轴
@@ -29,7 +29,7 @@ public class AccidentQueryCondition {
 
     private String weather; //天气
 
-    private boolean workPlaceRel;    //是否与作业区相关
+    private String workPlaceRel;    //是否与作业区相关
 
     private String intersectionType;    //交叉口类型
 
@@ -37,15 +37,19 @@ public class AccidentQueryCondition {
 
     private String troEscape;   //是否肇事逃逸
 
+    private Integer isWorkDay; //是否工作日
 
 
-    public String getTeanName() {
-        return teanName;
-    }
 
-    public void setTeanName(String teanName) {
-        this.teanName = teanName;
-    }
+    private Integer timePrecision;      //时间精度，1为精确到年，2为精确到月，3为精确到日
+
+    private Integer propertyLoss;   //事故严重程度，仅财产损失，null为不选择该条件进行显示，1为选择该条件显示
+
+    private Integer slightInjury;   //事故严重程度，轻伤，null为不选择该条件进行显示，1为选择该条件显示
+
+    private Integer severInjury;    //事故严重，重伤，null为不选择该条件进行显示，1为选择该条件显示
+
+    private Integer dead;   //事故严重程度，死亡，null为不选择该条件进行显示，1为选择该条件显示
 
     public String getAreaName() {
         return areaName;
@@ -111,11 +115,11 @@ public class AccidentQueryCondition {
         this.weather = weather;
     }
 
-    public boolean isWorkPlaceRel() {
+    public String getWorkPlaceRel() {
         return workPlaceRel;
     }
 
-    public void setWorkPlaceRel(boolean workPlaceRel) {
+    public void setWorkPlaceRel(String workPlaceRel) {
         this.workPlaceRel = workPlaceRel;
     }
 
@@ -143,22 +147,59 @@ public class AccidentQueryCondition {
         this.troEscape = troEscape;
     }
 
-    @Override
-    public String toString() {
-        return "QueryCondition{" +
-                "teanName='" + teanName + '\'' +
-                ", areaName='" + areaName + '\'' +
-                ", roadType='" + roadType + '\'' +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                ", yType=" + yType +
-                ", roadLevel='" + roadLevel + '\'' +
-                ", carCollisionType='" + carCollisionType + '\'' +
-                ", weather='" + weather + '\'' +
-                ", workPlaceRel='" + workPlaceRel + '\'' +
-                ", intersectionType='" + intersectionType + '\'' +
-                ", carType='" + carType + '\'' +
-                ", troEscape='" + troEscape + '\'' +
-                '}';
+    public Integer getIsWorkDay() {
+        return isWorkDay;
+    }
+
+    public void setIsWorkDay(Integer isWorkDay) {
+        this.isWorkDay = isWorkDay;
+    }
+
+    public Integer getTimePrecision() {
+        return timePrecision;
+    }
+
+    public void setTimePrecision(Integer timePrecision) {
+        this.timePrecision = timePrecision;
+    }
+
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
+    }
+
+    public Integer getPropertyLoss() {
+        return propertyLoss;
+    }
+
+    public void setPropertyLoss(Integer propertyLoss) {
+        this.propertyLoss = propertyLoss;
+    }
+
+    public Integer getSlightInjury() {
+        return slightInjury;
+    }
+
+    public void setSlightInjury(Integer slightInjury) {
+        this.slightInjury = slightInjury;
+    }
+
+    public Integer getSeverInjury() {
+        return severInjury;
+    }
+
+    public void setSeverInjury(Integer severInjury) {
+        this.severInjury = severInjury;
+    }
+
+    public Integer getDead() {
+        return dead;
+    }
+
+    public void setDead(Integer dead) {
+        this.dead = dead;
     }
 }
