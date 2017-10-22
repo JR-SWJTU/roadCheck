@@ -52,7 +52,7 @@
             accidencecollectiondata
             <where>
                 <if test="teamName!=null">
-                    team_name = #{teanName}
+                    team_name = #{teamName}
                 </if>
                 <if test="startTime!=null">
                     AND riqi <![CDATA[ >= ]]> #{startTime}
@@ -167,7 +167,7 @@
             accidencecollectiondata
             <where>
                 <if test="teamName!=null">
-                    team_name = #{teanName}
+                    team_name = #{teamName}
                 </if>
                 <if test="startTime!=null">
                     AND riqi <![CDATA[ >= ]]> #{startTime}
@@ -244,14 +244,14 @@
         <if test="yType==false">
             ,yanZhongCd
         </if>
-        <if test="timePrecision==null || timePrecision>=1">
-            ,YEAR (riqi) AS year
+        <if test="timePrecision==0 || timePrecision>0">
+            ,YEAR (riqi) AS yearRes
         </if>
-        <if test="timePrecision>=2">
-            ,MONTH (riqi) as month
+        <if test="timePrecision>1">
+            ,MONTH (riqi) as monthRes
         </if>
-        <if test="timePrecision>=3">
-            ,DAY(riqi) as day
+        <if test="timePrecision>2">
+            ,DAY(riqi) as dayRes
         </if>
         FROM
 
@@ -294,7 +294,7 @@
             accidencecollectiondata
             <where>
                 <if test="teamName!=null">
-                    team_name = #{teanName}
+                    team_name = #{teamName}
                 </if>
                 <if test="startTime!=null">
                     AND riqi <![CDATA[ >= ]]> #{startTime}
@@ -325,8 +325,21 @@
         FROM
         accidentdata
         <where>
+            <if test="propertyLoss!=null">
+                accidentdata.yanZhongCd = '仅财产损失'
+            </if>
+            <if test="slightInjury!=null">
+                OR accidentdata.yanZhongCd = '轻伤'
+            </if>
+            <if test="severInjury!=null">
+                OR accidentdata.yanZhongCd = '重伤'
+            </if>
+            <if test="dead!=null">
+                OR accidentdata.yanZhongCd = '死亡'
+            </if>
+
             <if test="carCollisionType!=null">
-                accidentdata.shiguType = #{carCollisionType}
+                and accidentdata.shiguType = #{carCollisionType}
             </if>
             <if test="troEscape!=null">
                 AND accidentdata.taoYi = #{troEscape}
