@@ -15,6 +15,7 @@ public class AccidentQueryCondition {
 
     private String roadType;    //道路类型，交叉口还是路段
 
+//    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date startTime;
 
@@ -39,9 +40,7 @@ public class AccidentQueryCondition {
 
     private Integer isWorkDay; //是否工作日
 
-
-
-    private Integer timePrecision;      //时间精度，1为精确到年，2为精确到月，3为精确到日
+    private int timePrecision;      //时间精度，1为精确到年，2为精确到月，3为精确到日
 
     private Integer propertyLoss;   //事故严重程度，仅财产损失，null为不选择该条件进行显示，1为选择该条件显示
 
@@ -155,11 +154,11 @@ public class AccidentQueryCondition {
         this.isWorkDay = isWorkDay;
     }
 
-    public Integer getTimePrecision() {
+    public int getTimePrecision() {
         return timePrecision;
     }
 
-    public void setTimePrecision(Integer timePrecision) {
+    public void setTimePrecision(int timePrecision) {
         this.timePrecision = timePrecision;
     }
 

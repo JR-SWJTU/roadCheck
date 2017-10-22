@@ -1,7 +1,8 @@
 package com.swjtu.roadCheck.web.controller;
 
-import com.swjtu.roadCheck.entityCustom.AccidentQueryCondition;
+import com.google.gson.Gson;
 import com.swjtu.roadCheck.entity.Accidentdata;
+import com.swjtu.roadCheck.entityCustom.AccidentQueryCondition;
 import com.swjtu.roadCheck.mapper.AccidentdataMapper;
 import com.swjtu.roadCheck.service.IAccidentService;
 import com.swjtu.roadCheck.util.JsonResult;
@@ -47,7 +48,8 @@ public class AccidentController {
      */
     @RequestMapping(value = "/analyseData/timeMultiConditionQuery", method = RequestMethod.POST)
     public JsonResult timeMultiConditionQuery(@RequestBody AccidentQueryCondition condition) throws Exception{
-        return JsonResult.build(StatusCode.SUCCESS, accidentService.areaMultiConditionQuery(condition));
+        System.out.println(new Gson().toJson(condition));
+        return JsonResult.build(StatusCode.SUCCESS, accidentService.timeMultiConditionQuery(condition));
     }
 
     @RequestMapping(value = "/add/accidentdatas",method = RequestMethod.POST)

@@ -11,11 +11,11 @@ public class Accident {
 
     private String diMingBeiZhu;   //事故发生所在的地名
 
-    private String year;    //时间分析中的时间
+    private String yearRes;    //时间分析中的时间
 
-    private String month;
+    private String monthRes;
 
-    private String day;
+    private String dayRes;
 
     public int getNum() {
         return num;
@@ -41,27 +41,27 @@ public class Accident {
         this.diMingBeiZhu = diMingBeiZhu;
     }
 
-    public String getYear() {
-        return year;
+    public String getYearRes() {
+        return yearRes;
     }
 
-    public void setYear(String year) {
-        this.year = year;
+    public void setYearRes(String yearRes) {
+        this.yearRes = yearRes;
     }
 
-    public String getMonth() {
-        return month;
+    public String getMonthRes() {
+        return monthRes;
     }
 
-    public void setMonth(String month) {
-        this.month = month;
+    public void setMonthRes(String monthRes) {
+        this.monthRes = monthRes;
     }
 
-    public String getDay() {
-        return day;
+    public String getDayRes() {
+        return dayRes;
     }
 
-    public void setDay(String day) {
-        this.day = day;
+    public void setDayRes(String dayRes) {
+        this.dayRes = dayRes;
     }
 }
