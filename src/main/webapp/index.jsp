@@ -68,8 +68,8 @@
                     <mu-menu-item v-for="text,index in basicData.area.administrative" :key="index" :value="index" :title="text" ></mu-menu-item>
                 </mu-select-field>
                 <div class="mu-text-field-label label-class" style="padding-top: 12px;">选择分析的时间段</div>
-                <mu-date-picker auto-ok hint-text="开始监测日期" min-date="2016-09-01" :underline-class="{'underline-class': true}"></mu-date-picker>
-                <mu-date-picker auto-ok hint-text="至截止监测日期" :underline-class="{'underline-class': true}"></mu-date-picker>
+                <mu-date-picker auto-ok hint-text="开始监测日期" container="inline" mode="landscape" min-date="2016-09-01" :underline-class="{'underline-class': true}"></mu-date-picker>
+                <mu-date-picker auto-ok hint-text="至截止监测日期" container="inline" mode="landscape" :underline-class="{'underline-class': true}"></mu-date-picker>
             </div>
             <div class="body-right" :style="mapStyle">
                 <div id="blackPointMap" class="map">
@@ -92,8 +92,8 @@
                     <mu-menu-item v-for="text,index in basicData.area.administrative" :key="index" :value="index" :title="text" ></mu-menu-item>
                 </mu-select-field>
                 <div class="mu-text-field-label label-class" style="padding-top: 12px;">选择分析的时间段</div>
-                <mu-date-picker auto-ok hint-text="开始监测日期" min-date="2016-09-01" :underline-class="{'underline-class': true}"></mu-date-picker>
-                <mu-date-picker auto-ok hint-text="至截止监测日期" :underline-class="{'underline-class': true}"></mu-date-picker>
+                <mu-date-picker auto-ok hint-text="开始监测日期" container="inline" mode="landscape" min-date="2016-09-01" :underline-class="{'underline-class': true}"></mu-date-picker>
+                <mu-date-picker auto-ok hint-text="至截止监测日期" container="inline" mode="landscape" :underline-class="{'underline-class': true}"></mu-date-picker>
                 <mu-select-field v-model="selectData.bali" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}"  label="具体地点">
                     <mu-menu-item v-for="text,index in basicData.bali" :key="index" :value="index" :title="text" ></mu-menu-item>
                 </mu-select-field>
@@ -116,8 +116,8 @@
                     <mu-menu-item v-for="text,index in basicData.area.administrative" :key="index" :value="index" :title="text" ></mu-menu-item>
                 </mu-select-field>
                 <div class="mu-text-field-label label-class" style="padding-top: 12px;">选择分析的时间段</div>
-                <mu-date-picker auto-ok hint-text="开始监测日期" min-date="2016-09-01" :underline-class="{'underline-class': true}"></mu-date-picker>
-                <mu-date-picker auto-ok hint-text="至截止监测日期" :underline-class="{'underline-class': true}"></mu-date-picker>
+                <mu-date-picker auto-ok hint-text="开始监测日期" container="inline" mode="landscape" min-date="2016-09-01" :underline-class="{'underline-class': true}"></mu-date-picker>
+                <mu-date-picker auto-ok hint-text="至截止监测日期" container="inline" mode="landscape" :underline-class="{'underline-class': true}"></mu-date-picker>
                 <mu-select-field v-model="selectData.accidentalSev" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="事故严重程度">
                     <mu-menu-item v-for="text,index in basicData.accidentalSev" :key="index" :value="index" :title="text" ></mu-menu-item>
                 </mu-select-field>
@@ -144,8 +144,8 @@
                     <mu-menu-item v-for="text,index in basicData.area.administrative" :key="index" :value="index" :title="text" ></mu-menu-item>
                 </mu-select-field>
                 <div class="mu-text-field-label label-class" style="padding-top: 12px;">选择分析的时间段</div>
-                <mu-date-picker auto-ok hint-text="开始监测日期" min-date="2016-09-01" :underline-class="{'underline-class': true}"></mu-date-picker>
-                <mu-date-picker auto-ok hint-text="至截止监测日期" :underline-class="{'underline-class': true}"></mu-date-picker>
+                <mu-date-picker auto-ok hint-text="开始监测日期" container="inline" mode="landscape" min-date="2016-09-01" :underline-class="{'underline-class': true}"></mu-date-picker>
+                <mu-date-picker auto-ok hint-text="至截止监测日期" container="inline" mode="landscape" :underline-class="{'underline-class': true}"></mu-date-picker>
                 <mu-raised-button label="细节筛选" icon="widgets" label-position="before" primary style="width: 256px" @click="details"></mu-raised-button>
             </div>
             <div class="body-right" :style="mapStyle">
