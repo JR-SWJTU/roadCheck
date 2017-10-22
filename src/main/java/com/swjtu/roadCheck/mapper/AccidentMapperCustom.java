@@ -14,8 +14,6 @@ public interface AccidentMapperCustom {
 
     List<Accident> multiConditionQueryAccidentForYZCD(AccidentQueryCondition condition);
 
-    List<Accident> multiConditionQueryAccidentForTimeSGS(AccidentQueryCondition condition);
-
-    List<Accident> multiConditionQueryAccidentForTimeYZCD(AccidentQueryCondition condition);
+    List<Accident> multiConditionQueryAccidentForTime(AccidentQueryCondition condition);
 
 }

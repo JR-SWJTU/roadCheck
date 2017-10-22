@@ -22,4 +22,11 @@ public interface IAccidentService {
      * @return
      */
     List<Accident> areaMultiConditionQuery(AccidentQueryCondition condition);
+
+    /**
+     * 时间分析，多条件符合查询
+     * @param condition
+     * @return
+     */
+    List<Accident> timeMultiConditionQuery(AccidentQueryCondition condition);
 }

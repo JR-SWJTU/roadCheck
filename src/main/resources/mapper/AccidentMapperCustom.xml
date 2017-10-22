@@ -235,20 +235,23 @@
     </select>
 
 
-    <!--事故分析中的时间分析，多重搜索条件下某路段发生的不同事故严重程度的事故的统计-->
-    <select id="multiConditionQueryAccidentForTimeYZCD" parameterType="com.swjtu.roadCheck.entityCustom.AccidentQueryCondition"
+    <!--事故分析中的时间分析，多重搜索条件下某路段发生的不同事故严重程度的事故的统计或者事故数量统计，按照年月日进行统计-->
+    <select id="multiConditionQueryAccidentForTime" parameterType="com.swjtu.roadCheck.entityCustom.AccidentQueryCondition"
             resultType="com.swjtu.roadCheck.dto.Accident">
 
         SELECT
-        count(*) as num,diMingBeiZhu,yanZhongCd
+        count(*) as num,diMingBeiZhu
+        <if test="yType==false">
+            ,yanZhongCd
+        </if>
         <if test="timePrecision==null || timePrecision>=1">
-            ,YEAR (riqi)
+            ,YEAR (riqi) AS year
         </if>
         <if test="timePrecision>=2">
-            ,MONTH (riqi)
+            ,MONTH (riqi) as month
         </if>
         <if test="timePrecision>=3">
-            ,DAY(riqi)
+            ,DAY(riqi) as day
         </if>
         FROM
 
@@ -356,7 +359,10 @@
             ) carResult ON res1.carnumber = carResult.carnumber
         </if>
 
-        GROUP BY diMingBeiZhu,yanZhongCd
+        GROUP BY diMingBeiZhu
+        <if test="yType==false">
+        ,yanZhongCd
+        </if>
         <if test="timePrecision==null || timePrecision>=1">
             ,YEAR (riqi)
         </if>

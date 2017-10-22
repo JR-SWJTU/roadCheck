@@ -40,12 +40,12 @@ public class AccidentController {
     }
 
     /**
-     * 时间分析中的多条件查询特定地点的事故数或者各个不同严重程度下的事故数量
+     * 时间分析中的多条件查询特定地点的事故数或者各个不同严重程度下的事故数量或者事故数量统计，按年月日进行统计
      * @param condition
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "/analyseData/areaMultiConditionQuery", method = RequestMethod.POST)
+    @RequestMapping(value = "/analyseData/timeMultiConditionQuery", method = RequestMethod.POST)
     public JsonResult timeMultiConditionQuery(@RequestBody AccidentQueryCondition condition) throws Exception{
         return JsonResult.build(StatusCode.SUCCESS, accidentService.areaMultiConditionQuery(condition));
     }

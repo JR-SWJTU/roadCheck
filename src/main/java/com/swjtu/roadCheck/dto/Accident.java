@@ -11,7 +11,11 @@ public class Accident {
 
     private String diMingBeiZhu;   //事故发生所在的地名
 
-    private String time;    //时间分析中的时间，最多精确到日
+    private String year;    //时间分析中的时间
+
+    private String month;
+
+    private String day;
 
     public int getNum() {
         return num;
@@ -37,11 +41,27 @@ public class Accident {
         this.diMingBeiZhu = diMingBeiZhu;
     }
 
-    public String getTime() {
-        return time;
+    public String getYear() {
+        return year;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setYear(String year) {
+        this.year = year;
+    }
+
+    public String getMonth() {
+        return month;
+    }
+
+    public void setMonth(String month) {
+        this.month = month;
+    }
+
+    public String getDay() {
+        return day;
+    }
+
+    public void setDay(String day) {
+        this.day = day;
     }
 }

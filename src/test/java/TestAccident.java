@@ -23,7 +23,7 @@ public class TestAccident {
         condition.setWeather("晴朗");
         condition.setWorkPlaceRel("否");
         condition.setRoadType("非交叉口");
-        condition.setTeanName("大队A");
+        condition.setTeamName("大队A");
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         try {
             condition.setStartTime(format.parse("2017-09-09") );

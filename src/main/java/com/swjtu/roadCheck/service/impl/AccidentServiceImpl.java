@@ -51,4 +51,16 @@ public class AccidentServiceImpl implements IAccidentService {
         else
             return accidentMapperCustom.multiConditionQueryAccidentForYZCD(condition);
     }
+
+    /**
+     * 时间分析，多条件符合查询
+     *
+     * @param condition
+     * @return
+     */
+    public List<Accident> timeMultiConditionQuery(AccidentQueryCondition condition) {
+        return accidentMapperCustom.multiConditionQueryAccidentForTime(condition);
+    }
+
+
 }
