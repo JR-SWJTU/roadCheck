@@ -50,7 +50,10 @@
 </bean>
 
     <!-- 静态资源处理:资源映射 -->
-    <mvc:resources location="/images/" mapping="/images/**" />
+    <mvc:resources location="/js/" mapping="/js/**" />
+    <mvc:resources location="/css/" mapping="/css/**" />
+    <mvc:resources location="/libs/" mapping="/libs/**" />
+    <mvc:resources location="/source/" mapping="/source/**" />
 
 <!-- 多部分文件上传 -->
 <bean id="multipartResolver"
