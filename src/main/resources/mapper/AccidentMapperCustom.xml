@@ -83,7 +83,7 @@
         accidentdata
         <where>
             <if test="carCollisionType!=null">
-                accidentdata.shiguType = #{carCollisionType}
+                accidentdata.shiguType2 = #{carCollisionType}
             </if>
             <if test="troEscape!=null">
                 AND accidentdata.taoYi = #{troEscape}
@@ -199,7 +199,7 @@
         accidentdata
         <where>
             <if test="carCollisionType!=null">
-                accidentdata.shiguType = #{carCollisionType}
+                accidentdata.shiguType2 = #{carCollisionType}
             </if>
             <if test="troEscape!=null">
                 AND accidentdata.taoYi = #{troEscape}
@@ -339,7 +339,7 @@
             </if>
 
             <if test="carCollisionType!=null">
-                and accidentdata.shiguType = #{carCollisionType}
+                and accidentdata.shiguType2 = #{carCollisionType}
             </if>
             <if test="troEscape!=null">
                 AND accidentdata.taoYi = #{troEscape}
@@ -387,6 +387,10 @@
         </if>
 
     </select>
+
+
+
+
 
 
 </mapper>
