@@ -123,6 +123,18 @@ var app = new Vue({
         },
         highStatistics: function () {
             this.nowFuc = 'statistics';
+        },
+        resetObj: function () {
+            console.log('resetObj');
+        },
+        blackPointGet: function () {
+            console.log('blackPointGet');
+        },
+        spaceGet: function () {
+            console.log('spaceGet');
+        },
+        timeGet: function () {
+            console.log('timeGet');
         }
     },
     computed: {

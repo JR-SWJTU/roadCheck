@@ -69,7 +69,9 @@
                 </mu-select-field>
                 <div class="mu-text-field-label label-class" style="padding-top: 12px;">选择分析的时间段</div>
                 <mu-date-picker auto-ok hint-text="开始监测日期" container="inline" mode="landscape" min-date="2016-09-01" :underline-class="{'underline-class': true}"></mu-date-picker>
-                <mu-date-picker auto-ok hint-text="至截止监测日期" container="inline" mode="landscape" :underline-class="{'underline-class': true}"></mu-date-picker>
+                <mu-date-picker auto-ok hint-text="至截止监测日期" container="inline" mode="landscape" :underline-class="{'underline-class': true, 'end-time-line': true}" style="width: 205px;"></mu-date-picker>
+                <mu-icon-button tooltip="筛选结果" tooltip-position="bottom-right" icon="call_merge" class="right-btn" @click="blackPointGet"></mu-icon-button>
+                <%--<mu-icon-button tooltip="筛选数据重置" tooltip-position="bottom-right" icon="grade" class="right-btn" @click="resetObj"></mu-icon-button>--%>
             </div>
             <div class="body-right" :style="mapStyle">
                 <div id="blackPointMap" class="map">
@@ -121,7 +123,9 @@
                 <mu-select-field v-model="selectData.accidentalSev" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="事故严重程度">
                     <mu-menu-item v-for="text,index in basicData.accidentalSev" :key="index" :value="index" :title="text" ></mu-menu-item>
                 </mu-select-field>
-                <mu-raised-button label="细节筛选" icon="widgets" label-position="before" primary style="width: 256px" @click="details"></mu-raised-button>
+                <mu-raised-button label="细节筛选" icon="widgets" label-position="before" primary class="detail-btn" @click="details"></mu-raised-button>
+                <mu-icon-button tooltip="筛选结果" tooltip-position="bottom-right" icon="call_merge" class="right-btn" @click="blackPointGet"></mu-icon-button>
+                <%--<mu-icon-button tooltip="筛选数据重置" tooltip-position="bottom-right" icon="grade" class="right-btn" @click="spaceGet"></mu-icon-button>--%>
             </div>
             <div class="body-right" :style="mapStyle">
                 <div id="spaceMap" class="map">
@@ -146,7 +150,9 @@
                 <div class="mu-text-field-label label-class" style="padding-top: 12px;">选择分析的时间段</div>
                 <mu-date-picker auto-ok hint-text="开始监测日期" container="inline" mode="landscape" min-date="2016-09-01" :underline-class="{'underline-class': true}"></mu-date-picker>
                 <mu-date-picker auto-ok hint-text="至截止监测日期" container="inline" mode="landscape" :underline-class="{'underline-class': true}"></mu-date-picker>
-                <mu-raised-button label="细节筛选" icon="widgets" label-position="before" primary style="width: 256px" @click="details"></mu-raised-button>
+                <mu-raised-button label="细节筛选" icon="widgets" label-position="before" primary class="detail-btn" @click="details"></mu-raised-button>
+                <mu-icon-button tooltip="筛选结果" tooltip-position="bottom-right" icon="call_merge" class="right-btn" @click="blackPointGet"></mu-icon-button>
+                <%--<mu-icon-button tooltip="筛选数据重置" tooltip-position="bottom-right" icon="grade" class="right-btn" @click="timeGet"></mu-icon-button>--%>
             </div>
             <div class="body-right" :style="mapStyle">
                 <div id="timeMap" class="map">
@@ -192,8 +198,9 @@
     </mu-dialog>
 </div>
 
-<script src="libs/vue/vue.js"></script>
+<script src="libs/vue/vue.min.js"></script>
 <script src="libs/muse-ui-2.1.0/muse-ui.js"></script>
+<script src="libs/axios-0.17.0/axios.min.js"></script>
 <script src="js/index.js"></script>
 </body>
 </html>
