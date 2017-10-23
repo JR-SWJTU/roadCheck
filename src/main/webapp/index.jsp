@@ -59,7 +59,7 @@
                     <mu-menu-item v-for="text,index in basicData.analysisObj" :key="index" :value="index" :title="text" ></mu-menu-item>
                 </mu-select-field>
                 <div class="mu-text-field-label label-class">选择分析的区域</div>
-                <mu-radio label="大队" name="area1" native-value="gruppe" :icon-class="{'icon-class': true}" v-model="selectData.area.type"></mu-radio>
+                <mu-radio label="大队" name="area1" native-value="gruppe" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 20px;"></mu-radio>
                 <mu-radio label="行政区" name="area1" native-value="administrative" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 50px;"></mu-radio>
                 <mu-select-field v-show="selectData.area.type == 'gruppe'" v-model="selectData.area.value" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="大队管辖区">
                     <mu-menu-item v-for="text,index in basicData.area.gruppe" :key="index" :value="index" :title="text" ></mu-menu-item>
@@ -83,7 +83,7 @@
                     <mu-menu-item v-for="text,index in basicData.analysisObj" :key="index" :value="index" :title="text" ></mu-menu-item>
                 </mu-select-field>
                 <div class="mu-text-field-label label-class">选择分析的区域</div>
-                <mu-radio label="大队" name="area2" native-value="gruppe" :icon-class="{'icon-class': true}" v-model="selectData.area.type"></mu-radio>
+                <mu-radio label="大队" name="area2" native-value="gruppe" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 20px;"></mu-radio>
                 <mu-radio label="行政区" name="area2" native-value="administrative" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 50px;"></mu-radio>
                 <mu-select-field v-show="selectData.area.type == 'gruppe'" v-model="selectData.area.value" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}"  label="大队管辖区">
                     <mu-menu-item v-for="text,index in basicData.area.gruppe" :key="index" :value="index" :title="text" ></mu-menu-item>
@@ -107,7 +107,7 @@
                     <mu-menu-item v-for="text,index in basicData.analysisObj" :key="index" :value="index" :title="text" ></mu-menu-item>
                 </mu-select-field>
                 <div class="mu-text-field-label label-class">选择分析的区域</div>
-                <mu-radio label="大队" name="area3" native-value="gruppe" :icon-class="{'icon-class': true}" v-model="selectData.area.type"></mu-radio>
+                <mu-radio label="大队" name="area3" native-value="gruppe" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 20px;"></mu-radio>
                 <mu-radio label="行政区" name="area3" native-value="administrative" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 50px;"></mu-radio>
                 <mu-select-field v-show="selectData.area.type == 'gruppe'" v-model="selectData.area.value" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="大队管辖区">
                     <mu-menu-item v-for="text,index in basicData.area.gruppe" :key="index" :value="index" :title="text" ></mu-menu-item>
@@ -135,7 +135,7 @@
                     <mu-menu-item v-for="text,index in basicData.analysisObj" :key="index" :value="index" :title="text" ></mu-menu-item>
                 </mu-select-field>
                 <div class="mu-text-field-label label-class">选择分析的区域</div>
-                <mu-radio label="大队" name="area4" native-value="gruppe" :icon-class="{'icon-class': true}" v-model="selectData.area.type"></mu-radio>
+                <mu-radio label="大队" name="area4" native-value="gruppe" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 20px;"></mu-radio>
                 <mu-radio label="行政区" name="area4" native-value="administrative" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 50px;"></mu-radio>
                 <mu-select-field v-show="selectData.area.type == 'gruppe'" v-model="selectData.area.value" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="大队管辖区">
                     <mu-menu-item v-for="text,index in basicData.area.gruppe" :key="index" :value="index" :title="text" ></mu-menu-item>
