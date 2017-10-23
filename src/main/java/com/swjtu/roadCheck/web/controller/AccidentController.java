@@ -3,6 +3,7 @@ package com.swjtu.roadCheck.web.controller;
 import com.google.gson.Gson;
 import com.swjtu.roadCheck.entity.Accidentdata;
 import com.swjtu.roadCheck.entityCustom.AccidentQueryCondition;
+import com.swjtu.roadCheck.entityCustom.BlackPointData;
 import com.swjtu.roadCheck.mapper.AccidentdataMapper;
 import com.swjtu.roadCheck.service.IAccidentService;
 import com.swjtu.roadCheck.util.JsonResult;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -66,8 +68,8 @@ public class AccidentController {
 
     @RequestMapping(value = "/blackPointDiagnosis/results", method = RequestMethod.POST)
     public JsonResult analyseBlackPoint(@RequestBody Map map) throws Exception{
-
-
-        return JsonResult.build(StatusCode.SUCCESS);
+        List<BlackPointData> blackPointDatas = new ArrayList<BlackPointData>();
+        blackPointDatas = accidentService.getAllAccidentdataByCondition(map);
+        return JsonResult.build(StatusCode.SUCCESS,blackPointDatas);
     }
 }

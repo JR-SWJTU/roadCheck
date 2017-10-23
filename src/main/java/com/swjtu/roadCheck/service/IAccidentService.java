@@ -3,6 +3,7 @@ package com.swjtu.roadCheck.service;
 import com.swjtu.roadCheck.dto.Accident;
 import com.swjtu.roadCheck.entity.Accidentdata;
 import com.swjtu.roadCheck.entityCustom.AccidentQueryCondition;
+import com.swjtu.roadCheck.entityCustom.BlackPointData;
 
 import java.util.List;
 import java.util.Map;
@@ -14,7 +15,7 @@ public interface IAccidentService {
 
     List<String> getRegions();
 
-    List<Accidentdata> getAllAccidentdataByCondition(Map<String,Object> map);
+    List<BlackPointData> getAllAccidentdataByCondition(Map<String,Object> map);
 
     /**
      * 空间分析，多条件符合查询

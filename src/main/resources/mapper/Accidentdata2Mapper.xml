@@ -10,12 +10,28 @@
     </select>
 
     <select id="queryAccidentdataByCondition" parameterType="Map" resultType="com.swjtu.roadCheck.entity.Accidentdata">
-        SELECT * FROM accidentdata WHERE accidencnumber IN
-        (SELECT shigunumber FROM accidencecollectiondata WHERE admin_id IN
-        (SELECT admin_id FROM admin a,team t WHERE a.team_id = t.id AND t.team_name = #{team})
+        SELECT * FROM accidentdata
+        <if test="regions != null">
+            <where>
+                xianQu IN
+                <foreach collection="regions" item="region" open="(" separator="," close=")">
+                    #{region}
+                </foreach>
+            </where>
+        </if>
+        AND accidencnumber IN
+        (SELECT shigunumber FROM accidencecollectiondata
+        <if test="teams != null">
+            <where>
+                team_name IN
+                <foreach collection="teams" item="team" open="(" separator="," close=")">
+                    #{team}
+                </foreach>
+            </where>
+        </if>
         AND environmentnumber IN
         (SELECT emnumber FROM emdata WHERE Jcktype LIKE #{jckType}))
-        AND xianQu = #{region}
+        AND (DATE(riQI) BETWEEN #{startDate} and #{endDate})
     </select>
 
 
