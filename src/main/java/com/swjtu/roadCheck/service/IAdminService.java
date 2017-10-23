@@ -16,5 +16,5 @@ public interface IAdminService {
      * 登录
      * @param admin
      */
-    void login(Admin admin);
+    Admin login(Admin admin);
 }
