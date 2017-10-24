@@ -278,12 +278,20 @@
             <artifactId>poi-ooxml</artifactId>
             <version>3.9</version>
         </dependency>
+
+        <!-- json jar包 -->
+        <dependency>
+            <groupId>net.sf.json-lib</groupId>
+            <artifactId>json-lib</artifactId>
+            <version>2.4</version>
+            <classifier>jdk15</classifier>
+        </dependency>
     </dependencies>
 
 
 
 
-  <build>
+    <build>
     <finalName>roadCheck</finalName>
       <plugins>
           <plugin>

@@ -93,6 +93,11 @@
           <element id="library" level="project" name="Maven: stax:stax-api:1.0.1" />
           <element id="library" level="project" name="Maven: dom4j:dom4j:1.6.1" />
           <element id="library" level="project" name="Maven: xml-apis:xml-apis:1.0.b2" />
+          <element id="library" level="project" name="Maven: net.sf.json-lib:json-lib:jdk15:2.4" />
+          <element id="library" level="project" name="Maven: commons-beanutils:commons-beanutils:1.8.0" />
+          <element id="library" level="project" name="Maven: commons-collections:commons-collections:3.2.1" />
+          <element id="library" level="project" name="Maven: commons-lang:commons-lang:2.5" />
+          <element id="library" level="project" name="Maven: net.sf.ezmorph:ezmorph:1.0.6" />
         </element>
       </element>
       <element id="directory" name="META-INF">

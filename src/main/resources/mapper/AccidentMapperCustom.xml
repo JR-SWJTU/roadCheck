@@ -125,7 +125,7 @@
             resultType="com.swjtu.roadCheck.dto.Accident">
 
         SELECT
-        count(*) as num,diMingBeiZhu,yanZhongCd
+        count(*) as num,diMingBeiZhu,yanZhongCd as keyRes
         FROM
 
         (
@@ -242,7 +242,7 @@
         SELECT
         count(*) as num,diMingBeiZhu
         <if test="yType==false">
-            ,yanZhongCd
+            ,yanZhongCd as keyRes
         </if>
         <if test="timePrecision==0 || timePrecision>0">
             ,YEAR (riqi) AS yearRes
@@ -389,8 +389,289 @@
     </select>
 
 
+    <!--查询某大队、某个地区或某个地点发生的事故总数, 借用AccidentQueryCondition中roadType属性存储需要查询统计的地名名称-->
+    <select id="areaTotalAccidentNumsQuery" parameterType="com.swjtu.roadCheck.entityCustom.AccidentQueryCondition"
+            resultType="Integer">
+        SELECT
+        count(*) AS num
+        FROM
+        (
+
+        SELECT
+        *
+        FROM
+        (
+
+        SELECT
+        *
+        FROM
+        accidencecollectiondata
+        <where>
+            <if test="teamName!=null">
+                team_name = #{teamName}
+            </if>
+            <if test="startTime!=null">
+                AND riqi <![CDATA[ >= ]]> #{startTime}
+            </if>
+            <if test="endTime!=null">
+                AND riqi <![CDATA[ <= ]]> #{endTime}
+            </if>
+        </where>
+        ) acdResult
+
+        <if test="areaName!=null || roadType !=null">
+            INNER JOIN (
+            SELECT
+            accidencnumber
+            FROM
+            accidentdata
+            WHERE
+            <if test="areaName!=null">
+                accidentdata.xianQu = #{areaName}
+            </if>
+            <if test="roadType!=null">
+                diMingBeiZhu = #{roadType}
+            </if>
+            ) aResult ON acdResult.shigunumber = aResult.accidencnumber
+        </if>
+
+        ) res1
+
+    </select>
+
+    <!-- 查询某大队、某个地区或某个地点各个严重程度的事故的数量, 借用AccidentQueryCondition中roadType属性存储需要查询统计的地名名称-->
+    <select id="queryAreaTotalAccidentNumsForYZCD"
+            parameterType="com.swjtu.roadCheck.entityCustom.AccidentQueryCondition"
+            resultType="com.swjtu.roadCheck.dto.ResMap">
+        SELECT
+        count(*) AS num,
+        yanZhongCd as keyRes
+        FROM
+        (
+
+        SELECT
+        *
+        FROM
+        (
+
+        SELECT
+        *
+        FROM
+        accidencecollectiondata
+        <where>
+            <if test="teamName!=null">
+                team_name = #{teamName}
+            </if>
+            <if test="startTime!=null">
+                AND riqi <![CDATA[ >= ]]> #{startTime}
+            </if>
+            <if test="endTime!=null">
+                AND riqi <![CDATA[ <= ]]> #{endTime}
+            </if>
+        </where>
+        ) acdResult
+
+        INNER JOIN (
+        SELECT
+        accidencnumber,
+        yanZhongCd
+        FROM
+        accidentdata
+        <where>
+            <if test="areaName!=null">
+                accidentdata.xianQu = #{areaName}
+            </if>
+            <if test="roadType!=null">
+                diMingBeiZhu = #{roadType}
+            </if>
+        </where>
+        ) aResult ON acdResult.shigunumber = aResult.accidencnumber
+
+        ) res1
+
+        GROUP BY yanZhongCd
+
+    </select>
+
+    <!-- 查询某大队、某个地区或某个地点各个事故类型的事故的数量, 借用AccidentQueryCondition中roadType属性存储需要查询统计的地名名称-->
+    <select id="queryAreaTotalAccidentNumsForSGType"
+            parameterType="com.swjtu.roadCheck.entityCustom.AccidentQueryCondition"
+            resultType="com.swjtu.roadCheck.dto.ResMap">
+        SELECT
+        count(*) AS num,
+        shiguType as keyRes
+        FROM
+        (
+
+        SELECT
+        *
+        FROM
+        (
+
+        SELECT
+        *
+        FROM
+        accidencecollectiondata
+        <where>
+            <if test="teamName!=null">
+                team_name = #{teamName}
+            </if>
+            <if test="startTime!=null">
+                AND riqi <![CDATA[ >= ]]> #{startTime}
+            </if>
+            <if test="endTime!=null">
+                AND riqi <![CDATA[ <= ]]> #{endTime}
+            </if>
+        </where>
+        ) acdResult
+
+        INNER JOIN (
+        SELECT
+        accidencnumber,
+        shiguType
+        FROM
+        accidentdata
+        <where>
+            <if test="areaName!=null">
+                accidentdata.xianQu = #{areaName}
+            </if>
+            <if test="roadType!=null">
+                diMingBeiZhu = #{roadType}
+            </if>
+        </where>
+        ) aResult ON acdResult.shigunumber = aResult.accidencnumber
+
+        ) res1
+
+        GROUP BY shiguType
+    </select>
 
 
+    <!-- 查询某大队、某个地区或某个地点各个天气类型的事故的数量, 借用AccidentQueryCondition中roadType属性存储需要查询统计的地名名称-->
+    <select id="queryAreaTotalAccidentNumsSGWeather"
+            parameterType="com.swjtu.roadCheck.entityCustom.AccidentQueryCondition"
+            resultType="com.swjtu.roadCheck.dto.ResMap">
+        SELECT
+        count(*) AS num,
+        Tianqicondition as keyRes
+        FROM
+        (
+
+        SELECT
+        *
+        FROM
+        (
+        SELECT
+        *
+        FROM
+        (
+        SELECT
+        e.emnumber,
+        e.Tianqicondition
+        FROM
+        emdata e
+        ) eResult
+        INNER JOIN (
+        SELECT
+        *
+        FROM
+        accidencecollectiondata
+        <where>
+            <if test="teamName!=null">
+                team_name = #{teamName}
+            </if>
+            <if test="startTime!=null">
+                AND riqi <![CDATA[ >= ]]> #{startTime}
+            </if>
+            <if test="endTime!=null">
+                AND riqi <![CDATA[ <= ]]> #{endTime}
+            </if>
+        </where>
+        ) acd ON eResult.emnumber = acd.environmentnumber
+        ) acdResult
+
+        <if test="areaName!=null || roadType !=null">
+            INNER JOIN (
+            SELECT
+            accidencnumber
+            FROM
+            accidentdata
+            WHERE
+            <if test="areaName!=null">
+                accidentdata.xianQu = #{areaName}
+            </if>
+            <if test="roadType!=null">
+                diMingBeiZhu = #{roadType}
+            </if>
+            ) aResult ON acdResult.shigunumber = aResult.accidencnumber
+        </if>
+
+        ) res1
+
+        GROUP BY Tianqicondition
+    </select>
+
+
+    <!-- 查询某大队、某个地区或某个地点各个车辆类型的事故数量, 借用AccidentQueryCondition中roadType属性存储需要查询统计的地名名称-->
+    <select id="queryAreaTotalAccidentNumsSGCarType"
+            parameterType="com.swjtu.roadCheck.entityCustom.AccidentQueryCondition"
+            resultType="com.swjtu.roadCheck.dto.ResMap">
+        SELECT
+        count(*) AS num,
+        Leixing as keyRes
+        FROM
+        (
+
+        SELECT
+        *
+        FROM
+        (
+
+        SELECT
+        *
+        FROM
+        accidencecollectiondata
+        <where>
+            <if test="teamName!=null">
+                team_name = #{teamName}
+            </if>
+            <if test="startTime!=null">
+                AND riqi <![CDATA[ >= ]]> #{startTime}
+            </if>
+            <if test="endTime!=null">
+                AND riqi <![CDATA[ <= ]]> #{endTime}
+            </if>
+        </where>
+        ) acdResult
+
+        <if test="areaName!=null || roadType !=null">
+            INNER JOIN (
+            SELECT
+            accidencnumber
+            FROM
+            accidentdata
+            WHERE
+            <if test="areaName!=null">
+                accidentdata.xianQu = #{areaName}
+            </if>
+            <if test="roadType!=null">
+                diMingBeiZhu = #{roadType}
+            </if>
+            ) aResult ON acdResult.shigunumber = aResult.accidencnumber
+        </if>
+
+        ) res1
+
+        INNER JOIN (
+        SELECT
+        carnumber,
+        Leixing
+        FROM
+        cardata
+        ) carResult ON res1.carnumber = carResult.carnumber
+
+        GROUP BY Leixing
+    </select>
 
 
 </mapper>

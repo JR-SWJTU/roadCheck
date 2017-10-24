@@ -7,7 +7,7 @@ public class Accident {
 
     private int num;  //总的事故数量
 
-    private String yanZhongCd;   //事故严重程度
+    private String keyRes;   //num对应的键
 
     private String diMingBeiZhu;   //事故发生所在的地名
 
@@ -25,12 +25,12 @@ public class Accident {
         this.num = num;
     }
 
-    public String getYanZhongCd() {
-        return yanZhongCd;
+    public String getkeyRes() {
+        return keyRes;
     }
 
-    public void setYanZhongCd(String yanZhongCd) {
-        this.yanZhongCd = yanZhongCd;
+    public void setkeyRes(String keyRes) {
+        this.keyRes = keyRes;
     }
 
     public String getDiMingBeiZhu() {

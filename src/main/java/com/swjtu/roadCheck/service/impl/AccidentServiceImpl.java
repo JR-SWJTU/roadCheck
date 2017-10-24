@@ -1,14 +1,16 @@
 package com.swjtu.roadCheck.service.impl;
 
 import com.swjtu.roadCheck.dto.Accident;
+import com.swjtu.roadCheck.dto.ResMap;
+import com.swjtu.roadCheck.entity.Accidentdata;
 import com.swjtu.roadCheck.entityCustom.AccidentQueryCondition;
 import com.swjtu.roadCheck.entityCustom.BlackPointData;
 import com.swjtu.roadCheck.mapper.AccidentMapperCustom;
-import com.swjtu.roadCheck.entity.Accidentdata;
 import com.swjtu.roadCheck.mapper.Accidentdata2Mapper;
 import com.swjtu.roadCheck.service.IAccidentService;
 import com.swjtu.roadCheck.util.ExportExcel;
 import com.swjtu.roadCheck.web.exception.base.CustomException;
+import com.swjtu.roadCheck.web.exception.base.ReqParmIncorException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -129,6 +131,69 @@ public class AccidentServiceImpl implements IAccidentService {
      */
     public List<Accident> timeMultiConditionQuery(AccidentQueryCondition condition) {
         return accidentMapperCustom.multiConditionQueryAccidentForTime(condition);
+    }
+
+    /**
+     * 查询某大队、某个地区或某个地点发生的事故总数
+     *
+     * @param condition
+     * @return
+     */
+    public Integer areaTotalAccidentNumsQuery(AccidentQueryCondition condition) {
+        if(condition.getTeamName() == null && condition.getAreaName() == null && condition.getRoadType() == null)
+            throw new ReqParmIncorException();
+
+        if(condition.getAreaName() != null && condition.getRoadType() != null)
+            throw new ReqParmIncorException();
+        return accidentMapperCustom.areaTotalAccidentNumsQuery(condition);
+    }
+
+    /**
+     * 查询某大队、某个地区或某个地点各个严重程度的事故的数量
+     *
+     * @param condition
+     * @return
+     */
+    public List<ResMap> queryAreaTotalAccidentNumsForYZCD(AccidentQueryCondition condition) {
+        if(condition.getAreaName() != null && condition.getRoadType() != null)
+            throw new ReqParmIncorException();
+        return accidentMapperCustom.queryAreaTotalAccidentNumsForYZCD(condition);
+    }
+
+    /**
+     * 查询某大队、某个地区或某个地点各个事故类型的事故的数量
+     *
+     * @param condition
+     * @return
+     */
+    public List<ResMap> queryAreaTotalAccidentNumsForSGType(AccidentQueryCondition condition) {
+        if(condition.getAreaName() != null && condition.getRoadType() != null)
+            throw new ReqParmIncorException();
+        return accidentMapperCustom.queryAreaTotalAccidentNumsForSGType(condition);
+    }
+
+    /**
+     * 查询某大队、某个地区或某个地点各个天气类型的事故的数量
+     *
+     * @param condition
+     * @return
+     */
+    public List<ResMap> queryAreaTotalAccidentNumsSGWeather(AccidentQueryCondition condition) {
+        if(condition.getAreaName() != null && condition.getRoadType() != null)
+            throw new ReqParmIncorException();
+        return accidentMapperCustom.queryAreaTotalAccidentNumsSGWeather(condition);
+    }
+
+    /**
+     * 查询某大队、某个地区或某个地点各个车辆类型的事故数量
+     *
+     * @param condition
+     * @return
+     */
+    public List<ResMap> queryAreaTotalAccidentNumsSGCarType(AccidentQueryCondition condition) {
+        if(condition.getAreaName() != null && condition.getRoadType() != null)
+            throw new ReqParmIncorException();
+        return accidentMapperCustom.queryAreaTotalAccidentNumsSGCarType(condition);
     }
 
 

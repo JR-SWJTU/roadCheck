@@ -1,6 +1,7 @@
 package com.swjtu.roadCheck.web.controller;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.swjtu.roadCheck.entity.Accidentdata;
 import com.swjtu.roadCheck.entityCustom.AccidentQueryCondition;
 import com.swjtu.roadCheck.entityCustom.BlackPointData;
@@ -8,6 +9,7 @@ import com.swjtu.roadCheck.mapper.AccidentdataMapper;
 import com.swjtu.roadCheck.service.IAccidentService;
 import com.swjtu.roadCheck.util.JsonResult;
 import com.swjtu.roadCheck.util.enums.StatusCode;
+import net.sf.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,6 +54,23 @@ public class AccidentController {
     public JsonResult timeMultiConditionQuery(@RequestBody AccidentQueryCondition condition) throws Exception{
         System.out.println(new Gson().toJson(condition));
         return JsonResult.build(StatusCode.SUCCESS, accidentService.timeMultiConditionQuery(condition));
+    }
+
+    /**
+     * 数据分析，单点分析功能
+     * @param condition
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/analyseData/singlePointAnalyseDataQuery", method = RequestMethod.POST)
+    public JsonResult singlePointAnalyseDataQuery(@RequestBody AccidentQueryCondition condition) throws Exception{
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("totalNum", accidentService.areaTotalAccidentNumsQuery(condition));
+        jsonObject.put("severity", accidentService.queryAreaTotalAccidentNumsForYZCD(condition));
+        jsonObject.put("accidentType", accidentService.queryAreaTotalAccidentNumsForSGType(condition));
+        jsonObject.put("weather", accidentService.queryAreaTotalAccidentNumsSGWeather(condition));
+        jsonObject.put("carType", accidentService.queryAreaTotalAccidentNumsSGCarType(condition));
+        return  JsonResult.build(StatusCode.SUCCESS, jsonObject);
     }
 
     @RequestMapping(value = "/add/accidentdatas",method = RequestMethod.POST)
