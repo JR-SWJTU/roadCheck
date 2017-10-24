@@ -166,8 +166,8 @@
     </div>
 
     <mu-dialog :open="loginDialog" title="泸州市交通事故数据分析系统" dialog-class="dialog" title-class="dialog-title" body-class="dialog-body" >
-        <mu-text-field label="请输入您的用户名|警号" :full-width="true" label-float></mu-text-field>
-        <mu-text-field label="请输入您的密码" :full-width="true" label-float></mu-text-field>
+        <mu-text-field label="请输入您的用户名|警号" :full-width="true" label-float v-model="loginInfor.userName"></mu-text-field>
+        <mu-text-field label="请输入您的密码" :full-width="true" label-float v-model="loginInfor.password"></mu-text-field>
         <mu-flat-button slot="actions" primary @click="loginConfirm" label="登录"></mu-flat-button>
     </mu-dialog>
 
