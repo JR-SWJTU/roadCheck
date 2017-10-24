@@ -41,17 +41,17 @@ import org.apache.poi.ss.util.CellRangeAddress;
     /***
      * 时间行开始位置
      */
-    private static final int DATEHEAD_START_POSITION = 1;
-
-    /***
-     * 表头行开始位置
-     */
-    private static final int HEAD_START_POSITION = 2;
+//    private static final int DATEHEAD_START_POSITION = 1;
+//
+//    /***
+//     * 表头行开始位置
+//     */
+    private static final int HEAD_START_POSITION = 0;
 
     /***
      * 文本行开始位置
      */
-    private static final int CONTENT_START_POSITION = 3;
+    private static final int CONTENT_START_POSITION = 1;
 
 
     /**
@@ -118,13 +118,13 @@ import org.apache.poi.ss.util.CellRangeAddress;
      * 创建时间行（第一行创建）
      * @param titleMap 对象属性名称->表头显示名称
      */
-    private static void createDateHeadRow(Map<String, String> titleMap) {
-        CellRangeAddress dateRange = new CellRangeAddress(1, 1, 0, titleMap.size() - 1);
-        sheet.addMergedRegion(dateRange);
-        HSSFRow dateRow = sheet.createRow(DATEHEAD_START_POSITION);
-        HSSFCell dateCell = dateRow.createCell(0);
-        dateCell.setCellValue(new SimpleDateFormat("yyyy年MM月dd日").format(new Date()));
-    }
+//    private static void createDateHeadRow(Map<String, String> titleMap) {
+//        CellRangeAddress dateRange = new CellRangeAddress(1, 1, 0, titleMap.size() - 1);
+//        sheet.addMergedRegion(dateRange);
+//        HSSFRow dateRow = sheet.createRow(DATEHEAD_START_POSITION);
+//        HSSFCell dateCell = dateRow.createCell(0);
+//        dateCell.setCellValue(new SimpleDateFormat("yyyy年MM月dd日").format(new Date()));
+//    }
 
     /**
      * 创建表头行（第二行创建）

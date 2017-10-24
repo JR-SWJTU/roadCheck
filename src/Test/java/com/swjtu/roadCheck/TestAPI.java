@@ -122,14 +122,59 @@ public class TestAPI {
 
     @Test
     public void testExcelExport(){
+        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:/spring/applicationContext-*.xml");
+        Accidentdata2Mapper accidentdata2Mapper = ctx.getBean(Accidentdata2Mapper.class);
         List<BlackPointData> blackPointDatas = new ArrayList<BlackPointData>();
-        for(int i = 0;i < 3;i++){
+        List<Accidentdata> accidentdatas = new ArrayList<Accidentdata>();
+        Map<String,Object> map = new HashMap<String,Object>();
+        ArrayList<String> teams = new ArrayList<String>();
+        ArrayList<String> regions = new ArrayList<String>();
+        regions.add("金牛区");
+        regions.add("青羊区");
+        regions.add("郫都区");
+        teams.add("一大队");
+        teams.add("二大队");
+        map.put("teams",teams);
+        map.put("jckType","非交叉口");
+        map.put("regions",regions);
+        map.put("startDate","2017-01-01");
+        map.put("endDate","2017-10-30");
+        accidentdatas = accidentdata2Mapper.queryAccidentdataByCondition1(map);
+        Map<String,Integer> resultMap = new HashMap<String,Integer>();
+        for(Accidentdata accidentdata : accidentdatas){
+            if(!resultMap.containsKey(accidentdata.getXianqu()+"+"+accidentdata.getDimingbeizhu())){
+                resultMap.put(accidentdata.getXianqu()+"+"+accidentdata.getDimingbeizhu(),0);
+            }
+            int score = 0;
+            if(accidentdata.getYanzhongcd().equals("死亡")){
+                score = 10;
+            }else if(accidentdata.getYanzhongcd().equals("轻伤")|| accidentdata.getYanzhongcd().equals("重伤")){
+                score = 5;
+            }else if(accidentdata.getYanzhongcd().equals("仅财损")){
+                score = 1;
+            }
+            int s = (Integer) resultMap.get(accidentdata.getXianqu()+"+"+accidentdata.getDimingbeizhu());
+            s+=score;
+            resultMap.put(accidentdata.getXianqu()+"+"+accidentdata.getDimingbeizhu(),s);
+        }
+
+        List<Map.Entry<String, Integer>> resultList = new ArrayList<Map.Entry<String, Integer>>(resultMap.entrySet());
+        Collections.sort(resultList, new Comparator<Map.Entry<String, Integer>>() {
+            public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+                return o2.getValue() - o1.getValue();
+            }
+        });
+        int topTenPercent = (int)Math.floor(resultList.size() * 0.1);
+        for(int i = 0;i < topTenPercent;i++){
+            Map.Entry entry = resultList.get(i);
             BlackPointData blackPointData = new BlackPointData();
-            blackPointData.setBlackPointName("123");
-            blackPointData.setBlackPointRegion("456");
-            blackPointData.setNumber(11);
+            String str = (String)entry.getKey();
+            blackPointData.setBlackPointName(str.split("\\+")[1]);
+            blackPointData.setBlackPointRegion(str.split("\\+")[0]);
+            blackPointData.setNumber((Integer)entry.getValue());
             blackPointDatas.add(blackPointData);
         }
+
         Map<String,String> titleMap = new LinkedHashMap<String,String>();
         titleMap.put("blackPointRegion", "行政区");
         titleMap.put("blackPointName", "备注");

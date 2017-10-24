@@ -40,8 +40,8 @@ public class AccidentServiceImpl implements IAccidentService {
         }
         Map<String,Integer> resultMap = new HashMap<String,Integer>();
         for(Accidentdata accidentdata : accidentdatas){
-            if(!resultMap.containsKey(accidentdata.getXianqu())){
-                resultMap.put(accidentdata.getXianqu(),0);
+            if(!resultMap.containsKey(accidentdata.getXianqu()+"+"+accidentdata.getDimingbeizhu())){
+                resultMap.put(accidentdata.getXianqu()+"+"+accidentdata.getDimingbeizhu(),0);
             }
             int score = 0;
             if(accidentdata.getYanzhongcd().equals("死亡")){
@@ -51,9 +51,9 @@ public class AccidentServiceImpl implements IAccidentService {
             }else if(accidentdata.getYanzhongcd().equals("仅财损")){
                 score = 1;
             }
-            int s = (Integer) resultMap.get(accidentdata.getXianqu());
+            int s = (Integer) resultMap.get(accidentdata.getXianqu()+"+"+accidentdata.getDimingbeizhu());
             s+=score;
-            resultMap.put(accidentdata.getXianqu(),s);
+            resultMap.put(accidentdata.getXianqu()+"+"+accidentdata.getDimingbeizhu(),s);
         }
 
         List<Map.Entry<String, Integer>> resultList = new ArrayList<Map.Entry<String, Integer>>(resultMap.entrySet());
