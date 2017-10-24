@@ -15,7 +15,9 @@ public interface IAccidentService {
 
     List<String> getRegions();
 
-    List<BlackPointData> getAllAccidentdataByCondition(Map<String,Object> map);
+    List<BlackPointData> getTopTen(Map<String, Object> map);
+
+    void exportAccidentData(Map<String,Object> map);
 
     /**
      * 空间分析，多条件符合查询

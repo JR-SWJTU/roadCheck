@@ -7,6 +7,8 @@ import com.swjtu.roadCheck.mapper.AccidentMapperCustom;
 import com.swjtu.roadCheck.entity.Accidentdata;
 import com.swjtu.roadCheck.mapper.Accidentdata2Mapper;
 import com.swjtu.roadCheck.service.IAccidentService;
+import com.swjtu.roadCheck.util.ExportExcel;
+import com.swjtu.roadCheck.web.exception.base.CustomException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -30,7 +32,7 @@ public class AccidentServiceImpl implements IAccidentService {
         return regionList;
     }
 
-    public List<BlackPointData> getAllAccidentdataByCondition(Map<String, Object> map) {
+    public List<Map.Entry<String, Integer>> getAllAccidentdataByCondition(Map<String, Object> map) {
 
         List<Accidentdata> accidentdatas = new ArrayList<Accidentdata>();
         if(map.get("jckType").equals("路段")){
@@ -62,8 +64,12 @@ public class AccidentServiceImpl implements IAccidentService {
                 return o2.getValue() - o1.getValue();
             }
         });
-        List<BlackPointData> blackPointDatas = new ArrayList<BlackPointData>();
+       return resultList;
+    }
+    public List<BlackPointData> getTopTen(Map<String, Object> map){
+        List<Map.Entry<String, Integer>> resultList = getAllAccidentdataByCondition(map);
         int topTenPercent = (int)Math.floor(resultList.size() * 0.1);
+        List<BlackPointData> blackPointDatas = new ArrayList<BlackPointData>();
         for(int i = 0;i < topTenPercent;i++){
             Map.Entry entry = resultList.get(i);
             BlackPointData blackPointData = new BlackPointData();
@@ -74,6 +80,31 @@ public class AccidentServiceImpl implements IAccidentService {
             blackPointDatas.add(blackPointData);
         }
         return blackPointDatas;
+    }
+
+    public void exportAccidentData(Map<String, Object> map) {
+        List<Map.Entry<String, Integer>> resultList = getAllAccidentdataByCondition(map);
+        List<BlackPointData> blackPointDatas = new ArrayList<BlackPointData>();
+        for(int i = 0;i < resultList.size();i++){
+            Map.Entry entry = resultList.get(i);
+            BlackPointData blackPointData = new BlackPointData();
+            String str = (String)entry.getKey();
+            blackPointData.setBlackPointName(str.split("\\+")[1]);
+            blackPointData.setBlackPointRegion(str.split("\\+")[0]);
+            blackPointData.setNumber((Integer)entry.getValue());
+            blackPointDatas.add(blackPointData);
+        }
+
+        Map<String,String> titleMap = new LinkedHashMap<String,String>();
+        titleMap.put("blackPointRegion", "行政区");
+        titleMap.put("blackPointName", "备注");
+        titleMap.put("number", "当量");
+        String sheetName = "信息导出";
+        try{
+            ExportExcel.excelExport(blackPointDatas, titleMap, sheetName,"BPResult");
+        }catch (CustomException cex){
+           throw new CustomException("信息导出失败");
+        }
     }
 
 

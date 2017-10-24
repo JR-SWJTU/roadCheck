@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
+import com.swjtu.roadCheck.web.exception.base.CustomException;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -63,7 +65,7 @@ import org.apache.poi.ss.util.CellRangeAddress;
      * @param sheetName
      *        sheet名称和表头值
      */
-    public static void excelExport(List<?> dataList, Map<String, String> titleMap, String sheetName,String filename) {
+    public static void excelExport(List<?> dataList, Map<String, String> titleMap, String sheetName,String filename) throws CustomException {
         // 初始化workbook
         initHSSFWorkbook(sheetName);
 //        // 标题行
@@ -78,7 +80,6 @@ import org.apache.poi.ss.util.CellRangeAddress;
         //autoSizeColumn(titleMap.size());
         // 写入处理结果
         try {
-
             String filedisplay = filename + ".xls";
             //如果web项目，1、设置下载框的弹出（设置response相关参数)；2、通过httpservletresponse.getOutputStream()获取
             OutputStream out = new FileOutputStream(filedisplay);
@@ -86,7 +87,7 @@ import org.apache.poi.ss.util.CellRangeAddress;
             out.close();
         }
         catch (Exception e) {
-            e.printStackTrace();
+            throw new CustomException("导出失败");
         }
     }
 

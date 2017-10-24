@@ -69,7 +69,14 @@ public class AccidentController {
     @RequestMapping(value = "/blackPointDiagnosis/results", method = RequestMethod.POST)
     public JsonResult analyseBlackPoint(@RequestBody Map map) throws Exception{
         List<BlackPointData> blackPointDatas = new ArrayList<BlackPointData>();
-        blackPointDatas = accidentService.getAllAccidentdataByCondition(map);
+        blackPointDatas = accidentService.getTopTen(map);
         return JsonResult.build(StatusCode.SUCCESS,blackPointDatas);
+    }
+
+    @RequestMapping(value = "/blackPointDiagnosis/exportaion", method = RequestMethod.POST)
+    public JsonResult exportBlackPoint(@RequestBody Map map) throws Exception{
+        List<BlackPointData> blackPointDatas = new ArrayList<BlackPointData>();
+        accidentService.exportAccidentData(map);
+        return JsonResult.build(StatusCode.SUCCESS);
     }
 }
