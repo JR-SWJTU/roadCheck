@@ -47,7 +47,7 @@ public class AdminServiceImpl implements IAdminService {
      *
      * @param admin
      */
-    public void login(Admin admin) {
+    public Admin login(Admin admin) {
 
         AdminExample adminExample = new AdminExample();
         adminExample.createCriteria().andNameEqualTo(admin.getName());
@@ -56,13 +56,16 @@ public class AdminServiceImpl implements IAdminService {
 
         //账号不存在
         if(list.size() == 0){
-            throw new AccountNotExistException();
+            return null;
+            //throw new AccountNotExistException();
         }
 
         //密码不正确
         Admin res = list.get(0);
         if(!res.getPassword().equals(admin.getPassword())){
-            throw  new PasswdIncorException();
+            return null;
+            //throw  new PasswdIncorException();
         }
+        return res;
     }
 }

@@ -64,6 +64,11 @@ var app = new Vue({
             hitAndRun: ''
         },
 
+        loginInfor: {
+            userName: '',
+            password: ''
+        },
+
         isFirstLoad: false,
         isShowItems: false,
 
@@ -91,6 +96,7 @@ var app = new Vue({
             this.loginDialog = true;
         },
         loginConfirm: function () {
+            //loginInfor.userName, loginInfor.password
             this.isLogin = true;
             this.loginDialog = false;
         },
@@ -123,6 +129,19 @@ var app = new Vue({
         },
         highStatistics: function () {
             this.nowFuc = 'statistics';
+        },
+        resetObj: function () {
+            console.log('resetObj');
+        },
+        blackPointGet: function () {
+            console.log('blackPointGet');
+
+        },
+        spaceGet: function () {
+            console.log('spaceGet');
+        },
+        timeGet: function () {
+            console.log('timeGet');
         }
     },
     computed: {

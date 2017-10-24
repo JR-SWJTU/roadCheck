@@ -145,6 +145,9 @@
 .underline-class{
     background-color: olivedrab;
 }
+.end-time-line{
+    width: 205px;
+}
 .icon-class{
     width: 16px;
 }
@@ -173,12 +176,22 @@
     font-weight: 900;
 }
 .body-left{
-    width: 298px;
+    width: 288px;
     padding: 15px;
     margin: 10px 0px 0px 20px;
     border: 1px solid lightblue;
     -webkit-border-radius: 10px;
     border-radius: 10px;
+}
+.right-btn{
+    float: right;
+    background-color: lavender;
+    width: 38px;
+    height: 38px;
+    padding: 7px;
+}
+.detail-btn{
+    width: 205px;
 }
 .body-left-float{
     position: absolute;

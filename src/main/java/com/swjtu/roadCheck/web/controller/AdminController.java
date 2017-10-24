@@ -33,9 +33,9 @@ public class AdminController {
     }
 
     @RequestMapping(value="/login", method = RequestMethod.POST)
-    public JsonResult login(@RequestBody Admin admin) throws  Exception{
-        adminService.login(admin);
-        return JsonResult.build(StatusCode.SUCCESS);
+    public Admin login(@RequestBody Admin admin) throws  Exception{
+        Admin admin1 = adminService.login(admin);
+        return admin1;
     }
 
     @RequestMapping(value = "/testlogin",method = RequestMethod.POST)
