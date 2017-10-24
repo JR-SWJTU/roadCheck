@@ -63,7 +63,7 @@ import org.apache.poi.ss.util.CellRangeAddress;
      * @param sheetName
      *        sheet名称和表头值
      */
-    public static void excelExport(List<?> dataList, Map<String, String> titleMap, String sheetName) {
+    public static void excelExport(List<?> dataList, Map<String, String> titleMap, String sheetName,String filename) {
         // 初始化workbook
         initHSSFWorkbook(sheetName);
 //        // 标题行
@@ -78,9 +78,8 @@ import org.apache.poi.ss.util.CellRangeAddress;
         //autoSizeColumn(titleMap.size());
         // 写入处理结果
         try {
-            //生成UUID文件名称
-            UUID uuid = UUID.randomUUID();
-            String filedisplay = uuid + ".xls";
+
+            String filedisplay = filename + ".xls";
             //如果web项目，1、设置下载框的弹出（设置response相关参数)；2、通过httpservletresponse.getOutputStream()获取
             OutputStream out = new FileOutputStream(filedisplay);
             workbook.write(out);

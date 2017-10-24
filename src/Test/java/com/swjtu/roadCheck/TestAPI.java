@@ -164,8 +164,8 @@ public class TestAPI {
                 return o2.getValue() - o1.getValue();
             }
         });
-        int topTenPercent = (int)Math.floor(resultList.size() * 0.1);
-        for(int i = 0;i < topTenPercent;i++){
+
+        for(int i = 0;i < resultList.size();i++){
             Map.Entry entry = resultList.get(i);
             BlackPointData blackPointData = new BlackPointData();
             String str = (String)entry.getKey();
@@ -184,7 +184,7 @@ public class TestAPI {
 
         System.out.println("start导出");
         long start = System.currentTimeMillis();
-        ExportExcel.excelExport(blackPointDatas, titleMap, sheetName);
+        ExportExcel.excelExport(blackPointDatas, titleMap, sheetName,"BPResult");
         long end = System.currentTimeMillis();
         System.out.println("end导出");
         System.out.println("耗时："+(end-start)+"ms");
