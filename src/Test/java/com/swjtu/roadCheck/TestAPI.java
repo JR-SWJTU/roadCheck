@@ -74,16 +74,16 @@ public class TestAPI {
         ArrayList<String> teams = new ArrayList<String>();
         ArrayList<String> regions = new ArrayList<String>();
         regions.add("金牛区");
+        regions.add("青羊区");
         regions.add("郫都区");
-        teams.add("大队A");
-        teams.add("大队B");
+        teams.add("一大队");
+        teams.add("二大队");
         map.put("teams",teams);
-       // map.put("team","大队A");
-        map.put("jckType","%非交叉口%");
+        map.put("jckType","非交叉口");
         map.put("regions",regions);
-        map.put("startDate","2017-10-01");
+        map.put("startDate","2017-01-01");
         map.put("endDate","2017-10-30");
-        accidentdatas = accidentdata2Mapper.queryAccidentdataByCondition(map);
+        accidentdatas = accidentdata2Mapper.queryAccidentdataByCondition1(map);
         Map<String,Integer> resultMap = new HashMap<String,Integer>();
         for(Accidentdata accidentdata : accidentdatas){
             if(!resultMap.containsKey(accidentdata.getXianqu()+"+"+accidentdata.getDimingbeizhu())){

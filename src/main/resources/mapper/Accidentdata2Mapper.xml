@@ -9,7 +9,7 @@
         select distinct Xianqu from accidentdata
     </select>
 
-    <select id="queryAccidentdataByCondition" parameterType="Map" resultType="com.swjtu.roadCheck.entity.Accidentdata">
+    <select id="queryAccidentdataByCondition1" parameterType="Map" resultType="com.swjtu.roadCheck.entity.Accidentdata">
         SELECT * FROM accidentdata
         <if test="regions != null">
             <where>
@@ -19,8 +19,36 @@
                 </foreach>
             </where>
         </if>
-        AND accidencnumber IN
-        (SELECT shigunumber FROM accidencecollectiondata
+        AND accidencnumber IN (
+          SELECT shigunumber FROM accidencecollectiondata
+          <if test="teams != null">
+            <where>
+                team_name IN
+                <foreach collection="teams" item="team" open="(" separator="," close=")">
+                    #{team}
+                </foreach>
+            </where>
+          </if>
+          AND environmentnumber IN (
+            SELECT emnumber FROM emdata
+              WHERE Jcktype LIKE "%"#{jckType}"%"
+            )
+        )
+          AND (DATE(riQI) BETWEEN #{startDate} and #{endDate})
+    </select>
+
+    <select id="queryAccidentdataByCondition2" parameterType="Map" resultType="com.swjtu.roadCheck.entity.Accidentdata">
+        SELECT * FROM accidentdata
+        <if test="regions != null">
+            <where>
+                xianQu IN
+                <foreach collection="regions" item="region" open="(" separator="," close=")">
+                    #{region}
+                </foreach>
+            </where>
+        </if>
+        AND accidencnumber IN (
+        SELECT shigunumber FROM accidencecollectiondata
         <if test="teams != null">
             <where>
                 team_name IN
@@ -29,10 +57,11 @@
                 </foreach>
             </where>
         </if>
-        AND environmentnumber IN
-        (SELECT emnumber FROM emdata WHERE Jcktype LIKE #{jckType}))
+        AND environmentnumber IN (
+        SELECT emnumber FROM emdata
+        WHERE Jcktype NOT LIKE "%"#{jckType}"%"
+        )
+        )
         AND (DATE(riQI) BETWEEN #{startDate} and #{endDate})
     </select>
-
-
 </mapper>

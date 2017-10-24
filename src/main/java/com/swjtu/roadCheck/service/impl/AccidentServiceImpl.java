@@ -33,7 +33,11 @@ public class AccidentServiceImpl implements IAccidentService {
     public List<BlackPointData> getAllAccidentdataByCondition(Map<String, Object> map) {
 
         List<Accidentdata> accidentdatas = new ArrayList<Accidentdata>();
-        accidentdatas = accidentdata2Mapper.queryAccidentdataByCondition(map);
+        if(map.get("jckType").equals("路段")){
+            accidentdatas = accidentdata2Mapper.queryAccidentdataByCondition1(map);
+        }else{
+            accidentdatas = accidentdata2Mapper.queryAccidentdataByCondition2(map);
+        }
         Map<String,Integer> resultMap = new HashMap<String,Integer>();
         for(Accidentdata accidentdata : accidentdatas){
             if(!resultMap.containsKey(accidentdata.getXianqu())){

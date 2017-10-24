@@ -11,6 +11,8 @@ public interface Accidentdata2Mapper {
 
     List<String> getRegionList();
 
-    List<Accidentdata> queryAccidentdataByCondition(Map<String,Object> map);
+    List<Accidentdata> queryAccidentdataByCondition1(Map<String,Object> map);
+
+    List<Accidentdata> queryAccidentdataByCondition2(Map<String,Object> map);
 
 }
