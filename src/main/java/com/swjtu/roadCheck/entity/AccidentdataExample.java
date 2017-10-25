@@ -404,6 +404,76 @@ public class AccidentdataExample {
             addCriterion("is_workday not between", value1, value2, "isWorkday");
             return (Criteria) this;
         }
+
+        public Criteria andCarcollisiontypeIsNull() {
+            addCriterion("carCollisionType is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCarcollisiontypeIsNotNull() {
+            addCriterion("carCollisionType is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCarcollisiontypeEqualTo(String value) {
+            addCriterion("carCollisionType =", value, "carcollisiontype");
+            return (Criteria) this;
+        }
+
+        public Criteria andCarcollisiontypeNotEqualTo(String value) {
+            addCriterion("carCollisionType <>", value, "carcollisiontype");
+            return (Criteria) this;
+        }
+
+        public Criteria andCarcollisiontypeGreaterThan(String value) {
+            addCriterion("carCollisionType >", value, "carcollisiontype");
+            return (Criteria) this;
+        }
+
+        public Criteria andCarcollisiontypeGreaterThanOrEqualTo(String value) {
+            addCriterion("carCollisionType >=", value, "carcollisiontype");
+            return (Criteria) this;
+        }
+
+        public Criteria andCarcollisiontypeLessThan(String value) {
+            addCriterion("carCollisionType <", value, "carcollisiontype");
+            return (Criteria) this;
+        }
+
+        public Criteria andCarcollisiontypeLessThanOrEqualTo(String value) {
+            addCriterion("carCollisionType <=", value, "carcollisiontype");
+            return (Criteria) this;
+        }
+
+        public Criteria andCarcollisiontypeLike(String value) {
+            addCriterion("carCollisionType like", value, "carcollisiontype");
+            return (Criteria) this;
+        }
+
+        public Criteria andCarcollisiontypeNotLike(String value) {
+            addCriterion("carCollisionType not like", value, "carcollisiontype");
+            return (Criteria) this;
+        }
+
+        public Criteria andCarcollisiontypeIn(List<String> values) {
+            addCriterion("carCollisionType in", values, "carcollisiontype");
+            return (Criteria) this;
+        }
+
+        public Criteria andCarcollisiontypeNotIn(List<String> values) {
+            addCriterion("carCollisionType not in", values, "carcollisiontype");
+            return (Criteria) this;
+        }
+
+        public Criteria andCarcollisiontypeBetween(String value1, String value2) {
+            addCriterion("carCollisionType between", value1, value2, "carcollisiontype");
+            return (Criteria) this;
+        }
+
+        public Criteria andCarcollisiontypeNotBetween(String value1, String value2) {
+            addCriterion("carCollisionType not between", value1, value2, "carcollisiontype");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

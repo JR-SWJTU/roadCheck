@@ -83,7 +83,7 @@
         accidentdata
         <where>
             <if test="carCollisionType!=null">
-                accidentdata.shiguType2 = #{carCollisionType}
+                accidentdata.carCollisionType = #{carCollisionType}
             </if>
             <if test="troEscape!=null">
                 AND accidentdata.taoYi = #{troEscape}
@@ -199,7 +199,7 @@
         accidentdata
         <where>
             <if test="carCollisionType!=null">
-                accidentdata.shiguType2 = #{carCollisionType}
+                accidentdata.carCollisionType = #{carCollisionType}
             </if>
             <if test="troEscape!=null">
                 AND accidentdata.taoYi = #{troEscape}
@@ -339,7 +339,7 @@
             </if>
 
             <if test="carCollisionType!=null">
-                and accidentdata.shiguType2 = #{carCollisionType}
+                and accidentdata.carCollisionType = #{carCollisionType}
             </if>
             <if test="troEscape!=null">
                 AND accidentdata.taoYi = #{troEscape}
@@ -499,7 +499,7 @@
             resultType="com.swjtu.roadCheck.dto.ResMap">
         SELECT
         count(*) AS num,
-        shiguType as keyRes
+        shigu as keyRes
         FROM
         (
 
@@ -528,7 +528,7 @@
         INNER JOIN (
         SELECT
         accidencnumber,
-        shiguType
+        shigu
         FROM
         accidentdata
         <where>
@@ -543,7 +543,7 @@
 
         ) res1
 
-        GROUP BY shiguType
+        GROUP BY shigu
     </select>
 
 

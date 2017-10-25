@@ -13,6 +13,8 @@ public class Accidentdata {
 
     private Boolean isWorkday;
 
+    private String carcollisiontype;
+
     private String accidencnumber;
 
     private String city;
@@ -93,6 +95,14 @@ public class Accidentdata {
 
     public void setIsWorkday(Boolean isWorkday) {
         this.isWorkday = isWorkday;
+    }
+
+    public String getCarcollisiontype() {
+        return carcollisiontype;
+    }
+
+    public void setCarcollisiontype(String carcollisiontype) {
+        this.carcollisiontype = carcollisiontype == null ? null : carcollisiontype.trim();
     }
 
     public String getAccidencnumber() {
@@ -274,6 +284,7 @@ public class Accidentdata {
         sb.append(", lat=").append(lat);
         sb.append(", lng=").append(lng);
         sb.append(", isWorkday=").append(isWorkday);
+        sb.append(", carcollisiontype=").append(carcollisiontype);
         sb.append(", accidencnumber=").append(accidencnumber);
         sb.append(", city=").append(city);
         sb.append(", xianqu=").append(xianqu);
@@ -316,6 +327,7 @@ public class Accidentdata {
             && (this.getLat() == null ? other.getLat() == null : this.getLat().equals(other.getLat()))
             && (this.getLng() == null ? other.getLng() == null : this.getLng().equals(other.getLng()))
             && (this.getIsWorkday() == null ? other.getIsWorkday() == null : this.getIsWorkday().equals(other.getIsWorkday()))
+            && (this.getCarcollisiontype() == null ? other.getCarcollisiontype() == null : this.getCarcollisiontype().equals(other.getCarcollisiontype()))
             && (this.getAccidencnumber() == null ? other.getAccidencnumber() == null : this.getAccidencnumber().equals(other.getAccidencnumber()))
             && (this.getCity() == null ? other.getCity() == null : this.getCity().equals(other.getCity()))
             && (this.getXianqu() == null ? other.getXianqu() == null : this.getXianqu().equals(other.getXianqu()))
@@ -348,6 +360,7 @@ public class Accidentdata {
         result = prime * result + ((getLat() == null) ? 0 : getLat().hashCode());
         result = prime * result + ((getLng() == null) ? 0 : getLng().hashCode());
         result = prime * result + ((getIsWorkday() == null) ? 0 : getIsWorkday().hashCode());
+        result = prime * result + ((getCarcollisiontype() == null) ? 0 : getCarcollisiontype().hashCode());
         result = prime * result + ((getAccidencnumber() == null) ? 0 : getAccidencnumber().hashCode());
         result = prime * result + ((getCity() == null) ? 0 : getCity().hashCode());
         result = prime * result + ((getXianqu() == null) ? 0 : getXianqu().hashCode());
