@@ -1,6 +1,8 @@
 /**
  * Created by Leo on 2017/10/19.
  */
+var webBase = '/roadCheck'
+
 var app = new Vue({
     el: '#app',
     data: {
@@ -88,6 +90,28 @@ var app = new Vue({
             }
             this.isShowItems = !this.isShowItems;
         },
+
+        getTeams: function () {
+            var that = this;
+            var url = webBase + '/teams';
+            axios.get(url, {
+            }).then(function (response) {
+                console.log(response.data);
+            }).catch(function (error) {
+                console.log(error);
+            });
+        },
+        getRegions: function () {
+            var that = this;
+            var url = webBase + '/accidentDatas/blackPointDiagnosis/regions';
+            axios.get(url, {
+            }).then(function (response) {
+                console.log(response.data);
+            }).catch(function (error) {
+                console.log(error);
+            });
+        },
+
         login: function () {
             this.loginDialog = true;
         },
@@ -163,6 +187,8 @@ var app = new Vue({
     },
     mounted: function () {
         this.initPage();
+        this.getTeams();
+        this.getRegions();
         var that = this;
         addEventListener('resize', function () {
             that.initPage();
