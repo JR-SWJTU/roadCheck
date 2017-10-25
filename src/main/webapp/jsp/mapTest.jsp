@@ -21,6 +21,7 @@
 <body>
 <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
 <div id="main"></div>
+<div class="circle" style="width: 100px;height: 100px"></div>
 <div id="timeMap" style="width: 100%;height: 100%">
 
 </div>

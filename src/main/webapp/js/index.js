@@ -196,20 +196,3 @@ var app = new Vue({
     }
 });
 
-var blackPointMap = new AMap.Map('blackPointMap', {
-    resizeEnable: true,
-    zoom:11,
-    center: [116.40, 39.91]
-});
-
-var spaceMap = new AMap.Map('spaceMap', {
-    resizeEnable: true,
-    zoom:11,
-    center: [116.40, 39.91]
-});
-
-var timeMap = new AMap.Map('timeMap', {
-    resizeEnable: true,
-    zoom:11,
-    center: [116.40, 39.91]
-});

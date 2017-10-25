@@ -27,7 +27,7 @@ var timeMap = new AMap.Map('timeMap', {
 * 传入参数为，地图，标志名称，位置（经纬度），类型（0交叉口还是1路段），数量
 * */
 addMarker(timeMap,"XXX交叉口1",[104.042584,30.582064],1,3)
-addMarker(timeMap,"XXX交叉口2",[104.072584,30.472064],1,100)
+addMarker(timeMap,"XXX交叉口2",[104.072584,30.472064],0,100)
 addMarker(timeMap,"XXX交叉口3",[104.092584,30.692064],1,50)
 var mapMarkers = [];
 if (mapMarkers == null || mapMarkers.length == 0) {
@@ -38,18 +38,20 @@ if (mapMarkers == null || mapMarkers.length == 0) {
 * 设置交叉口事故数大小
 *传入参数为数量,全部事故数量
 * */
-function setIntersectionContent(number,allNumbers) {
+function setIntersectionContent(number,allNumbers,name) {
     var content = "<div style=\"height: 150px;width: 100px\">\n" +
-        "    <div id=\"bar\" style=\"width: 20px;height: 100px;background: "+getColor(number,allNumbers)+"; margin: auto\"></div>\n" +
-        "    <p style=\"width:100%;margin: auto;text-align: center\">事故数："+number+"</p>\n" +
+        "<div  style=\"width: "+getHeight(number,allNumbers)/2+"px;height: "+getHeight(number,allNumbers)/2+"px;background: "+getColor(number,allNumbers)+";border-radius:50%\"></div>" +
+        "    <p style=\"width:100%;margin: auto;text-align: center;color:blue;\">事故数："+number+"</p>\n" +
+        "    <p style=\"width:100%;margin: auto;background:white;text-align: center;\">"+name+"</p>\n" +
         "</div>";
     return content;
 }
 
-function setRoadContent (number,allNumbers) {
-    var content = "<div style=\"height: 150px;width: 100px\">\n" +
-        "    <div id=\"bar\" style=\"width: 20px;height: 100px;background: "+getColor(number,allNumbers)+"; margin: auto\"></div>\n" +
-        "    <p style=\"width:100%;margin: auto;text-align: center;color: "+getColor(number,allNumbers)+"\">事故数："+number+"</p>\n" +
+function setRoadContent (number,allNumbers,name) {
+    var content = "<br style=\"height: 200px;width: 250px\">\n" +
+        "    <div id=\"bar\" style=\"width: 20px;height: "+getHeight(number,allNumbers)+"px;background: "+getColor(number,allNumbers)+"; margin: auto\"></div>\n" +
+        "    <p style=\"width:100%;margin: auto;text-align: center;color: "+"blue"+"\">事故数："+number+"</p>\n" +
+        "    <p style=\"width:100%;margin: auto;background:white;text-align: center;\">"+name+"</p>\n" +
         "</div>";
     return content;
 };
@@ -69,9 +71,9 @@ function addMarker(amap,markerName,position,type,number){
         number +=10;
         var content;
         if (type == 0) {
-            content = setIntersectionContent(number,200);
+            content = setIntersectionContent(number,200,markerName);
         }else {
-            content = setRoadContent(number,200);
+            content = setRoadContent(number,200,markerName);
         }
 
         var marker = new AMap.Marker({
@@ -80,10 +82,10 @@ function addMarker(amap,markerName,position,type,number){
             icon: new AMap.Icon({
                 size: new AMap.Size(40, 50),  //图标大小
             }),
-            label:{
-                offset: new AMap.Pixel(15, 120),//修改label相对于maker的位置
-                content: markerName
-            },
+            // label:{
+            //     offset: new AMap.Pixel(15, 120),//修改label相对于maker的位置
+            //     content: markerName
+            // },
             content:content
         });
         Markers.push(marker);//添加marker
@@ -97,7 +99,7 @@ function addMarker(amap,markerName,position,type,number){
     * */
 function getColor(number,allNumbers) {
     var lev = (number/allNumbers)*10;
-    console.log("lev:---"+lev);
+   // console.log("lev:---"+lev);
     if (lev > 6) {
         return "red";
     }else if(lev > 3){
@@ -108,7 +110,7 @@ function getColor(number,allNumbers) {
         return "green"
     }
 }
-function getHeight() {
+function getHeight(number,allNumbers) {
     var lev = (number/allNumbers)*100;
     return lev;
 }

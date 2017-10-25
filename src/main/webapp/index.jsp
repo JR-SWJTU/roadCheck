@@ -15,7 +15,10 @@
     <link rel="stylesheet" href="libs/muse-ui-2.1.0/theme-light.css" />
     <link rel="stylesheet" href="css/index.css" />
 
-    <script src="http://webapi.amap.com/maps?v=1.4.0&key=9a1af9cca90cfaf160d5a8d7c0af9187"></script>
+ <!--   <script src="http://webapi.amap.com/maps?v=1.4.0&key=9a1af9cca90cfaf160d5a8d7c0af9187"></script>          -->
+    <!-- 地图key -->
+    <script src="http://webapi.amap.com/maps?v=1.4.0&key=396befe7016bef31b674c361915d082e"></script>
+
 </head>
 <body>
 <div id="app">
@@ -202,5 +205,6 @@
 <script src="libs/muse-ui-2.1.0/muse-ui.js"></script>
 <script src="libs/axios-0.17.0/axios.min.js"></script>
 <script src="js/index.js"></script>
+<script src="js/map.js"></script>
 </body>
 </html>
