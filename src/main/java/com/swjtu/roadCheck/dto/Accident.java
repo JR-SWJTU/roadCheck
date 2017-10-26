@@ -17,20 +17,16 @@ public class Accident {
 
     private String dayRes;
 
+    private double lat;
+
+    private double lng;
+
     public int getNum() {
         return num;
     }
 
     public void setNum(int num) {
         this.num = num;
-    }
-
-    public String getkeyRes() {
-        return keyRes;
-    }
-
-    public void setkeyRes(String keyRes) {
-        this.keyRes = keyRes;
     }
 
     public String getDiMingBeiZhu() {
@@ -63,5 +59,29 @@ public class Accident {
 
     public void setDayRes(String dayRes) {
         this.dayRes = dayRes;
+    }
+
+    public String getKeyRes() {
+        return keyRes;
+    }
+
+    public void setKeyRes(String keyRes) {
+        this.keyRes = keyRes;
+    }
+
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public double getLng() {
+        return lng;
+    }
+
+    public void setLng(double lng) {
+        this.lng = lng;
     }
 }

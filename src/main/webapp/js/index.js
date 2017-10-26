@@ -226,12 +226,12 @@ var app = new Vue({
         spaceGet: function () {
             var that = this;
             var url = webBase + '/accidentDatas/analyseData/areaMultiConditionQuery';
-            axios.post(url, {
+            var json = {
                 teamName: that.selectData.area.type == 'gruppe'? that.selectData.area.value: null,
                 //areaName: that.selectData.area.type == 'administrative'? that.selectData.area.value: null,
-                roadType: that.selectData.intersectionType,
+                // roadType: that.selectData.intersectionType,
                 startTime: that.selectData.dateTime.start,
-                // endTime: that.selectData.dateTime.end,
+                endTime: that.selectData.dateTime.end,
                 yType: true
                 // roadLevel: that.selectData.roadGrade,
                 // carCollisionType: that.selectData.carCollisionType,
@@ -240,7 +240,9 @@ var app = new Vue({
                 // carType: that.selectData.vehicleType,
                 // troEscape: that.selectData.hitAndRun,
                 // isWorkDay: that.selectData.workDay ? 1 : 0
-            }).then(function (response) {
+            };
+            console.log(json);
+            axios.post(url, json).then(function (response) {
                 var allData = response.data;
                 if(allData.code == 200){
                     console.log(allData.data);

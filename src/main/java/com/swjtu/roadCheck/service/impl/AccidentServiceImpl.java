@@ -120,8 +120,8 @@ public class AccidentServiceImpl implements IAccidentService {
         if(condition.getStartTime() == null || condition.getEndTime() == null)
             throw new ReqParmIncorException();
 
-        if(condition.getRoadType().equals("非交叉口"))
-            condition.setIntersectionType("非交叉口");
+//        if(condition.getRoadType().equals("路段"))
+//            condition.setIntersectionType("非交叉口");
 
         if ( condition.isyType() )
             return accidentMapperCustom.multiConditionQueryAccidentForSGS(condition);

@@ -10,7 +10,7 @@
             resultType="com.swjtu.roadCheck.dto.Accident">
 
         SELECT
-        count(*) AS num,diMingBeiZhu
+        count(*) AS num,diMingBeiZhu,lat,lng
         FROM
 
         (
@@ -78,7 +78,8 @@
         (
         SELECT
         accidencnumber,
-        diMingBeiZhu
+        diMingBeiZhu,
+        lat,lng
         FROM
         accidentdata
         <where>
