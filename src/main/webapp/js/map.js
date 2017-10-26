@@ -12,23 +12,40 @@ var spaceMap = new AMap.Map('spaceMap', {
 
 var timeMap = new AMap.Map('timeMap', {
     resizeEnable: true,
-    zoom:11,
+    zoom:15,
     city:'成都',
     center:[104.082584,30.682064]
 });
 
+
+
 /*
 * 地图操作
 * */
+//spaceMap.setMapStyle('amap://styles/'+"dark");
+//spaceMap.setMapStyle('amap://styles/'+"dark");
 
-
+var features = ['road'];
+spaceMap.setFeatures(features);
+/*
+*  value='dark'>幻影
+ value='light'>月
+ value='fresh'>草
+ value='grey'>雅士
+ value='graffiti
+ value='whitesmo
+ value='macaron'
+ value='blue'>靛青
+ value='darkblue
+' value='wine'>酱
+* */
 /*
 * 设置marker
 * 传入参数为，地图，标志名称，位置（经纬度），类型（0交叉口还是1路段），数量
 * */
-addMarker(timeMap,"XXX交叉口1",[104.042584,30.582064],1,3)
-addMarker(timeMap,"XXX交叉口2",[104.072584,30.472064],0,100)
-addMarker(timeMap,"XXX交叉口3",[104.092584,30.692064],1,50)
+addMarker(spaceMap,"XXX交叉口1",[104.042584,30.582064],1,3)
+addMarker(spaceMap,"XXX交叉口2",[104.072584,30.472064],0,100)
+addMarker(spaceMap,"XXX交叉口3",[104.092584,30.692064],1,50)
 var mapMarkers = [];
 if (mapMarkers == null || mapMarkers.length == 0) {
     mapMarkers = [];
@@ -40,7 +57,7 @@ if (mapMarkers == null || mapMarkers.length == 0) {
 * */
 function setIntersectionContent(number,allNumbers,name) {
     var content = "<div style=\"height: 150px;width: 100px\">\n" +
-        "<div  style=\"width: "+getHeight(number,allNumbers)/2+"px;height: "+getHeight(number,allNumbers)/2+"px;background: "+getColor(number,allNumbers)+";border-radius:50%\"></div>" +
+        "<div  style=\"margin: auto;width: "+getHeight(number,allNumbers)/2+"px;height: "+getHeight(number,allNumbers)/2+"px;background: "+getColor(number,allNumbers)+";border-radius:50%\"></div>" +
         "    <p style=\"width:100%;margin: auto;text-align: center;color:blue;\">事故数："+number+"</p>\n" +
         "    <p style=\"width:100%;margin: auto;background:white;text-align: center;\">"+name+"</p>\n" +
         "</div>";
@@ -48,7 +65,7 @@ function setIntersectionContent(number,allNumbers,name) {
 }
 
 function setRoadContent (number,allNumbers,name) {
-    var content = "<br style=\"height: 200px;width: 250px\">\n" +
+    var content = "<div style=\"height: 200px;width: 100px\">\n" +
         "    <div id=\"bar\" style=\"width: 20px;height: "+getHeight(number,allNumbers)+"px;background: "+getColor(number,allNumbers)+"; margin: auto\"></div>\n" +
         "    <p style=\"width:100%;margin: auto;text-align: center;color: "+"blue"+"\">事故数："+number+"</p>\n" +
         "    <p style=\"width:100%;margin: auto;background:white;text-align: center;\">"+name+"</p>\n" +
