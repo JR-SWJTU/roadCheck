@@ -117,6 +117,12 @@ public class AccidentServiceImpl implements IAccidentService {
      * @return
      */
     public List<Accident> areaMultiConditionQuery(AccidentQueryCondition condition) {
+        if(condition.getStartTime() == null || condition.getEndTime() == null)
+            throw new ReqParmIncorException();
+
+        if(condition.getRoadType().equals("非交叉口"))
+            condition.setIntersectionType("非交叉口");
+
         if ( condition.isyType() )
             return accidentMapperCustom.multiConditionQueryAccidentForSGS(condition);
         else
@@ -130,6 +136,9 @@ public class AccidentServiceImpl implements IAccidentService {
      * @return
      */
     public List<Accident> timeMultiConditionQuery(AccidentQueryCondition condition) {
+        if(condition.getStartTime() == null || condition.getEndTime() == null)
+            throw new ReqParmIncorException();
+
         return accidentMapperCustom.multiConditionQueryAccidentForTime(condition);
     }
 

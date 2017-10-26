@@ -98,9 +98,14 @@
         ) aResult
 
         <if test="teamName!=null || startTime!=null || endTime!=null">
-            ON acdResult.shigunumber = aResult.accidencnumber
-            ) res1
+            <if test="roadLevel==null and weather==null and workPlaceRel == null and intersectionType == null">
+                ON acd.shigunumber = aResult.accidencnumber
+            </if>
+            <if test="roadLevel!=null || weather!=null || workPlaceRel != null || intersectionType != null">
+                ON acdResult.shigunumber = aResult.accidencnumber
+            </if>
         </if>
+        ) res1
 
         <if test="carType!= null">
             INNER JOIN (
@@ -214,9 +219,14 @@
         ) aResult
 
         <if test="teamName!=null || startTime!=null || endTime!=null">
-            ON acdResult.shigunumber = aResult.accidencnumber
-            ) res1
+            <if test="roadLevel==null and weather==null and workPlaceRel == null and intersectionType == null">
+                ON acd.shigunumber = aResult.accidencnumber
+            </if>
+            <if test="roadLevel!=null || weather!=null || workPlaceRel != null || intersectionType != null">
+                ON acdResult.shigunumber = aResult.accidencnumber
+            </if>
         </if>
+        ) res1
 
         <if test="carType!= null">
             INNER JOIN (
@@ -354,9 +364,14 @@
         ) aResult
 
         <if test="teamName!=null || startTime!=null || endTime!=null">
+            <if test="roadLevel==null and weather==null and workPlaceRel == null and intersectionType == null">
+                ON acd.shigunumber = aResult.accidencnumber
+            </if>
+            <if test="roadLevel!=null || weather!=null || workPlaceRel != null || intersectionType != null">
             ON acdResult.shigunumber = aResult.accidencnumber
-            ) res1
+            </if>
         </if>
+        ) res1
 
         <if test="carType!= null">
             INNER JOIN (
@@ -376,7 +391,7 @@
         <if test="yType==false">
         ,yanZhongCd
         </if>
-        <if test="timePrecision==null || timePrecision>=1">
+        <if test="timePrecision==0 || timePrecision>=1">
             ,YEAR (riqi)
         </if>
         <if test="timePrecision>=2">
