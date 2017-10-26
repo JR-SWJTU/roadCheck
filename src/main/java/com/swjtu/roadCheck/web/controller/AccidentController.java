@@ -79,7 +79,7 @@ public class AccidentController {
         return JsonResult.build(StatusCode.SUCCESS);
     }
 
-    @RequestMapping(value = "/blackPointDiagnosis/regions", method = RequestMethod.POST)
+    @RequestMapping(value = "/blackPointDiagnosis/regions", method = RequestMethod.GET)
     public JsonResult getAllRegions() throws Exception{
         List<String> regions = accidentService.getRegions();
         return JsonResult.build(StatusCode.SUCCESS,regions);

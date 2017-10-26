@@ -12,8 +12,8 @@ var app = new Vue({
             analysisObj: ['交叉口', '路段'],
             accidentalSev: ['仅财损', '轻伤', '重伤', '死亡'],
             area: {
-                gruppe: ['大队1', '大队2'],
-                administrative: ['行政区域1', '行政区域2']
+                gruppe: [],
+                administrative: []
             },
 
             roadGrade: ['主干道', '快速路', '次干道', '支路', '高速公路', '国道', '省道', '县道', '乡村公路'],
@@ -25,6 +25,7 @@ var app = new Vue({
                     solidCollision: ['防撞墩/桶', '护栏', '桥梁栏杆', '路缘石', '隔离墩', '信号灯杆', '路灯杆', '标志牌柱', '树木', '其它固定物']
                 }
             },
+            carCollisionType: ['追尾碰撞', '正面碰撞	', '侧面碰撞', '直角碰撞', '刮擦', '其它'],
             weather: ['晴天', '阴天', '雨', '雾', '雪', '冰雹', '台风'],
             workZone: {
                 flag: ['是', '否'],
@@ -42,28 +43,34 @@ var app = new Vue({
         detailDialog: false,
 
         selectData: {
-            analysisObj: '',
+            analysisObj: '', //'交叉口',
             area: {
-                type: '',
+                type: '', //'gruppe',
                 value: ''
             },
-            accidentalSev: '',
+            accidentalSev: '', //'仅财损',
+            workDay: false,
+            dateTime: {
+                start: '',
+                end: ''
+            },
 
-            roadGrade: '',
+            roadGrade: '', //'主干道',
             accident: {
                 type: '',
                 value: ''
             },
-            weather: '',
+            carCollisionType: '', //'追尾碰撞',
+            weather: '', //'晴天',
             workZone: {
-                flag: '',
+                flag: '是',
                 controlMode: '',
                 worker: '',
                 lawEnfor: ''
             },
-            intersectionType: '',
-            vehicleType: '',
-            hitAndRun: ''
+            intersectionType: '', //'非交叉口',
+            vehicleType: '', //'小客车',
+            hitAndRun: '', //'是'
         },
 
         loginInfor: {
@@ -77,7 +84,11 @@ var app = new Vue({
         loginDialog: false,
         isLogin: true,
 
-        nowFuc: 'main-page'
+        nowFuc: 'main-page',
+
+        textFlag: true,
+        showMessageTop: false,
+        messageTop: ''
     },
     methods: {
         initPage: function () {
@@ -96,7 +107,18 @@ var app = new Vue({
             var url = webBase + '/teams';
             axios.get(url, {
             }).then(function (response) {
-                console.log(response.data);
+                var allData = response.data;
+                if(allData.code == 200){
+                    var data = allData.data;
+                    var teams = [];
+                    data.forEach(function (item, index, array) {
+                        teams.push(item.teamName);
+                    })
+                    that.basicData.area.gruppe = teams;
+                }
+                else{
+                    console.log(allData.message);
+                }
             }).catch(function (error) {
                 console.log(error);
             });
@@ -106,12 +128,22 @@ var app = new Vue({
             var url = webBase + '/accidentDatas/blackPointDiagnosis/regions';
             axios.get(url, {
             }).then(function (response) {
-                console.log(response.data);
+                var allData = response.data;
+                if(allData.code == 200){
+                    that.basicData.area.administrative = allData.data;
+                }
+                else{
+                    console.log(allData.message);
+                }
             }).catch(function (error) {
                 console.log(error);
             });
         },
 
+        checkLogin: function () {
+            this.isLogin = false;
+            this.loginDialog = true;
+        },
         login: function () {
             this.loginDialog = true;
         },
@@ -121,8 +153,27 @@ var app = new Vue({
         },
         loginConfirm: function () {
             //loginInfor.userName, loginInfor.password
-            this.isLogin = true;
-            this.loginDialog = false;
+            var that = this;
+            var url = webBase + '/admin/login';
+            axios.post(url, {
+                name: that.loginInfor.userName,
+                password: that.loginInfor.password
+            }).then(function (response) {
+                if(response.data == ''){
+                    that.messageTop = "账号或密码输入错误，请重新登录！";
+                    that.textFlag = false;
+                    that.showMessageTop = true;
+                }
+                else{
+                    that.loginDialog = false;
+                    that.isLogin = true;
+                    that.messageTop = "登录成功！";
+                    that.textFlag = true;
+                    that.showMessageTop = true;
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
         },
         loginCancel: function () {
             this.loginDialog = false;
@@ -154,18 +205,81 @@ var app = new Vue({
         highStatistics: function () {
             this.nowFuc = 'statistics';
         },
+        workDayChange: function (val) {
+            this.selectData.workDay = val;
+        },
+        disableWeekends: function (date) {
+            if(this.selectData.workDay){
+                return date.getDay() === 0 || date.getDay() === 6;
+            }
+            else{
+                return null;
+            }
+        },
         resetObj: function () {
             console.log('resetObj');
         },
         blackPointGet: function () {
             console.log('blackPointGet');
-
+            console.log(this.selectData);
         },
         spaceGet: function () {
-            console.log('spaceGet');
+            var that = this;
+            var url = webBase + '/accidentDatas/analyseData/areaMultiConditionQuery';
+            axios.post(url, {
+                teamName: that.selectData.area.type == 'gruppe'? that.selectData.area.value: null,
+                //areaName: that.selectData.area.type == 'administrative'? that.selectData.area.value: null,
+                roadType: that.selectData.intersectionType,
+                startTime: that.selectData.dateTime.start,
+                // endTime: that.selectData.dateTime.end,
+                yType: true
+                // roadLevel: that.selectData.roadGrade,
+                // carCollisionType: that.selectData.carCollisionType,
+                // weather: that.selectData.weather,
+                // workPlaceRel: that.selectData.workZone.flag,
+                // carType: that.selectData.vehicleType,
+                // troEscape: that.selectData.hitAndRun,
+                // isWorkDay: that.selectData.workDay ? 1 : 0
+            }).then(function (response) {
+                var allData = response.data;
+                if(allData.code == 200){
+                    console.log(allData.data);
+                }
+                else{
+                    console.log(allData.message);
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
         },
         timeGet: function () {
-            console.log('timeGet');
+            var that = this;
+            var url = webBase + '/accidentDatas/analyseData/timeMultiConditionQuery';
+            axios.post(url, {
+                teamName: that.selectData.area.type == 'gruppe'? that.selectData.area.value: null,
+                areaName: that.selectData.area.type == 'administrative'? that.selectData.area.value: null,
+                roadType: that.selectData.intersectionType,
+                startTime: that.selectData.dateTime.start,
+                endTime: that.selectData.dateTime.end,
+                yType: false,
+                roadLevel: that.selectData.roadGrade,
+                weather: that.selectData.weather,
+                workPlaceRel: that.selectData.workZone.flag,
+                carType: that.selectData.vehicleType,
+                timePrecision: 1,
+                troEscape: that.selectData.hitAndRun,
+                propertyLoss: 1
+            }).then(function (response) {
+                var allData = response.data;
+                if(allData.code == 200){
+                    console.log(allData.data);
+                }
+                else{
+                    console.log(allData.message);
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
         }
     },
     computed: {
@@ -183,10 +297,19 @@ var app = new Vue({
         }
     },
     watch: {
-
+        showMessageTop: function (val, oldVal) {
+            if (val)
+            {
+                var that = this;
+                setTimeout(function () {
+                    that.showMessageTop = false;
+                }, 1500);
+            }
+        }
     },
     mounted: function () {
         this.initPage();
+        this.checkLogin();
         this.getTeams();
         this.getRegions();
         var that = this;

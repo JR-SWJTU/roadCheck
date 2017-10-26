@@ -2,6 +2,21 @@
     margin: 0px;
     padding: 0px;
 }
+
+.mu-radio-ripple-wrapper {
+    left: -16px;
+}
+.popup-top
+{
+    min-width: 30%;
+    max-width: 80%;
+    min-height: 48px;
+    padding: 0 10px;
+    opacity: 0.8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .items-class{
     width: 256px;
     height: 100%;
@@ -193,6 +208,11 @@
 .detail-btn{
     width: 205px;
 }
+.work-checkbox{
+    float: right;
+    position: relative;
+    top: 5px;
+}
 .body-left-float{
     position: absolute;
     left: 256px;
@@ -255,6 +275,12 @@
     100% { left: 0px; }
 }
 
+.succeed-text{
+    color: limegreen;
+}
+.failure-text{
+    color: red;
+}
 .body-right{
     position: relative;
     left: 0px;

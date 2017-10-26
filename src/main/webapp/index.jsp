@@ -59,20 +59,20 @@
         <div v-show="nowFuc == 'black-point'" :style="bodyContent">
             <div class="body-left body-left-float" :class="{'left-float-open': isFirstLoad && isShowItems, 'left-float-close': isFirstLoad && !isShowItems}">
                 <mu-select-field v-model="selectData.analysisObj" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="选择交叉口或路段黑点诊断">
-                    <mu-menu-item v-for="text,index in basicData.analysisObj" :key="index" :value="index" :title="text" ></mu-menu-item>
+                    <mu-menu-item v-for="text,index in basicData.analysisObj" :key="index" :value="text" :title="text" ></mu-menu-item>
                 </mu-select-field>
                 <div class="mu-text-field-label label-class">选择分析的区域</div>
                 <mu-radio label="大队" name="area1" native-value="gruppe" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 20px;"></mu-radio>
                 <mu-radio label="行政区" name="area1" native-value="administrative" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 50px;"></mu-radio>
                 <mu-select-field v-show="selectData.area.type == 'gruppe'" v-model="selectData.area.value" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="大队管辖区">
-                    <mu-menu-item v-for="text,index in basicData.area.gruppe" :key="index" :value="index" :title="text" ></mu-menu-item>
+                    <mu-menu-item v-for="text,index in basicData.area.gruppe" :key="index" :value="text" :title="text" ></mu-menu-item>
                 </mu-select-field>
                 <mu-select-field v-show="selectData.area.type == 'administrative'" v-model="selectData.area.value" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="行政管辖区">
-                    <mu-menu-item v-for="text,index in basicData.area.administrative" :key="index" :value="index" :title="text" ></mu-menu-item>
+                    <mu-menu-item v-for="text,index in basicData.area.administrative" :key="index" :value="text" :title="text" ></mu-menu-item>
                 </mu-select-field>
                 <div class="mu-text-field-label label-class" style="padding-top: 12px;">选择分析的时间段</div>
-                <mu-date-picker auto-ok hint-text="开始监测日期" container="inline" mode="landscape" min-date="2016-09-01" :underline-class="{'underline-class': true}"></mu-date-picker>
-                <mu-date-picker auto-ok hint-text="至截止监测日期" container="inline" mode="landscape" :underline-class="{'underline-class': true, 'end-time-line': true}" style="width: 205px;"></mu-date-picker>
+                <mu-date-picker auto-ok hint-text="开始监测日期" v-model="selectData.dateTime.start" container="inline" mode="landscape" min-date="2016-09-01" :underline-class="{'underline-class': true}"></mu-date-picker>
+                <mu-date-picker auto-ok hint-text="至截止监测日期" v-model="selectData.dateTime.end" container="inline" mode="landscape" :underline-class="{'underline-class': true, 'end-time-line': true}" style="width: 205px;"></mu-date-picker>
                 <mu-icon-button tooltip="筛选结果" tooltip-position="bottom-right" icon="call_merge" class="right-btn" @click="blackPointGet"></mu-icon-button>
                 <%--<mu-icon-button tooltip="筛选数据重置" tooltip-position="bottom-right" icon="grade" class="right-btn" @click="resetObj"></mu-icon-button>--%>
             </div>
@@ -85,22 +85,22 @@
         <div v-show="nowFuc == 'single-point'" :style="bodyContent">
             <div class="body-left">
                 <mu-select-field v-model="selectData.analysisObj" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="选择交叉口或路段">
-                    <mu-menu-item v-for="text,index in basicData.analysisObj" :key="index" :value="index" :title="text" ></mu-menu-item>
+                    <mu-menu-item v-for="text,index in basicData.analysisObj" :key="index" :value="text" :title="text" ></mu-menu-item>
                 </mu-select-field>
                 <div class="mu-text-field-label label-class">选择分析的区域</div>
                 <mu-radio label="大队" name="area2" native-value="gruppe" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 20px;"></mu-radio>
                 <mu-radio label="行政区" name="area2" native-value="administrative" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 50px;"></mu-radio>
                 <mu-select-field v-show="selectData.area.type == 'gruppe'" v-model="selectData.area.value" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}"  label="大队管辖区">
-                    <mu-menu-item v-for="text,index in basicData.area.gruppe" :key="index" :value="index" :title="text" ></mu-menu-item>
+                    <mu-menu-item v-for="text,index in basicData.area.gruppe" :key="index" :value="text" :title="text" ></mu-menu-item>
                 </mu-select-field>
                 <mu-select-field v-show="selectData.area.type == 'administrative'" v-model="selectData.area.value" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="行政管辖区">
-                    <mu-menu-item v-for="text,index in basicData.area.administrative" :key="index" :value="index" :title="text" ></mu-menu-item>
+                    <mu-menu-item v-for="text,index in basicData.area.administrative" :key="index" :value="text" :title="text" ></mu-menu-item>
                 </mu-select-field>
                 <div class="mu-text-field-label label-class" style="padding-top: 12px;">选择分析的时间段</div>
-                <mu-date-picker auto-ok hint-text="开始监测日期" container="inline" mode="landscape" min-date="2016-09-01" :underline-class="{'underline-class': true}"></mu-date-picker>
-                <mu-date-picker auto-ok hint-text="至截止监测日期" container="inline" mode="landscape" :underline-class="{'underline-class': true}"></mu-date-picker>
+                <mu-date-picker auto-ok hint-text="开始监测日期" v-model="selectData.dateTime.start" container="inline" mode="landscape" min-date="2016-09-01" :underline-class="{'underline-class': true}"></mu-date-picker>
+                <mu-date-picker auto-ok hint-text="至截止监测日期" v-model="selectData.dateTime.end" container="inline" mode="landscape" :underline-class="{'underline-class': true}"></mu-date-picker>
                 <mu-select-field v-model="selectData.bali" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}"  label="具体地点">
-                    <mu-menu-item v-for="text,index in basicData.bali" :key="index" :value="index" :title="text" ></mu-menu-item>
+                    <mu-menu-item v-for="text,index in basicData.bali" :key="index" :value="text" :title="text" ></mu-menu-item>
                 </mu-select-field>
             </div>
             <div class="body-right">
@@ -109,25 +109,26 @@
         <div v-show="nowFuc == 'space'" :style="bodyContent">
             <div class="body-left body-left-float" :class="{'left-float-open': isFirstLoad && isShowItems, 'left-float-close': isFirstLoad && !isShowItems}">
                 <mu-select-field v-model="selectData.analysisObj" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="选择交叉口或路段黑点诊断">
-                    <mu-menu-item v-for="text,index in basicData.analysisObj" :key="index" :value="index" :title="text" ></mu-menu-item>
+                    <mu-menu-item v-for="text,index in basicData.analysisObj" :key="index" :value="text" :title="text" ></mu-menu-item>
                 </mu-select-field>
                 <div class="mu-text-field-label label-class">选择分析的区域</div>
                 <mu-radio label="大队" name="area3" native-value="gruppe" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 20px;"></mu-radio>
                 <mu-radio label="行政区" name="area3" native-value="administrative" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 50px;"></mu-radio>
                 <mu-select-field v-show="selectData.area.type == 'gruppe'" v-model="selectData.area.value" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="大队管辖区">
-                    <mu-menu-item v-for="text,index in basicData.area.gruppe" :key="index" :value="index" :title="text" ></mu-menu-item>
+                    <mu-menu-item v-for="text,index in basicData.area.gruppe" :key="index" :value="text" :title="text" ></mu-menu-item>
                 </mu-select-field>
                 <mu-select-field v-show="selectData.area.type == 'administrative'" v-model="selectData.area.value" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="行政管辖区">
-                    <mu-menu-item v-for="text,index in basicData.area.administrative" :key="index" :value="index" :title="text" ></mu-menu-item>
+                    <mu-menu-item v-for="text,index in basicData.area.administrative" :key="index" :value="text" :title="text" ></mu-menu-item>
                 </mu-select-field>
-                <div class="mu-text-field-label label-class" style="padding-top: 12px;">选择分析的时间段</div>
-                <mu-date-picker auto-ok hint-text="开始监测日期" container="inline" mode="landscape" min-date="2016-09-01" :underline-class="{'underline-class': true}"></mu-date-picker>
-                <mu-date-picker auto-ok hint-text="至截止监测日期" container="inline" mode="landscape" :underline-class="{'underline-class': true}"></mu-date-picker>
+                <div class="mu-text-field-label label-class" style="padding-top: 12px; display: inline-block">选择分析的时间段</div>
+                <mu-checkbox label="工作日" class="work-checkbox" :icon-class="{'icon-class': true}" label-left @change="workDayChange"></mu-checkbox>
+                <mu-date-picker auto-ok hint-text="开始监测日期" :should-disable-date="disableWeekends" v-model="selectData.dateTime.start" container="inline" mode="landscape" min-date="2016-09-01" :underline-class="{'underline-class': true}"></mu-date-picker>
+                <mu-date-picker auto-ok hint-text="至截止监测日期" :should-disable-date="disableWeekends" v-model="selectData.dateTime.end" container="inline" mode="landscape" :underline-class="{'underline-class': true}"></mu-date-picker>
                 <mu-select-field v-model="selectData.accidentalSev" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="事故严重程度">
-                    <mu-menu-item v-for="text,index in basicData.accidentalSev" :key="index" :value="index" :title="text" ></mu-menu-item>
+                    <mu-menu-item v-for="text,index in basicData.accidentalSev" :key="index" :value="text" :title="text" ></mu-menu-item>
                 </mu-select-field>
                 <mu-raised-button label="细节筛选" icon="widgets" label-position="before" primary class="detail-btn" @click="details"></mu-raised-button>
-                <mu-icon-button tooltip="筛选结果" tooltip-position="bottom-right" icon="call_merge" class="right-btn" @click="blackPointGet"></mu-icon-button>
+                <mu-icon-button tooltip="筛选结果" tooltip-position="bottom-right" icon="call_merge" class="right-btn" @click="spaceGet"></mu-icon-button>
                 <%--<mu-icon-button tooltip="筛选数据重置" tooltip-position="bottom-right" icon="grade" class="right-btn" @click="spaceGet"></mu-icon-button>--%>
             </div>
             <div class="body-right" :style="mapStyle">
@@ -139,22 +140,22 @@
         <div v-show="nowFuc == 'time'" :style="bodyContent">
             <div class="body-left body-left-float" :class="{'left-float-open': isFirstLoad && isShowItems, 'left-float-close': isFirstLoad && !isShowItems}">
                 <mu-select-field v-model="selectData.analysisObj" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="选择交叉口或路段黑点诊断">
-                    <mu-menu-item v-for="text,index in basicData.analysisObj" :key="index" :value="index" :title="text" ></mu-menu-item>
+                    <mu-menu-item v-for="text,index in basicData.analysisObj" :key="index" :value="text" :title="text" ></mu-menu-item>
                 </mu-select-field>
                 <div class="mu-text-field-label label-class">选择分析的区域</div>
                 <mu-radio label="大队" name="area4" native-value="gruppe" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 20px;"></mu-radio>
                 <mu-radio label="行政区" name="area4" native-value="administrative" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 50px;"></mu-radio>
                 <mu-select-field v-show="selectData.area.type == 'gruppe'" v-model="selectData.area.value" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="大队管辖区">
-                    <mu-menu-item v-for="text,index in basicData.area.gruppe" :key="index" :value="index" :title="text" ></mu-menu-item>
+                    <mu-menu-item v-for="text,index in basicData.area.gruppe" :key="index" :value="text" :title="text" ></mu-menu-item>
                 </mu-select-field>
                 <mu-select-field v-show="selectData.area.type == 'administrative'" v-model="selectData.area.value" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="行政管辖区">
-                    <mu-menu-item v-for="text,index in basicData.area.administrative" :key="index" :value="index" :title="text" ></mu-menu-item>
+                    <mu-menu-item v-for="text,index in basicData.area.administrative" :key="index" :value="text" :title="text" ></mu-menu-item>
                 </mu-select-field>
                 <div class="mu-text-field-label label-class" style="padding-top: 12px;">选择分析的时间段</div>
-                <mu-date-picker auto-ok hint-text="开始监测日期" container="inline" mode="landscape" min-date="2016-09-01" :underline-class="{'underline-class': true}"></mu-date-picker>
-                <mu-date-picker auto-ok hint-text="至截止监测日期" container="inline" mode="landscape" :underline-class="{'underline-class': true}"></mu-date-picker>
+                <mu-date-picker auto-ok hint-text="开始监测日期" v-model="selectData.dateTime.start" container="inline" mode="landscape" min-date="2016-09-01" :underline-class="{'underline-class': true}"></mu-date-picker>
+                <mu-date-picker auto-ok hint-text="至截止监测日期" v-model="selectData.dateTime.end" container="inline" mode="landscape" :underline-class="{'underline-class': true}"></mu-date-picker>
                 <mu-raised-button label="细节筛选" icon="widgets" label-position="before" primary class="detail-btn" @click="details"></mu-raised-button>
-                <mu-icon-button tooltip="筛选结果" tooltip-position="bottom-right" icon="call_merge" class="right-btn" @click="blackPointGet"></mu-icon-button>
+                <mu-icon-button tooltip="筛选结果" tooltip-position="bottom-right" icon="call_merge" class="right-btn" @click="timeGet"></mu-icon-button>
                 <%--<mu-icon-button tooltip="筛选数据重置" tooltip-position="bottom-right" icon="grade" class="right-btn" @click="timeGet"></mu-icon-button>--%>
             </div>
             <div class="body-right" :style="mapStyle">
@@ -170,35 +171,42 @@
 
     <mu-dialog :open="loginDialog" title="泸州市交通事故数据分析系统" dialog-class="dialog" title-class="dialog-title" body-class="dialog-body" >
         <mu-text-field label="请输入您的用户名|警号" :full-width="true" label-float v-model="loginInfor.userName"></mu-text-field>
-        <mu-text-field label="请输入您的密码" :full-width="true" label-float v-model="loginInfor.password"></mu-text-field>
+        <mu-text-field label="请输入您的密码" type="password" :full-width="true" label-float v-model="loginInfor.password"></mu-text-field>
         <mu-flat-button slot="actions" primary @click="loginConfirm" label="登录"></mu-flat-button>
     </mu-dialog>
 
     <mu-dialog :open="detailDialog" title="交通事故细节筛选" dialog-class="dialog" title-class="dialog-title" body-class="dialog-body" @close="detailClose">
         <mu-select-field v-model="selectData.roadGrade" :full-width="true" label="道路等级">
-            <mu-menu-item v-for="text,index in basicData.roadGrade" :key="index" :value="index" :title="text" ></mu-menu-item>
+            <mu-menu-item v-for="text,index in basicData.roadGrade" :key="index" :value="text" :title="text" ></mu-menu-item>
         </mu-select-field>
-        <mu-select-field v-model="selectData.accident.type" :full-width="true" label="事故类型">
-            <mu-menu-item v-for="text,index in basicData.accident.type" :key="index" :value="index" :title="text" ></mu-menu-item>
+        <%--<mu-select-field v-model="selectData.accident.type" :full-width="true" label="事故类型">--%>
+            <%--<mu-menu-item v-for="text,index in basicData.accident.type" :key="index" :value="text" :title="text" ></mu-menu-item>--%>
+        <%--</mu-select-field>--%>
+        <mu-select-field v-model="selectData.carCollisionType" :full-width="true" label="车辆碰撞类型">
+            <mu-menu-item v-for="text,index in basicData.carCollisionType" :key="index" :value="text" :title="text" ></mu-menu-item>
         </mu-select-field>
         <mu-select-field v-model="selectData.weather" :full-width="true" label="天气">
-            <mu-menu-item v-for="text,index in basicData.weather" :key="index" :value="index" :title="text" ></mu-menu-item>
+            <mu-menu-item v-for="text,index in basicData.weather" :key="index" :value="text" :title="text" ></mu-menu-item>
         </mu-select-field>
         <mu-select-field v-model="selectData.workZone.flag" :full-width="true" label="作业区">
-            <mu-menu-item v-for="text,index in basicData.workZone.flag" :key="index" :value="index" :title="text" ></mu-menu-item>
+            <mu-menu-item v-for="text,index in basicData.workZone.flag" :key="index" :value="text" :title="text" ></mu-menu-item>
         </mu-select-field>
         <mu-select-field v-model="selectData.intersectionType" :full-width="true" label="交叉口类型">
-            <mu-menu-item v-for="text,index in basicData.intersectionType" :key="index" :value="index" :title="text" ></mu-menu-item>
+            <mu-menu-item v-for="text,index in basicData.intersectionType" :key="index" :value="text" :title="text" ></mu-menu-item>
         </mu-select-field>
         <mu-select-field v-model="selectData.vehicleType" :full-width="true" label="车辆类型">
-            <mu-menu-item v-for="text,index in basicData.vehicleType" :key="index" :value="index" :title="text" ></mu-menu-item>
+            <mu-menu-item v-for="text,index in basicData.vehicleType" :key="index" :value="text" :title="text" ></mu-menu-item>
         </mu-select-field>
         <mu-select-field v-model="selectData.hitAndRun" :full-width="true" label="肇事逃逸">
-            <mu-menu-item v-for="text,index in basicData.hitAndRun" :key="index" :value="index" :title="text" ></mu-menu-item>
+            <mu-menu-item v-for="text,index in basicData.hitAndRun" :key="index" :value="text" :title="text" ></mu-menu-item>
         </mu-select-field>
         <mu-flat-button slot="actions" primary @click="detailConfirm" label="取消"></mu-flat-button>
         <mu-flat-button slot="actions" primary @click="detailClose" label="确认"></mu-flat-button>
     </mu-dialog>
+
+    <mu-popup position="top" :overlay="false" :open="showMessageTop" popup-class="popup-top">
+        <span :class="{'succeed-text': textFlag, 'failure-text': !textFlag}">{{ messageTop }}</span>
+    </mu-popup>
 </div>
 
 <script src="libs/vue/vue.min.js"></script>
