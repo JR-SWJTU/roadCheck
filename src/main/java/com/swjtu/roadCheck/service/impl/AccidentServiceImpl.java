@@ -117,11 +117,13 @@ public class AccidentServiceImpl implements IAccidentService {
      * @return
      */
     public List<Accident> areaMultiConditionQuery(AccidentQueryCondition condition) {
-        if(condition.getStartTime() == null || condition.getEndTime() == null)
+        if(condition.getRoadType() == null ||
+                condition.getStartTime() == null || condition.getEndTime() == null ||
+                (condition.getAreaName() == null && condition.getTeamName() == null))
             throw new ReqParmIncorException();
 
-//        if(condition.getRoadType().equals("路段"))
-//            condition.setIntersectionType("非交叉口");
+        if(condition.getRoadType().equals("路段"))
+            condition.setIntersectionType("非交叉口");
 
         if ( condition.isyType() )
             return accidentMapperCustom.multiConditionQueryAccidentForSGS(condition);
@@ -136,8 +138,13 @@ public class AccidentServiceImpl implements IAccidentService {
      * @return
      */
     public List<Accident> timeMultiConditionQuery(AccidentQueryCondition condition) {
-        if(condition.getStartTime() == null || condition.getEndTime() == null)
+        if(condition.getRoadType() == null ||
+                condition.getStartTime() == null || condition.getEndTime() == null ||
+                (condition.getAreaName() == null && condition.getTeamName() == null))
             throw new ReqParmIncorException();
+
+        if(condition.getRoadType().equals("路段"))
+            condition.setIntersectionType("非交叉口");
 
         return accidentMapperCustom.multiConditionQueryAccidentForTime(condition);
     }

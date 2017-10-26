@@ -131,7 +131,7 @@
             resultType="com.swjtu.roadCheck.dto.Accident">
 
         SELECT
-        count(*) as num,diMingBeiZhu,yanZhongCd as keyRes
+        count(*) as num,diMingBeiZhu,yanZhongCd as keyRes,lat,lng
         FROM
 
         (
@@ -200,7 +200,7 @@
         SELECT
         accidencnumber,
         diMingBeiZhu,
-        yanZhongCd
+        yanZhongCd,lat,lng
         FROM
         accidentdata
         <where>
@@ -251,7 +251,7 @@
             resultType="com.swjtu.roadCheck.dto.Accident">
 
         SELECT
-        count(*) as num,diMingBeiZhu
+        count(*) as num,diMingBeiZhu,lat,lng
         <if test="yType==false">
             ,yanZhongCd as keyRes
         </if>
@@ -332,12 +332,12 @@
         SELECT
         accidencnumber,
         diMingBeiZhu,
-        yanZhongCd
+        yanZhongCd,lat,lng
         FROM
         accidentdata
         <where>
             <if test="propertyLoss!=null">
-                accidentdata.yanZhongCd = '仅财产损失'
+                accidentdata.yanZhongCd = '仅财损'
             </if>
             <if test="slightInjury!=null">
                 OR accidentdata.yanZhongCd = '轻伤'
@@ -409,7 +409,7 @@
     <select id="areaTotalAccidentNumsQuery" parameterType="com.swjtu.roadCheck.entityCustom.AccidentQueryCondition"
             resultType="Integer">
         SELECT
-        count(*) AS num
+        count(*) AS num,lat,lng
         FROM
         (
 
@@ -438,7 +438,7 @@
         <if test="areaName!=null || roadType !=null">
             INNER JOIN (
             SELECT
-            accidencnumber
+            accidencnumber,lat,lng
             FROM
             accidentdata
             WHERE
