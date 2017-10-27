@@ -16,7 +16,7 @@ var app = new Vue({
                 administrative: []
             },
 
-            roadGrade: ['主干道', '快速路', '次干道', '支路', '高速公路', '国道', '省道', '县道', '乡村公路'],
+            roadGrade: ['null', '主干道', '快速路', '次干道', '支路', '高速公路', '国道', '省道', '县道', '乡村公路'],
             accident: {
                 type: ['非碰撞', '撞人、撞机动车或其他非固定物', '碰撞固定物'],
                 detail: {
@@ -25,52 +25,53 @@ var app = new Vue({
                     solidCollision: ['防撞墩/桶', '护栏', '桥梁栏杆', '路缘石', '隔离墩', '信号灯杆', '路灯杆', '标志牌柱', '树木', '其它固定物']
                 }
             },
-            carCollisionType: ['追尾碰撞', '正面碰撞	', '侧面碰撞', '直角碰撞', '刮擦', '其它'],
-            weather: ['晴天', '阴天', '雨', '雾', '雪', '冰雹', '台风'],
+            carCollisionType: ['null', '追尾碰撞', '正面碰撞	', '侧面碰撞', '直角碰撞', '刮擦', '其它'],
+            weather: ['null', '晴天', '阴天', '雨', '雾', '雪', '冰雹', '台风'],
             workZone: {
                 flag: ['是', '否'],
                 controlMode: ['单向车道关闭', '单向车道压缩'],
                 worker: ['是', '否'],
                 lawEnfor: ['无', '有']
             },
-            intersectionType: ['非交叉口', '十字', 'T形', 'Y形', '环岛', '多路交叉口' ,'立交'],
-            vehicleType: ['小客车', '中客车', '大客车', '公交', '校车', '小货车', '中货车', '大货车', '拖挂车', '特种车辆', '摩托车', '非机动车', '畜力车'],
+            intersectionType: ['null', '非交叉口', '十字', 'T形', 'Y形', '环岛', '多路交叉口' ,'立交'],
+            vehicleType: ['null', '小客车', '中客车', '大客车', '公交', '校车', '小货车', '中货车', '大货车', '拖挂车', '特种车辆', '摩托车', '非机动车', '畜力车'],
             hitAndRun: ['是', '否'],
 
-            bali: ['地点1', '地点2', '地点3', '地点4']
+            bali: []
         },
 
         detailDialog: false,
 
         selectData: {
-            analysisObj: '', //'交叉口',
+            analysisObj: '交叉口', //'交叉口',
             area: {
-                type: '', //'gruppe',
+                type: 'gruppe', //'gruppe',
                 value: ''
             },
-            accidentalSev: '', //'仅财损',
+            accidentalSev: [], //'仅财损',
             workDay: false,
             dateTime: {
                 start: '',
                 end: ''
             },
+            yType: 'accidentCount',
 
-            roadGrade: '', //'主干道',
+            roadGrade: 'null', //'主干道',
             accident: {
                 type: '',
                 value: ''
             },
-            carCollisionType: '', //'追尾碰撞',
-            weather: '', //'晴天',
+            carCollisionType: 'null', //'追尾碰撞',
+            weather: 'null', //'晴天',
             workZone: {
-                flag: '是',
+                flag: '否',
                 controlMode: '',
                 worker: '',
                 lawEnfor: ''
             },
-            intersectionType: '', //'非交叉口',
-            vehicleType: '', //'小客车',
-            hitAndRun: '', //'是'
+            intersectionType: 'null', //'非交叉口',
+            vehicleType: 'null', //'小客车',
+            hitAndRun: '否', //'是'
         },
 
         loginInfor: {
@@ -141,8 +142,8 @@ var app = new Vue({
         },
 
         checkLogin: function () {
-            this.isLogin = false;
-            this.loginDialog = true;
+            // this.isLogin = false;
+            // this.loginDialog = true;
         },
         login: function () {
             this.loginDialog = true;
@@ -219,28 +220,150 @@ var app = new Vue({
         resetObj: function () {
             console.log('resetObj');
         },
+        checkInput: function (json) {
+            if(this.nowFuc == 'black-point' || this.nowFuc == 'single-point' || this.nowFuc == 'space' || this.nowFuc == 'time'){
+                json.roadType = this.selectData.analysisObj;
+                if(this.selectData.area.type == 'gruppe'){
+                    if(this.selectData.area.value != '' || this.selectData.area.value != 'null'){
+                        json.teamName = this.selectData.area.value;
+                    }
+                    else{
+                        this.messageTop = "大队尚未选取！";
+                        this.textFlag = false;
+                        this.showMessageTop = true;
+                        return;
+                    }
+                }
+                else if(this.selectData.area.type == 'administrative'){
+                    if(this.selectData.area.value != '' || this.selectData.area.value != 'null'){
+                        json.areaName = this.selectData.area.value;
+                    }
+                    else{
+                        this.messageTop = "行政区尚未选取！";
+                        this.textFlag = false;
+                        this.showMessageTop = true;
+                        return;
+                    }
+                }
+                if(this.selectData.dateTime.start != ''){
+                    json.startTime = this.selectData.dateTime.start;
+                }
+                else{
+                    this.messageTop = "起始监测日期尚未选取！";
+                    this.textFlag = false;
+                    this.showMessageTop = true;
+                    return;
+                }
+                if(this.selectData.dateTime.end != ''){
+                    json.endTime = this.selectData.dateTime.end;
+                }
+                else{
+                    this.messageTop = "截止监测日期尚未选取！";
+                    this.textFlag = false;
+                    this.showMessageTop = true;
+                    return;
+                }
+            }
+
+            if(this.nowFuc == 'space' || this.nowFuc == 'time'){
+                if(this.selectData.roadGrade != 'null'){
+                    json.roadLevel = this.selectData.roadGrade;
+                }
+                if(this.selectData.carCollisionType != 'null'){
+                    json.carCollisionType = this.selectData.carCollisionType;
+                }
+                if(this.selectData.weather != 'null'){
+                    json.weather = this.selectData.weather;
+                }
+                if(this.selectData.workZone.flag != 'null'){
+                    json.workPlaceRel = this.selectData.workZone.flag;
+                }
+                if(this.selectData.intersectionType != 'null'){
+                    json.intersectionType = this.selectData.intersectionType;
+                }
+                if(this.selectData.vehicleType != 'null'){
+                    json.carType = this.selectData.vehicleType;
+                }
+                if(this.selectData.hitAndRun != 'null'){
+                    json.troEscape = this.selectData.hitAndRun;
+                }
+            }
+
+            if(this.nowFuc == 'space'){
+                if(this.selectData.workDay){
+                    json.isWorkDay = 1;
+                }
+                if(this.selectData.yType == 'accidentCount'){
+                    json.yType = true;
+                }
+                else{
+                    json.yType = false;
+                }
+            }
+
+            if(this.nowFuc == 'time'){
+                if(this.selectData.yType == 'accidentCount'){
+                    json.yType = true;
+                }
+                else{
+                    if(this.selectData.accidentalSev.length > 0){
+                        json.yType = false;
+                        this.selectData.accidentalSev.forEach(function (item, index, array) {
+                            switch(item){
+                                case '仅财损': {
+                                    json.propertyLoss = 1;
+                                    break;
+                                }
+                                case '轻伤': {
+                                    json.slightInjury = 1;
+                                    break;
+                                }
+                                case '重伤': {
+                                    json.severInjury = 1;
+                                    break;
+                                }
+                                case '死亡': {
+                                    json.dead = 1;
+                                    break;
+                                }
+                                default:
+                                    break;
+                            }
+                        })
+                    }
+                    else{
+                        this.messageTop = "纵坐标为‘事故严重程度’，其不可为空！";
+                        this.textFlag = false;
+                        this.showMessageTop = true;
+                        return;
+                    }
+                }
+            }
+
+        },
         blackPointGet: function () {
-            console.log('blackPointGet');
-            console.log(this.selectData);
+            var that = this;
+            var url = webBase + '/accidentDatas/blackPointDiagnosis/results';
+            var json = {};
+            this.checkInput(json);
+            console.log(json);
+            axios.post(url, json).then(function (response) {
+                var allData = response.data;
+                if(allData.code == 200){
+                    console.log(allData.data);
+                }
+                else{
+                    console.log(allData.message);
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
         },
         spaceGet: function () {
             var that = this;
             var url = webBase + '/accidentDatas/analyseData/areaMultiConditionQuery';
-            var json = {
-                teamName: that.selectData.area.type == 'gruppe'? that.selectData.area.value: null,
-                //areaName: that.selectData.area.type == 'administrative'? that.selectData.area.value: null,
-                // roadType: that.selectData.intersectionType,
-                startTime: that.selectData.dateTime.start,
-                endTime: that.selectData.dateTime.end,
-                yType: true
-                // roadLevel: that.selectData.roadGrade,
-                // carCollisionType: that.selectData.carCollisionType,
-                // weather: that.selectData.weather,
-                // workPlaceRel: that.selectData.workZone.flag,
-                // carType: that.selectData.vehicleType,
-                // troEscape: that.selectData.hitAndRun,
-                // isWorkDay: that.selectData.workDay ? 1 : 0
-            };
+            var json = {};
+            this.checkInput(json);
             console.log(json);
             axios.post(url, json).then(function (response) {
                 var allData = response.data;
@@ -257,21 +380,9 @@ var app = new Vue({
         timeGet: function () {
             var that = this;
             var url = webBase + '/accidentDatas/analyseData/timeMultiConditionQuery';
-            axios.post(url, {
-                teamName: that.selectData.area.type == 'gruppe'? that.selectData.area.value: null,
-                areaName: that.selectData.area.type == 'administrative'? that.selectData.area.value: null,
-                roadType: that.selectData.intersectionType,
-                startTime: that.selectData.dateTime.start,
-                endTime: that.selectData.dateTime.end,
-                yType: false,
-                roadLevel: that.selectData.roadGrade,
-                weather: that.selectData.weather,
-                workPlaceRel: that.selectData.workZone.flag,
-                carType: that.selectData.vehicleType,
-                timePrecision: 1,
-                troEscape: that.selectData.hitAndRun,
-                propertyLoss: 1
-            }).then(function (response) {
+            var json = {};
+            this.checkInput(json);
+            axios.post(url, json).then(function (response) {
                 var allData = response.data;
                 if(allData.code == 200){
                     console.log(allData.data);
