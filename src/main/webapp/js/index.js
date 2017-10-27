@@ -10,6 +10,7 @@ var app = new Vue({
         wrapHeight: 0,
 
         singleTab: 'gruppe',
+        singleShowSelect: false,
 
         basicData: {
             analysisObj: ['交叉口', '路段'],
@@ -206,6 +207,12 @@ var app = new Vue({
             console.log(val);
             this.singleTab = val;
         },
+        closeSingleShow: function () {
+            this.singleShowSelect = false;
+        },
+        openSingleShow: function () {
+            this.singleShowSelect = true;
+        },
         spaceAnalysis: function () {
             this.nowFuc = 'space';
         },
@@ -373,6 +380,9 @@ var app = new Vue({
                     console.log(error);
                 });
             }
+        },
+        singlePointGet: function () {
+            console.log('single-point-get');
         },
         spaceGet: function () {
             var that = this;

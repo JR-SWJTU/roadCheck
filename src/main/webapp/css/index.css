@@ -207,6 +207,31 @@
     -webkit-border-radius: 10px;
     border-radius: 10px;
 }
+.single-body-left{
+    margin: 6px 0px 0px 20px;
+}
+.single-select-left{
+    width: 288px;
+    padding: 15px;
+    border: 1px solid lightblue;
+    background-color: aliceblue;
+}
+.single-open-btn{
+    width: 38px;
+    height: 38px;
+    padding: 7px;
+    background: lightblue;
+}
+.single-close-btn{
+    position: relative;
+    top: -10px;
+    right: -10px;
+    float: right;
+    width: 38px;
+    height: 38px;
+    padding: 7px;
+    background: lightblue;
+}
 .right-btn{
     float: right;
     background-color: lavender;
@@ -284,6 +309,12 @@
     100% { left: 0px; }
 }
 
+.single-body-left-float{
+    position: absolute;
+    top: 118px;
+    z-index: 20;
+}
+
 .succeed-text{
     color: limegreen;
 }
@@ -331,6 +362,9 @@
     -webkit-border-radius: 10px 10px 0px 0px;
     -moz-border-radius: 10px 10px 0px 0px;
     border-radius: 10px 10px 0px 0px;
+}
+.single-content{
+    padding: 6px;
 }
 .map{
     width: 100%;

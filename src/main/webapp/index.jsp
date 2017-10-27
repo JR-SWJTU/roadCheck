@@ -83,26 +83,16 @@
             </div>
         </div>
         <div v-show="nowFuc == 'single-point'" :style="bodyContent">
-            <%--<div class="body-left">--%>
-                <%--<mu-select-field v-model="selectData.analysisObj" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="选择交叉口或路段">--%>
-                    <%--<mu-menu-item v-for="text,index in basicData.analysisObj" :key="index" :value="text" :title="text" ></mu-menu-item>--%>
-                <%--</mu-select-field>--%>
-                <%--<div class="mu-text-field-label label-class">选择分析的区域</div>--%>
-                <%--<mu-radio label="大队" name="area2" native-value="gruppe" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 20px;"></mu-radio>--%>
-                <%--<mu-radio label="行政区" name="area2" native-value="administrative" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 50px;"></mu-radio>--%>
-                <%--<mu-select-field v-show="selectData.area.type == 'gruppe'" hint-text="null" v-model="selectData.area.value" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}"  label="大队管辖区">--%>
-                    <%--<mu-menu-item v-for="text,index in basicData.area.gruppe" :key="index" :value="text" :title="text" ></mu-menu-item>--%>
-                <%--</mu-select-field>--%>
-                <%--<mu-select-field v-show="selectData.area.type == 'administrative'" hint-text="null" v-model="selectData.area.value" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="行政管辖区">--%>
-                    <%--<mu-menu-item v-for="text,index in basicData.area.administrative" :key="index" :value="text" :title="text" ></mu-menu-item>--%>
-                <%--</mu-select-field>--%>
-                <%--<div class="mu-text-field-label label-class" style="padding-top: 12px;">选择分析的时间段</div>--%>
-                <%--<mu-date-picker auto-ok hint-text="开始监测日期" v-model="selectData.dateTime.start" container="inline" mode="landscape" min-date="2016-09-01" :underline-class="{'underline-class': true}"></mu-date-picker>--%>
-                <%--<mu-date-picker auto-ok hint-text="至截止监测日期" v-model="selectData.dateTime.end" container="inline" mode="landscape" :underline-class="{'underline-class': true}"></mu-date-picker>--%>
-                <%--<mu-select-field v-model="selectData.bali" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}"  label="具体地点">--%>
-                    <%--<mu-menu-item v-for="text,index in basicData.bali" :key="index" :value="text" :title="text" ></mu-menu-item>--%>
-                <%--</mu-select-field>--%>
-            <%--</div>--%>
+            <div class="single-body-left single-body-left-float" :class="{'left-float-open': isFirstLoad && isShowItems, 'left-float-close': isFirstLoad && !isShowItems}">
+                <mu-icon-button v-show="!singleShowSelect" icon="navigate_next" tooltip-position="bottom-right" tooltip="筛选条件" class="single-open-btn" @click="openSingleShow"></mu-icon-button>
+                <div v-show="singleShowSelect" class="single-select-left">
+                    <div class="mu-text-field-label label-class" style="padding-top: 12px; display: inline-block;">选择分析的时间段</div>
+                    <mu-icon-button icon="navigate_before" tooltip-position="bottom-right" tooltip="收起" class="single-close-btn" @click="closeSingleShow"></mu-icon-button>
+                    <mu-date-picker auto-ok hint-text="开始监测日期" v-model="selectData.dateTime.start" container="inline" mode="landscape" min-date="2016-09-01" :underline-class="{'underline-class': true}"></mu-date-picker>
+                    <mu-date-picker auto-ok hint-text="至截止监测日期" v-model="selectData.dateTime.end" container="inline" mode="landscape" :underline-class="{'underline-class': true, 'end-time-line': true}" style="width: 205px;"></mu-date-picker>
+                    <mu-icon-button tooltip="筛选结果" tooltip-position="bottom-right" icon="call_merge" class="right-btn" @click="singlePointGet"></mu-icon-button>
+                </div>
+            </div>
             <div class="body-right" :style="rightStyle" style="background-color: inherit">
                 <div class="single-tabs-div">
                     <mu-tabs :value="singleTab" class="single-tabs" line-class="single-tabs-line" @change="singleTabChange">
@@ -113,6 +103,18 @@
                     </mu-tabs>
                 </div>
                 <mu-divider style="background-color: gainsboro"></mu-divider>
+                <div v-if="singleTab == 'gruppe'" class="single-content">
+                    gruppe
+                </div>
+                <div v-if="singleTab == 'administrative'" class="single-content">
+                    administrative
+                </div>
+                <div v-if="singleTab == 'intersection'" class="single-content">
+                    intersection
+                </div>
+                <div v-if="singleTab == 'crossing'" class="single-content">
+                    crossing
+                </div>
             </div>
         </div>
         <div v-show="nowFuc == 'space'" :style="bodyContent">
