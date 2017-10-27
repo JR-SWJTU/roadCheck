@@ -285,11 +285,43 @@
     position: relative;
     left: 0px;
     top: 0px;
-    background-color: #7cb5ec;
+    background-color: aliceblue;
     margin: 5px 15px;
     border: 1px solid lightblue;
     -webkit-border-radius: 10px;
     border-radius: 10px;
+}
+.single-tabs-div{
+    background-color: lightsteelblue;
+    -webkit-border-radius: 10px 10px 0px 0px;
+    -moz-border-radius: 10px 10px 0px 0px;
+    border-radius: 10px 10px 0px 0px;
+}
+.single-tabs{
+    background-color: lightsteelblue;
+    width: 512px;
+    border-right: 1px solid gainsboro;
+    -webkit-border-radius: 10px 10px 0px 0px;
+    -moz-border-radius: 10px 10px 0px 0px;
+    border-radius: 10px 10px 0px 0px;
+}
+.single-tabs-line{
+    background-color: darkblue;
+}
+.single-tab-title{
+    color: black;
+}
+.single-tab-title-active{
+    color: white;
+}
+.left-split-line{
+    border-left: 1px solid gainsboro;
+}
+.single-tab-active{
+    background-color: #2196f3;
+    -webkit-border-radius: 10px 10px 0px 0px;
+    -moz-border-radius: 10px 10px 0px 0px;
+    border-radius: 10px 10px 0px 0px;
 }
 .map{
     width: 100%;

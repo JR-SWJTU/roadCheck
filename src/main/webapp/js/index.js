@@ -8,6 +8,9 @@ var app = new Vue({
     data: {
         wrapWidth: 0,
         wrapHeight: 0,
+
+        singleTab: 'gruppe',
+
         basicData: {
             analysisObj: ['交叉口', '路段'],
             accidentalSev: ['仅财损', '轻伤', '重伤', '死亡'],
@@ -198,6 +201,10 @@ var app = new Vue({
         },
         singleAnalysis: function () {
             this.nowFuc = 'single-point';
+        },
+        singleTabChange: function (val) {
+            console.log(val);
+            this.singleTab = val;
         },
         spaceAnalysis: function () {
             this.nowFuc = 'space';
@@ -415,7 +422,7 @@ var app = new Vue({
                 'overflow': 'auto'
             };
         },
-        mapStyle: function () {
+        rightStyle: function () {
             return {
                 'width': this.wrapWidth - 30 - (this.isShowItems ? 256 : 8) + 'px',
                 'height': this.wrapHeight - 15 + 'px'
