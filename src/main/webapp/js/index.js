@@ -204,7 +204,7 @@ var app = new Vue({
             this.nowFuc = 'single-point';
         },
         singleTabChange: function (val) {
-            console.log(val);
+            this.singleShowSelect = false;
             this.singleTab = val;
         },
         closeSingleShow: function () {
