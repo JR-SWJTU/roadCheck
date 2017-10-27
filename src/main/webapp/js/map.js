@@ -29,32 +29,6 @@ var markerOptions = {
     death:0,//死亡数量
 }
 
-// function markerOptions(tyep,name,lat,lng,accidentNumbers,wealthLoss,slightInjury,seriousInjury,death) {
-//         this.tyep              = tyep                //类型0路段，1交叉口
-//         this.name              = name                //名称
-//         this.lat               = lat                 //经纬度
-//         this.lng               = lng                 //经纬度
-//         this.accidentNumbers  = accidentNumbers     //事故总数
-//         this.wealthLoss       =  wealthLoss          //财损数量
-//         this.slightInjury     = slightInjury        //轻伤数量
-//         this.seriousInjury    = seriousInjury       //重伤数量
-//         this.death             = death               //死亡数量
-// }
-
-// var m1 = new markerOptions();
-//
-// var m2 = new Object();
-// m2.tyep = 0;
-// m2.name = "";
-// m2.lat = 0.0;
-// m2.lng = 0.0;
-// m2.accidentNumbers = "";
-// m2.wealthLoss = "";
-// m2.slightInjury = "";
-// m2.seriousInjury = "";
-// m2.death = "";
-//
-// console.log(m2.tyep)
 /*
 * 地图操作
 * */
@@ -82,17 +56,6 @@ spaceMap.setFeatures(features);
 * 传入参数为，地图，标志名称，位置（经纬度），类型（0交叉口还是1路段），当前路段|交叉口事故数量
 * */
 
-// addMarker(spaceMap,"XXX路段1",[104.042584,30.582064],1,3)
-// addMarker(spaceMap,"XXX交叉口2",[104.072584,30.472064],0,100)
-// addMarker(spaceMap,"XXX路段3",[104.092584,30.692064],1,50)
-//
-// addMarker(blackPointMap,"XXX路段",[104.072584,30.472064],0,100)
-// addMarker(blackPointMap,"XXX交叉口3",[104.092584,30.692064],1,50)
-var mapMarkers = [];
-if (mapMarkers == null || mapMarkers.length == 0) {
-    mapMarkers = [];
-}
-
 /*
 * 设置交叉口事故数大小
 *传入参数为数量,全部事故数量
@@ -101,12 +64,12 @@ if (mapMarkers == null || mapMarkers.length == 0) {
 * */
 var markerOptions = {
     map                  : spaceMap,            //地图
-    type                 : 0           ,   //类型1路段，0交叉口
+    type                 : 1           ,   //类型1路段，0交叉口
     name                 : "交叉口1"           ,   //名称
     lat                  : 104.072584            ,   //经纬度
     lng                  : 30.472064            ,   //经纬度
-    isChenDu            : false,                   //是否为严重程度展示
-    showType            : "财损,轻伤"     ,   //严重程度需要的展示内容
+    isChenDu            : true,                   //是否为严重程度展示
+    showType            : "财损,重伤,死亡"     ,   //严重程度需要的展示内容
     accidentAllNumbers : 200,  //所有事故总数
     accidentNumbers     : 100 ,  //当前路段/交叉口事故总数
     wealthLoss          : 30     ,   //财损数量
@@ -123,13 +86,11 @@ function setMarker(options) {
     }
     //获取展示内容
     var content;
-    console.log("ok-----setMarker:type"+options.type);
     if (options.type == 0) {
-        content = setIntersectionContent(options.accidentNumbers,options.accidentAllNumbers,options.name,options.isChenDu,options.showType);
+        content = setIntersectionContent(options);
     }else {
-        content = setRoadContent(options.accidentNumbers,options.accidentAllNumbers,options.name);
+        content = setRoadContent(options);
     }
-    console.log("ok-----setMarker")
     var marker = new AMap.Marker({
         map: options.map,
         position: [options.lat,options.lng],
@@ -138,9 +99,7 @@ function setMarker(options) {
         }),
         content:content
     });
-    console.log("ok-----push")
     mapMarkers.push(marker);
-
 }
 function addMarker(amap,markerName,position,type,number){
     var Markers = [];
@@ -195,88 +154,87 @@ function addMarker(amap,markerName,position,type,number){
 
 }
 
-function setIntersectionContent(number,allNumbers,name,isChenDu,showType) {
+function setIntersectionContent(options) {
 
     var content = "<div style=\"height: 150px;width: 100px\">\n" +
-        "<div  style=\"margin: auto;width: "+getHeight(number,allNumbers)/2+"px;height: "+getHeight(number,allNumbers)/2+"px;background: "+getColor(number,allNumbers)+";border-radius:50%\"></div>" +
-        "    <p style=\"width:100%;margin: auto;text-align: center;color:white;\">事故数："+number+"</p>\n" +
-        "    <p style=\"width:100%;margin: auto;background:white;text-align: center;\">"+name+"</p>\n" +
+        "<div  style=\"margin: auto;width: "+getHeight(options.accidentNumbers,options.accidentAllNumbers)/2+"px;height: "+
+        getHeight(options.accidentNumbers,options.accidentAllNumbers)/2+"px;background: red"+
+       ";border-radius:50%\"></div>" +
+        "    <p style=\"width:100%;margin: auto;text-align: center;color:white;\">事故数："+options.accidentNumbers+"</p>\n" +
+        "    <p style=\"width:100%;margin: auto;background:white;text-align: center;\">"+options.name+"</p>\n" +
         "</div>";
-    //alert("ok");
-    console.log("ok-----setIntersectionContent")
-    if (isChenDu) {
-        var indexs = [0,0,0,0] ;
-        var content2 ="<div class=\"barcontain\">\n" +
-            "         <div class=\"barchild\">\n" +
-            "            <p style=\"margin:auto;text-align: center;\">111</p>\n" +
-            "            <div style=\"margin:auto;width:30px;height:100px;background: red;\"></div>\n" +
-            "            <p style=\"margin:auto;text-align: center;\">总数</p>\n" +
-            "         </div>\n" +
-            "         <div class=\"barchild\" style=\"left: 40px;\">\n" +
-            "            <p style=\"margin:auto;text-align: center;\">111</p>\n" +
-            "            <div style=\"margin:auto;width:30px;height:50px;background: green;\"></div>\n" +
-            "            <p style=\"margin:auto;text-align: center;\">财损</p>\n" +
-            "         </div>\n" +
-            "         <div class=\"barchild\" style=\"left: 80px;\">\n" +
-            "            <p style=\"margin:auto;text-align: center;\">111</p>\n" +
-            "            <div style=\"margin:auto;width:30px;height:70px;background: blue;\"></div>\n" +
-            "            <p style=\"margin:auto;text-align: center;\">轻伤</p>\n" +
-            "         </div>\n" +
-            "         <div class=\"barchild\" style=\"left: 120px;\">\n" +
-            "            <p style=\"margin:auto;text-align: center;\">111</p>\n" +
-            "            <div style=\"margin:auto;width:30px;height:50px;background: yellow;\"></div>\n" +
-            "            <p style=\"margin:auto;text-align: center;\">重伤</p>\n" +
-            "         </div>\n" +
-            "         <div class=\"barchild\" style=\"left: 160px;\">\n" +
-            "            <p style=\"margin:auto;text-align: center;\">111</p>\n" +
-            "            <div style=\"margin:auto;width:30px;height:80px;background: olive;\"></div>\n" +
-            "            <p style=\"margin:auto;text-align: center;\">死亡</p>\n" +
-            "         </div>\n" +
-            "      </div>"
-        return content2;
+
+    if (options.isChenDu) {
+        return getContent(options);
     }
     return content;
 }
 
-function setRoadContent (number,allNumbers,name) {
+function setRoadContent (options) {
     var content = "<div style=\"height: 200px;width: 100px\">\n" +
-        "    <div id=\"bar\" style=\"width: 20px;height: "+getHeight(number,allNumbers)+"px;background: "+getColor(number,allNumbers)+"; margin: auto\"></div>\n" +
-        "    <p style=\"width:100%;margin: auto;text-align: center;color: "+"white"+"\">事故数："+number+"</p>\n" +
-        "    <p style=\"width:100%;margin: auto;background:white;text-align: center;\">"+name+"</p>\n" +
+        "    <div id=\"bar\" style=\"width: 20px;height: "+getHeight(options.accidentNumbers,options.accidentAllNumbers)+"px;background: red"+
+             "; margin: auto\"></div>\n" +
+        "    <p style=\"width:100%;margin: auto;text-align: center;color: "+"white"+"\">事故数："+options.accidentNumbers+"</p>\n" +
+        "    <p style=\"width:100%;margin: auto;background:white;text-align: center;\">"+options.name+"</p>\n" +
         "</div>";
+    if (options.isChenDu) {
+        return getContent(options);
+    }
     return content;
 };
-
-function testContent() {
-    var content ="<div class=\"barcontain\">\n" +
-        "         <div class=\"barchild\">\n" +
-        "            <p style=\"margin:auto;text-align: center;\">111</p>\n" +
-        "            <div style=\"margin:auto;width:30px;height:100px;background: red;\"></div>\n" +
-        "            <p style=\"margin:auto;text-align: center;\">总数</p>\n" +
+function getContent(options) {
+    var indexs = [0, 0, 0, 0];
+    var marginLeft = [-1, 0, 0, 0];
+    if (options.showType.indexOf("财损") >= 0) {
+        indexs[0] = 1;
+    }
+    if (options.showType.indexOf("轻伤") >= 0) {
+        indexs[1] = 1;
+    }
+    if (options.showType.indexOf("重伤") >= 0) {
+        indexs[2] = 1;
+    }
+    if (options.showType.indexOf("死亡") >= 0) {
+        indexs[3] = 1;
+    }
+    marginLeft[0] += indexs[0];
+    for (var i = 1; i < 4; i++) {
+        marginLeft[i] += marginLeft[i - 1] + indexs[i];
+    }
+    var dis = [];
+    for (var i = 0; i < 4; i++) {
+        if (indexs[i] == 0) {
+            dis[i] = "none";
+        } else {
+            dis[i] = "block";
+        }
+    }
+    // console.log("marginLeft:" + marginLeft);
+    // console.log(indexs);
+    var content2 = "<div style=\"height: 200px;width: 100px;\">\n" +
+        "         <div class=\"barcontain\">\n" +
+        "            <div class=\"barchild\" style=\"left:" + marginLeft[0] * 20 + "px;display: " + dis[0] + ";\">\n" +
+        "               <p style=\"margin:auto;text-align: center;color: white;\">" + options.wealthLoss + "</p>\n" +
+        "               <div style=\"margin:auto;width:20px;height:" + getHeight(options.wealthLoss, options.accidentNumbers) + "px;background: green;\"></div>\n" +
+        "            </div>\n" +
+        "            <div class=\"barchild\" style=\"left: " + marginLeft[1] * 20 + "px;display: " + dis[1] + ";\">\n" +
+        "               <p style=\"margin:auto;text-align: center;color: white;\">" + options.slightInjury + "</p>\n" +
+        "               <div style=\"margin:auto;width:20px;height:" + getHeight(options.slightInjury, options.accidentNumbers) + "px;background: blue;\"></div>\n" +
+        "            </div>\n" +
+        "            <div class=\"barchild\" style=\"left: " + marginLeft[2] * 20 + "px;display: " + dis[2] + "\">\n" +
+        "               <p style=\"margin:auto;text-align: center;color: white;\">" + options.seriousInjury + "</p>\n" +
+        "               <div style=\"margin:auto;width:20px;height:" + getHeight(options.seriousInjury, options.accidentNumbers) + "px;background: yellow;\"></div>\n" +
+        "            </div>\n" +
+        "            <div class=\"barchild\" style=\"left: " + marginLeft[3] * 20 + "px;display: " + dis[3] + "\">\n" +
+        "               <p style=\"margin:auto;text-align: center;color: white;\">" + options.death + "</p>\n" +
+        "               <div style=\"margin:auto;width:20px;height:" + getHeight(options.death, options.accidentNumbers) + "px;background: olive;\"></div>\n" +
+        "            </div>\n" +
         "         </div>\n" +
-        "         <div class=\"barchild\" style=\"left: 40px;\">\n" +
-        "            <p style=\"margin:auto;text-align: center;\">111</p>\n" +
-        "            <div style=\"margin:auto;width:30px;height:50px;background: green;\"></div>\n" +
-        "            <p style=\"margin:auto;text-align: center;\">财损</p>\n" +
-        "         </div>\n" +
-        "         <div class=\"barchild\" style=\"left: 80px;\">\n" +
-        "            <p style=\"margin:auto;text-align: center;\">111</p>\n" +
-        "            <div style=\"margin:auto;width:30px;height:70px;background: blue;\"></div>\n" +
-        "            <p style=\"margin:auto;text-align: center;\">轻伤</p>\n" +
-        "         </div>\n" +
-        "         <div class=\"barchild\" style=\"left: 120px;\">\n" +
-        "            <p style=\"margin:auto;text-align: center;\">111</p>\n" +
-        "            <div style=\"margin:auto;width:30px;height:50px;background: yellow;\"></div>\n" +
-        "            <p style=\"margin:auto;text-align: center;\">重伤</p>\n" +
-        "         </div>\n" +
-        "         <div class=\"barchild\" style=\"left: 160px;\">\n" +
-        "            <p style=\"margin:auto;text-align: center;\">111</p>\n" +
-        "            <div style=\"margin:auto;width:30px;height:80px;background: olive;\"></div>\n" +
-        "            <p style=\"margin:auto;text-align: center;\">死亡</p>\n" +
-        "         </div>\n" +
+        "         <p style=\"text-align: center;margin: auto;color: white;\">" + options.name + "</p>\n" +
         "      </div>"
-    return content;
+    return content2;
 }
+
 /*
     * 返回颜色，红黄蓝绿
     * */
