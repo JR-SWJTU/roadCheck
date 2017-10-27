@@ -204,8 +204,21 @@
         FROM
         accidentdata
         <where>
+            <if test="propertyLoss!=null">
+                accidentdata.yanZhongCd = '仅财损'
+            </if>
+            <if test="slightInjury!=null">
+                OR accidentdata.yanZhongCd = '轻伤'
+            </if>
+            <if test="severInjury!=null">
+                OR accidentdata.yanZhongCd = '重伤'
+            </if>
+            <if test="dead!=null">
+                OR accidentdata.yanZhongCd = '死亡'
+            </if>
+
             <if test="carCollisionType!=null">
-                accidentdata.carCollisionType = #{carCollisionType}
+                and accidentdata.carCollisionType = #{carCollisionType}
             </if>
             <if test="troEscape!=null">
                 AND accidentdata.taoYi = #{troEscape}
