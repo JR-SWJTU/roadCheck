@@ -71,18 +71,15 @@ public class TestAPI {
         Accidentdata2Mapper accidentdata2Mapper = ctx.getBean(Accidentdata2Mapper.class);
         List<Accidentdata> accidentdatas = new ArrayList<Accidentdata>();
         Map<String,Object> map = new HashMap<String,Object>();
-        ArrayList<String> teams = new ArrayList<String>();
-        ArrayList<String> regions = new ArrayList<String>();
-        regions.add("金牛区");
-        regions.add("青羊区");
-        regions.add("郫都区");
-        teams.add("一大队");
-        teams.add("二大队");
-        map.put("teams",teams);
+        ArrayList<String> teamName = new ArrayList<String>();
+
+        teamName.add("一大队");
+        teamName.add("二大队");
+        map.put("teamName",teamName);
         map.put("jckType","非交叉口");
-        map.put("regions",regions);
-        map.put("startDate","2017-01-01");
-        map.put("endDate","2017-10-30");
+        map.put("areaName","金牛区");
+        map.put("startTime","2017-01-01");
+        map.put("endTime","2017-10-30");
         accidentdatas = accidentdata2Mapper.queryAccidentdataByCondition1(map);
         Map<String,Integer> resultMap = new HashMap<String,Integer>();
         for(Accidentdata accidentdata : accidentdatas){
@@ -127,18 +124,15 @@ public class TestAPI {
         List<BlackPointData> blackPointDatas = new ArrayList<BlackPointData>();
         List<Accidentdata> accidentdatas = new ArrayList<Accidentdata>();
         Map<String,Object> map = new HashMap<String,Object>();
-        ArrayList<String> teams = new ArrayList<String>();
-        ArrayList<String> regions = new ArrayList<String>();
-        regions.add("金牛区");
-        regions.add("青羊区");
-        regions.add("郫都区");
-        teams.add("一大队");
-        teams.add("二大队");
-        map.put("teams",teams);
+        ArrayList<String> teamName = new ArrayList<String>();
+
+        teamName.add("一大队");
+        teamName.add("二大队");
+        map.put("teamName",teamName);
         map.put("jckType","非交叉口");
-        map.put("regions",regions);
-        map.put("startDate","2017-01-01");
-        map.put("endDate","2017-10-30");
+        map.put("areaName","金牛区");
+        map.put("startTime","2017-01-01");
+        map.put("endTime","2017-10-30");
         accidentdatas = accidentdata2Mapper.queryAccidentdataByCondition1(map);
         Map<String,Integer> resultMap = new HashMap<String,Integer>();
         for(Accidentdata accidentdata : accidentdatas){

@@ -11,20 +11,13 @@
 
     <select id="queryAccidentdataByCondition1" parameterType="Map" resultType="com.swjtu.roadCheck.entity.Accidentdata">
         SELECT * FROM accidentdata
-        <if test="regions != null">
-            <where>
-                xianQu IN
-                <foreach collection="regions" item="region" open="(" separator="," close=")">
-                    #{region}
-                </foreach>
-            </where>
-        </if>
+        WHERE xianQu = #{areaName}
         AND accidencnumber IN (
           SELECT shigunumber FROM accidencecollectiondata
-          <if test="teams != null">
+          <if test="teamName != null">
             <where>
                 team_name IN
-                <foreach collection="teams" item="team" open="(" separator="," close=")">
+                <foreach collection="teamName" item="team" open="(" separator="," close=")">
                     #{team}
                 </foreach>
             </where>
@@ -34,25 +27,18 @@
               WHERE Jcktype LIKE "%"#{jckType}"%"
             )
         )
-          AND (DATE(riQI) BETWEEN #{startDate} and #{endDate})
+          AND (DATE(riQI) BETWEEN #{startTime} and #{endTime})
     </select>
 
     <select id="queryAccidentdataByCondition2" parameterType="Map" resultType="com.swjtu.roadCheck.entity.Accidentdata">
         SELECT * FROM accidentdata
-        <if test="regions != null">
-            <where>
-                xianQu IN
-                <foreach collection="regions" item="region" open="(" separator="," close=")">
-                    #{region}
-                </foreach>
-            </where>
-        </if>
+        WHERE xianQu = #{areaName}
         AND accidencnumber IN (
         SELECT shigunumber FROM accidencecollectiondata
-        <if test="teams != null">
+        <if test="teamName != null">
             <where>
                 team_name IN
-                <foreach collection="teams" item="team" open="(" separator="," close=")">
+                <foreach collection="teamName" item="team" open="(" separator="," close=")">
                     #{team}
                 </foreach>
             </where>
@@ -62,6 +48,6 @@
         WHERE Jcktype NOT LIKE "%"#{jckType}"%"
         )
         )
-        AND (DATE(riQI) BETWEEN #{startDate} and #{endDate})
+        AND (DATE(riQI) BETWEEN #{startTime} and #{endTime})
     </select>
 </mapper>
