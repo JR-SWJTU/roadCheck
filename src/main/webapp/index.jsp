@@ -148,6 +148,28 @@
                 <div id="spaceMap" class="map">
 
                 </div>
+                <div style="position: absolute;left:300px;top:50px;height: 50px;">
+                    <div class="barchild">
+                        <div style="margin:auto;width:30px;height:20px;background: red;"></div>
+                        <p style="margin:auto;text-align: center;color: white">总数</p>
+                    </div>
+                    <div class="barchild" style="left: 50px;">
+                        <div style="margin:auto;width:30px;height:20px;background: green;"></div>
+                        <p style="margin:auto;text-align: center;color: white;">财损</p>
+                    </div>
+                    <div class="barchild" style="left: 90px;">
+                        <div style="margin:auto;width:30px;height:20px;background: blue;"></div>
+                        <p style="margin:auto;text-align: center;color: white;">轻伤</p>
+                    </div>
+                    <div class="barchild" style="left: 130px;">
+                        <div style="margin:auto;width:30px;height:20px;background: yellow;"></div>
+                        <p style="margin:auto;text-align: center;color: white;">重伤</p>
+                    </div>
+                    <div class="barchild" style="left: 170px;">
+                        <div style="margin:auto;width:30px;height:20px;background: olive;"></div>
+                        <p style="margin:auto;text-align: center;color: white;">死亡</p>
+                    </div>
+                </div>
             </div>
         </div>
         <div v-show="nowFuc == 'time'" :style="bodyContent">
