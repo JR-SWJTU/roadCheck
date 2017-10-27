@@ -55,6 +55,7 @@ var app = new Vue({
                 end: ''
             },
             yType: 'accidentCount',
+            timePrecision: 1,
 
             roadGrade: 'null', //'主干道',
             accident: {
@@ -115,7 +116,7 @@ var app = new Vue({
                     data.forEach(function (item, index, array) {
                         teams.push(item.teamName);
                     })
-                    that.basicData.area.gruppe = teams;
+                    that.$set(that.basicData.area, 'gruppe', teams);
                 }
                 else{
                     console.log(allData.message);
@@ -131,7 +132,8 @@ var app = new Vue({
             }).then(function (response) {
                 var allData = response.data;
                 if(allData.code == 200){
-                    that.basicData.area.administrative = allData.data;
+                    that.$set(that.basicData.area, 'administrative', allData.data);
+                    // that.basicData.area.administrative = allData.data;
                 }
                 else{
                     console.log(allData.message);
@@ -224,25 +226,25 @@ var app = new Vue({
             if(this.nowFuc == 'black-point' || this.nowFuc == 'single-point' || this.nowFuc == 'space' || this.nowFuc == 'time'){
                 json.roadType = this.selectData.analysisObj;
                 if(this.selectData.area.type == 'gruppe'){
-                    if(this.selectData.area.value != '' || this.selectData.area.value != 'null'){
+                    if(this.selectData.area.value != ''){
                         json.teamName = this.selectData.area.value;
                     }
                     else{
                         this.messageTop = "大队尚未选取！";
                         this.textFlag = false;
                         this.showMessageTop = true;
-                        return;
+                        return false;
                     }
                 }
                 else if(this.selectData.area.type == 'administrative'){
-                    if(this.selectData.area.value != '' || this.selectData.area.value != 'null'){
+                    if(this.selectData.area.value != ''){
                         json.areaName = this.selectData.area.value;
                     }
                     else{
                         this.messageTop = "行政区尚未选取！";
                         this.textFlag = false;
                         this.showMessageTop = true;
-                        return;
+                        return false;
                     }
                 }
                 if(this.selectData.dateTime.start != ''){
@@ -252,7 +254,7 @@ var app = new Vue({
                     this.messageTop = "起始监测日期尚未选取！";
                     this.textFlag = false;
                     this.showMessageTop = true;
-                    return;
+                    return false;
                 }
                 if(this.selectData.dateTime.end != ''){
                     json.endTime = this.selectData.dateTime.end;
@@ -261,7 +263,7 @@ var app = new Vue({
                     this.messageTop = "截止监测日期尚未选取！";
                     this.textFlag = false;
                     this.showMessageTop = true;
-                    return;
+                    return false;
                 }
             }
 
@@ -301,7 +303,7 @@ var app = new Vue({
                 }
             }
 
-            if(this.nowFuc == 'time'){
+            if(this.nowFuc == 'time' || this.nowFuc == 'space'){
                 if(this.selectData.yType == 'accidentCount'){
                     json.yType = true;
                 }
@@ -335,64 +337,75 @@ var app = new Vue({
                         this.messageTop = "纵坐标为‘事故严重程度’，其不可为空！";
                         this.textFlag = false;
                         this.showMessageTop = true;
-                        return;
+                        return false;
                     }
                 }
             }
 
+            if(this.nowFuc == 'time'){
+                json.timePrecision = this.selectData.timePrecision;
+            }
+            return true;
         },
         blackPointGet: function () {
             var that = this;
             var url = webBase + '/accidentDatas/blackPointDiagnosis/results';
             var json = {};
-            this.checkInput(json);
+            var flag = this.checkInput(json);
             console.log(json);
-            axios.post(url, json).then(function (response) {
-                var allData = response.data;
-                if(allData.code == 200){
-                    console.log(allData.data);
-                }
-                else{
-                    console.log(allData.message);
-                }
-            }).catch(function (error) {
-                console.log(error);
-            });
+            if(flag){
+                axios.post(url, json).then(function (response) {
+                    var allData = response.data;
+                    if(allData.code == 200){
+                        console.log(allData.data);
+                    }
+                    else{
+                        console.log(allData.message);
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            }
         },
         spaceGet: function () {
             var that = this;
             var url = webBase + '/accidentDatas/analyseData/areaMultiConditionQuery';
             var json = {};
-            this.checkInput(json);
+            var flag = this.checkInput(json);
             console.log(json);
-            axios.post(url, json).then(function (response) {
-                var allData = response.data;
-                if(allData.code == 200){
-                    console.log(allData.data);
-                }
-                else{
-                    console.log(allData.message);
-                }
-            }).catch(function (error) {
-                console.log(error);
-            });
+            if(flag){
+                axios.post(url, json).then(function (response) {
+                    var allData = response.data;
+                    if(allData.code == 200){
+                        console.log(allData.data);
+                    }
+                    else{
+                        console.log(allData.message);
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            }
         },
         timeGet: function () {
             var that = this;
             var url = webBase + '/accidentDatas/analyseData/timeMultiConditionQuery';
             var json = {};
-            this.checkInput(json);
-            axios.post(url, json).then(function (response) {
-                var allData = response.data;
-                if(allData.code == 200){
-                    console.log(allData.data);
-                }
-                else{
-                    console.log(allData.message);
-                }
-            }).catch(function (error) {
-                console.log(error);
-            });
+            var flag = this.checkInput(json);
+            console.log(json);
+            if(flag){
+                axios.post(url, json).then(function (response) {
+                    var allData = response.data;
+                    if(allData.code == 200){
+                        console.log(allData.data);
+                    }
+                    else{
+                        console.log(allData.message);
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            }
         }
     },
     computed: {
