@@ -41,7 +41,7 @@
                     <mu-icon slot="left" value="grade"></mu-icon>
                 </mu-list-item>
             </mu-list-item>
-            <mu-list-item title="高级统计分析" @click="highStatistics">
+            <mu-list-item v-show="false" title="高级统计分析" @click="highStatistics">
                 <mu-icon slot="left" value="send"></mu-icon>
             </mu-list-item>
         </mu-list>
@@ -124,9 +124,10 @@
                 <mu-checkbox label="工作日" class="work-checkbox" :icon-class="{'icon-class': true}" label-left @change="workDayChange"></mu-checkbox>
                 <mu-date-picker auto-ok hint-text="开始监测日期" :should-disable-date="disableWeekends" v-model="selectData.dateTime.start" container="inline" mode="landscape" min-date="2016-09-01" :underline-class="{'underline-class': true}"></mu-date-picker>
                 <mu-date-picker auto-ok hint-text="至截止监测日期" :should-disable-date="disableWeekends" v-model="selectData.dateTime.end" container="inline" mode="landscape" :underline-class="{'underline-class': true}"></mu-date-picker>
-                <mu-select-field v-model="selectData.accidentalSev" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="事故严重程度">
-                    <mu-menu-item v-for="text,index in basicData.accidentalSev" :key="index" :value="text" :title="text" ></mu-menu-item>
-                </mu-select-field>
+                <div class="mu-text-field-label label-class">图形纵坐标选择</div>
+                <mu-radio label="事故数" name="ordinate1" native-value="accidentCount" :icon-class="{'icon-class': true}" v-model="selectData.yType"></mu-radio>
+                <mu-radio label="事故严重程度" name="ordinate1" native-value="accidentLevel" :icon-class="{'icon-class': true}" v-model="selectData.yType" style="margin-left: 20px;"></mu-radio>
+                <div style="height: 10px;"></div>
                 <mu-raised-button label="细节筛选" icon="widgets" label-position="before" primary class="detail-btn" @click="details"></mu-raised-button>
                 <mu-icon-button tooltip="筛选结果" tooltip-position="bottom-right" icon="call_merge" class="right-btn" @click="spaceGet"></mu-icon-button>
                 <%--<mu-icon-button tooltip="筛选数据重置" tooltip-position="bottom-right" icon="grade" class="right-btn" @click="spaceGet"></mu-icon-button>--%>
@@ -154,6 +155,13 @@
                 <div class="mu-text-field-label label-class" style="padding-top: 12px;">选择分析的时间段</div>
                 <mu-date-picker auto-ok hint-text="开始监测日期" v-model="selectData.dateTime.start" container="inline" mode="landscape" min-date="2016-09-01" :underline-class="{'underline-class': true}"></mu-date-picker>
                 <mu-date-picker auto-ok hint-text="至截止监测日期" v-model="selectData.dateTime.end" container="inline" mode="landscape" :underline-class="{'underline-class': true}"></mu-date-picker>
+                <div class="mu-text-field-label label-class">图形纵坐标选择</div>
+                <mu-radio label="事故数" name="ordinate2" native-value="accidentCount" :icon-class="{'icon-class': true}" v-model="selectData.yType"></mu-radio>
+                <mu-radio label="事故严重程度" name="ordinate2" native-value="accidentLevel" :icon-class="{'icon-class': true}" v-model="selectData.yType" style="margin-left: 20px;"></mu-radio>
+                <mu-select-field v-show="selectData.yType == 'accidentLevel'" v-model="selectData.accidentalSev" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="事故严重程度" hint-text="null" multiple>
+                    <mu-menu-item v-for="text,index in basicData.accidentalSev" :key="index" :value="text" :title="text" ></mu-menu-item>
+                </mu-select-field>
+                <div v-show="selectData.yType == 'accidentCount'" style="height: 10px;"></div>
                 <mu-raised-button label="细节筛选" icon="widgets" label-position="before" primary class="detail-btn" @click="details"></mu-raised-button>
                 <mu-icon-button tooltip="筛选结果" tooltip-position="bottom-right" icon="call_merge" class="right-btn" @click="timeGet"></mu-icon-button>
                 <%--<mu-icon-button tooltip="筛选数据重置" tooltip-position="bottom-right" icon="grade" class="right-btn" @click="timeGet"></mu-icon-button>--%>
