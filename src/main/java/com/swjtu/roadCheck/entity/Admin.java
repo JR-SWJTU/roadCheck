@@ -9,6 +9,8 @@ public class Admin {
 
     private Integer teamId;
 
+    private Byte issuper;
+
     public Integer getAdminId() {
         return adminId;
     }
@@ -41,6 +43,14 @@ public class Admin {
         this.teamId = teamId;
     }
 
+    public Byte getIssuper() {
+        return issuper;
+    }
+
+    public void setIssuper(Byte issuper) {
+        this.issuper = issuper;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -51,6 +61,7 @@ public class Admin {
         sb.append(", name=").append(name);
         sb.append(", password=").append(password);
         sb.append(", teamId=").append(teamId);
+        sb.append(", issuper=").append(issuper);
         sb.append("]");
         return sb.toString();
     }
@@ -70,7 +81,8 @@ public class Admin {
         return (this.getAdminId() == null ? other.getAdminId() == null : this.getAdminId().equals(other.getAdminId()))
             && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
             && (this.getPassword() == null ? other.getPassword() == null : this.getPassword().equals(other.getPassword()))
-            && (this.getTeamId() == null ? other.getTeamId() == null : this.getTeamId().equals(other.getTeamId()));
+            && (this.getTeamId() == null ? other.getTeamId() == null : this.getTeamId().equals(other.getTeamId()))
+            && (this.getIssuper() == null ? other.getIssuper() == null : this.getIssuper().equals(other.getIssuper()));
     }
 
     @Override
@@ -81,6 +93,7 @@ public class Admin {
         result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
         result = prime * result + ((getPassword() == null) ? 0 : getPassword().hashCode());
         result = prime * result + ((getTeamId() == null) ? 0 : getTeamId().hashCode());
+        result = prime * result + ((getIssuper() == null) ? 0 : getIssuper().hashCode());
         return result;
     }
 }

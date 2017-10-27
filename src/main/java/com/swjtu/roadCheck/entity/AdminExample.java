@@ -363,6 +363,66 @@ public class AdminExample {
             addCriterion("team_id not between", value1, value2, "teamId");
             return (Criteria) this;
         }
+
+        public Criteria andIssuperIsNull() {
+            addCriterion("isSuper is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIssuperIsNotNull() {
+            addCriterion("isSuper is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIssuperEqualTo(Byte value) {
+            addCriterion("isSuper =", value, "issuper");
+            return (Criteria) this;
+        }
+
+        public Criteria andIssuperNotEqualTo(Byte value) {
+            addCriterion("isSuper <>", value, "issuper");
+            return (Criteria) this;
+        }
+
+        public Criteria andIssuperGreaterThan(Byte value) {
+            addCriterion("isSuper >", value, "issuper");
+            return (Criteria) this;
+        }
+
+        public Criteria andIssuperGreaterThanOrEqualTo(Byte value) {
+            addCriterion("isSuper >=", value, "issuper");
+            return (Criteria) this;
+        }
+
+        public Criteria andIssuperLessThan(Byte value) {
+            addCriterion("isSuper <", value, "issuper");
+            return (Criteria) this;
+        }
+
+        public Criteria andIssuperLessThanOrEqualTo(Byte value) {
+            addCriterion("isSuper <=", value, "issuper");
+            return (Criteria) this;
+        }
+
+        public Criteria andIssuperIn(List<Byte> values) {
+            addCriterion("isSuper in", values, "issuper");
+            return (Criteria) this;
+        }
+
+        public Criteria andIssuperNotIn(List<Byte> values) {
+            addCriterion("isSuper not in", values, "issuper");
+            return (Criteria) this;
+        }
+
+        public Criteria andIssuperBetween(Byte value1, Byte value2) {
+            addCriterion("isSuper between", value1, value2, "issuper");
+            return (Criteria) this;
+        }
+
+        public Criteria andIssuperNotBetween(Byte value1, Byte value2) {
+            addCriterion("isSuper not between", value1, value2, "issuper");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
