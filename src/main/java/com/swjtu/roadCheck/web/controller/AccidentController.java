@@ -28,11 +28,11 @@ import java.util.Map;
 @RequestMapping("/accidentDatas")
 @ResponseBody
 public class AccidentController {
+
     @Resource
     private AccidentdataMapper accidentdataMapper;
     @Resource
     IAccidentService accidentService;
-
     /**
      * 空间分析中的多条件查询特定地点的事故数或者各个不同严重程度下的事故数量
      * @param condition
@@ -98,4 +98,17 @@ public class AccidentController {
         accidentService.exportAccidentData(map);
         return JsonResult.build(StatusCode.SUCCESS);
     }
+
+    @RequestMapping(value = "/blackPointDiagnosis/crossings", method = RequestMethod.GET)
+    public JsonResult getCrossings() throws Exception{
+        List<String> crossingsList = accidentService.queryCrossings();
+        return JsonResult.build(StatusCode.SUCCESS,crossingsList);
+    }
+
+    @RequestMapping(value = "/blackPointDiagnosis/ordinaryRoads", method = RequestMethod.GET)
+    public JsonResult getOrdinaryRoads() throws Exception{
+        List<String> roadsList = accidentService.queryOrdinaryRoad();
+        return JsonResult.build(StatusCode.SUCCESS,roadsList);
+    }
+
 }

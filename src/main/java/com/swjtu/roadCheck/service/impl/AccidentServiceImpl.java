@@ -236,5 +236,17 @@ public class AccidentServiceImpl implements IAccidentService {
         return accidentMapperCustom.queryAreaTotalAccidentNumsSGCarType(condition);
     }
 
+    public List<String> queryCrossings() {
+        List<String> crossingList = new ArrayList<String>();
+        crossingList = accidentdata2Mapper.queryCrossing();
+        return crossingList;
+    }
+
+    public List<String> queryOrdinaryRoad() {
+        List<String> rodaList = new ArrayList<String>();
+        rodaList = accidentdata2Mapper.quueryOrdinayRoad();
+        return rodaList;
+    }
+
 
 }

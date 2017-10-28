@@ -13,10 +13,26 @@ import java.util.Map;
  */
 public interface IAccidentService {
 
+    /**
+     * 黑点分析
+     * 获取所有行政区
+     * @return
+     */
     List<String> getRegions();
 
+
+    /**
+     * 返回事故当量排名前10%
+     * @param map
+     * @return
+     */
     List<BlackPointData> getTopTen(Map<String, Object> map);
 
+    /**
+     * 导出数据
+     * @param map
+     * @return
+     */
     void exportAccidentData(Map<String,Object> map);
 
     /**
@@ -67,5 +83,17 @@ public interface IAccidentService {
      * @return
      */
     List<ResMap> queryAreaTotalAccidentNumsSGCarType(AccidentQueryCondition condition);
+
+    /**
+     * 获取所有事故交叉口
+     * @return
+     */
+    List<String> queryCrossings();
+
+    /**
+     * 获取所有非交叉口
+     * @return
+     */
+    List<String> queryOrdinaryRoad();
 
 }

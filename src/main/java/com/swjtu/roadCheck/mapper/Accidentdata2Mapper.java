@@ -15,4 +15,7 @@ public interface Accidentdata2Mapper {
 
     List<Accidentdata> queryAccidentdataByCondition2(Map<String,Object> map);
 
+    List<String> queryCrossing();
+
+    List<String> quueryOrdinayRoad();
 }

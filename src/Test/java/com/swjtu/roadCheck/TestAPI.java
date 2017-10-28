@@ -184,4 +184,16 @@ public class TestAPI {
         System.out.println("耗时："+(end-start)+"ms");
     }
 
+    @Test
+    public void testRoadsOrCrossings(){
+        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:/spring/applicationContext-*.xml");
+        Accidentdata2Mapper accidentdata2Mapper = ctx.getBean(Accidentdata2Mapper.class);
+
+        List<String> roadsList = new ArrayList<String>();
+        roadsList = accidentdata2Mapper.quueryOrdinayRoad();
+        for (String s  : roadsList){
+            System.out.println(s);
+        }
+    }
+
 }
