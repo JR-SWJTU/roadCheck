@@ -26,18 +26,18 @@
         <mu-appbar title="功能列表">
         </mu-appbar>
         <mu-list class="list-class">
-            <mu-list-item title="事故黑点诊断" @click="blackPointDiagnose">
+            <mu-list-item title="事故黑点诊断" :class="{'item-active': nowFuc=='black-point'}" @click="blackPointDiagnose">
                 <mu-icon slot="left" value="send"></mu-icon>
             </mu-list-item>
-            <mu-list-item title="事故数据分析" :toggle-nested="true">
+            <mu-list-item title="事故数据分析" :class="{'items-active': nowFuc=='single-point' || nowFuc == 'space' || nowFuc == 'time'}" :toggle-nested="true">
                 <mu-icon slot="left" value="send"></mu-icon>
-                <mu-list-item slot="nested" title="单点分析" @click="singleAnalysis">
+                <mu-list-item slot="nested" title="单点分析" :class="{'item-active': nowFuc=='single-point'}" @click="singleAnalysis">
                     <mu-icon slot="left" value="grade"></mu-icon>
                 </mu-list-item>
-                <mu-list-item slot="nested" title="空间分析" @click="spaceAnalysis">
+                <mu-list-item slot="nested" title="空间分析" :class="{'item-active': nowFuc=='space'}" @click="spaceAnalysis">
                     <mu-icon slot="left" value="grade"></mu-icon>
                 </mu-list-item>
-                <mu-list-item slot="nested" title="时间分析" @click="timeAnalysis">
+                <mu-list-item slot="nested" title="时间分析" :class="{'item-active': nowFuc=='time'}" @click="timeAnalysis">
                     <mu-icon slot="left" value="grade"></mu-icon>
                 </mu-list-item>
             </mu-list-item>
