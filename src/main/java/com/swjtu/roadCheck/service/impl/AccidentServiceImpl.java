@@ -9,8 +9,10 @@ import com.swjtu.roadCheck.mapper.AccidentMapperCustom;
 import com.swjtu.roadCheck.mapper.Accidentdata2Mapper;
 import com.swjtu.roadCheck.service.IAccidentService;
 import com.swjtu.roadCheck.util.ExportExcel;
+import com.swjtu.roadCheck.util.ObjectUtil;
 import com.swjtu.roadCheck.web.exception.base.CustomException;
 import com.swjtu.roadCheck.web.exception.base.ReqParmIncorException;
+import net.sf.json.JSONArray;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -116,7 +118,7 @@ public class AccidentServiceImpl implements IAccidentService {
      * @param condition
      * @return
      */
-    public List<Accident> areaMultiConditionQuery(AccidentQueryCondition condition) {
+    public List<Accident> areaMultiConditionQuery(AccidentQueryCondition condition) throws Exception{
         if(condition.getRoadType() == null ||
                 condition.getStartTime() == null || condition.getEndTime() == null ||
                 (condition.getAreaName() == null && condition.getTeamName() == null))
@@ -131,9 +133,9 @@ public class AccidentServiceImpl implements IAccidentService {
             throw new ReqParmIncorException("TeamName和AreaName的查询不能同时存在");
 
         if ( condition.isyType() )
-            return accidentMapperCustom.multiConditionQueryAccidentForSGS(condition);
+            return accidentMapperCustom.multiConditionQueryAccidentForSGS(ObjectUtil.objectToMap(condition));
         else
-            return accidentMapperCustom.multiConditionQueryAccidentForYZCD(condition);
+            return accidentMapperCustom.multiConditionQueryAccidentForYZCD(ObjectUtil.objectToMap(condition));
     }
 
     /**
@@ -142,7 +144,7 @@ public class AccidentServiceImpl implements IAccidentService {
      * @param condition
      * @return
      */
-    public List<Accident> timeMultiConditionQuery(AccidentQueryCondition condition) {
+    public List<Accident> timeMultiConditionQuery(AccidentQueryCondition condition) throws  Exception{
         //必须参数要填
         if(condition.getRoadType() == null ||
                 condition.getStartTime() == null || condition.getEndTime() == null ||
@@ -163,7 +165,7 @@ public class AccidentServiceImpl implements IAccidentService {
                 (condition.getPropertyLoss() != null || condition.getSlightInjury() != null || condition.getSeverInjury() != null || condition.getDead() != null))
             throw  new ReqParmIncorException("以事故数为纵轴时，不能设置查询的严重程度");
 
-        return accidentMapperCustom.multiConditionQueryAccidentForTime(condition);
+        return accidentMapperCustom.multiConditionQueryAccidentForTime(ObjectUtil.objectToMap(condition));
     }
 
     /**
