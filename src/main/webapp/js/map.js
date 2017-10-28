@@ -78,6 +78,8 @@ var markerOptions = {
     death                : 10              //死亡数量
 };
 
+var mapMarkers = [];
+
 setMarker(markerOptions);
 function setMarker(options) {
 

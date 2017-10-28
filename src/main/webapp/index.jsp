@@ -56,7 +56,7 @@
         <div v-if="nowFuc == 'main-page'" :style="bodyContent">
 
         </div>
-        <div v-if="nowFuc == 'black-point'" :style="bodyContent">
+        <div v-show="nowFuc == 'black-point'" :style="bodyContent">
             <div class="body-left body-left-float" :class="{'left-float-open': isFirstLoad && isShowItems, 'left-float-close': isFirstLoad && !isShowItems}">
                 <mu-select-field v-model="selectData.analysisObj" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="选择交叉口或路段黑点诊断">
                     <mu-menu-item v-for="text,index in basicData.analysisObj" :key="index" :value="text" :title="text" ></mu-menu-item>
@@ -82,7 +82,7 @@
                 </div>
             </div>
         </div>
-        <div v-if="nowFuc == 'single-point'" :style="bodyContent">
+        <div v-show="nowFuc == 'single-point'" :style="bodyContent">
             <div class="single-body-left single-body-left-float" :class="{'left-float-open': isFirstLoad && isShowItems, 'left-float-close': isFirstLoad && !isShowItems}">
                 <mu-icon-button v-if="!singleShowSelect" icon="navigate_next" tooltip-position="bottom-right" tooltip="筛选条件" class="single-open-btn" @click="openSingleShow"></mu-icon-button>
                 <div v-if="singleShowSelect" class="single-select-left">
@@ -129,7 +129,7 @@
                 </div>
             </div>
         </div>
-        <div v-if="nowFuc == 'space'" :style="bodyContent">
+        <div v-show="nowFuc == 'space'" :style="bodyContent">
             <div class="body-left body-left-float" :class="{'left-float-open': isFirstLoad && isShowItems, 'left-float-close': isFirstLoad && !isShowItems}">
                 <mu-select-field v-model="selectData.analysisObj" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="选择交叉口或路段黑点诊断">
                     <mu-menu-item v-for="text,index in basicData.analysisObj" :key="index" :value="text" :title="text" ></mu-menu-item>
@@ -186,7 +186,7 @@
                 </div>
             </div>
         </div>
-        <div v-if="nowFuc == 'time'" :style="bodyContent">
+        <div v-show="nowFuc == 'time'" :style="bodyContent">
             <div class="body-left body-left-float" :class="{'left-float-open': isFirstLoad && isShowItems, 'left-float-close': isFirstLoad && !isShowItems}">
                 <mu-select-field v-model="selectData.analysisObj" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="选择交叉口或路段黑点诊断">
                     <mu-menu-item v-for="text,index in basicData.analysisObj" :key="index" :value="text" :title="text" ></mu-menu-item>
