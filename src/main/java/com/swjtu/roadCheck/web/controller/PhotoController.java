@@ -19,11 +19,11 @@ import java.io.IOException;
  * Created by user on 2017/8/3.
  */
 @Controller
-@RequestMapping("api/v1/photos")
+@RequestMapping("api/v1/videos")
 @ResponseBody
 public class PhotoController {
 
-    private final String route = "http://172.18.99.253:8080/seewo-bbs/";
+    private final String route = "http://172.18.99.253:8080/roadCheck/";
 
     /**
      * 图片上传

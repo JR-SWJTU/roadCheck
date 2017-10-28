@@ -153,11 +153,11 @@ public class AccidentServiceImpl implements IAccidentService {
                 condition.getStartTime() == null || condition.getEndTime() == null ||
                 (condition.getAreaName() == null && condition.getTeamName() == null) ||
                 condition.getTimePrecision() == 0)
-            throw new ReqParmIncorException("缺少必须参数");
+            throw new CustomException("缺少必须参数");
 
         //大队和辖区的查询不能同时存在
         if(condition.getAreaName() != null && condition.getTeamName() != null)
-            throw new ReqParmIncorException("TeamName和AreaName的查询不能同时存在");
+            throw new CustomException("TeamName和AreaName的查询不能同时存在");
 
         //查询路段时，需将交叉口类型设为非交叉口
         if(condition.getRoadType().equals("路段"))
@@ -166,7 +166,7 @@ public class AccidentServiceImpl implements IAccidentService {
         //以事故数为纵轴时，不能设置查询的严重程度
         if(condition.isyType() == true &&
                 (condition.getPropertyLoss() != null || condition.getSlightInjury() != null || condition.getSeverInjury() != null || condition.getDead() != null))
-            throw  new ReqParmIncorException("以事故数为纵轴时，不能设置查询的严重程度");
+            throw  new CustomException("以事故数为纵轴时，不能设置查询的严重程度");
 
         return accidentMapperCustom.multiConditionQueryAccidentForTime(ObjectUtil.objectToMap(condition));
     }
@@ -177,7 +177,7 @@ public class AccidentServiceImpl implements IAccidentService {
      * @param condition
      * @return
      */
-    public Integer areaTotalAccidentNumsQuery(AccidentQueryCondition condition) {
+    public Integer areaTotalAccidentNumsQuery(AccidentQueryCondition condition)  throws Exception{
         if(condition.getTeamName() == null && condition.getAreaName() == null && condition.getRoadType() == null ||
                 condition.getStartTime() == null || condition.getEndTime() == null)
             throw new ReqParmIncorException("缺少必须参数");
@@ -185,7 +185,7 @@ public class AccidentServiceImpl implements IAccidentService {
         if(condition.getAreaName() != null && condition.getRoadType() != null)
             throw new ReqParmIncorException();
 
-        return accidentMapperCustom.areaTotalAccidentNumsQuery(condition);
+        return accidentMapperCustom.areaTotalAccidentNumsQuery(ObjectUtil.objectToMap(condition));
     }
 
     /**
@@ -194,13 +194,13 @@ public class AccidentServiceImpl implements IAccidentService {
      * @param condition
      * @return
      */
-    public List<ResMap> queryAreaTotalAccidentNumsForYZCD(AccidentQueryCondition condition) {
+    public List<ResMap> queryAreaTotalAccidentNumsForYZCD(AccidentQueryCondition condition)  throws Exception{
         //大队、辖区、地点的查询不能同时存在
         if(condition.getAreaName() != null && condition.getTeamName() != null && condition.getRoadType() != null ||
                 condition.getStartTime() == null || condition.getEndTime() == null )
             throw new ReqParmIncorException("TeamName和AreaName的查询不能同时存在");
 
-        return accidentMapperCustom.queryAreaTotalAccidentNumsForYZCD(condition);
+        return accidentMapperCustom.queryAreaTotalAccidentNumsForYZCD(ObjectUtil.objectToMap(condition));
     }
 
     /**
@@ -209,11 +209,11 @@ public class AccidentServiceImpl implements IAccidentService {
      * @param condition
      * @return
      */
-    public List<ResMap> queryAreaTotalAccidentNumsForSGType(AccidentQueryCondition condition) {
+    public List<ResMap> queryAreaTotalAccidentNumsForSGType(AccidentQueryCondition condition)  throws Exception{
         if(condition.getAreaName() != null && condition.getTeamName() != null && condition.getRoadType() != null ||
                 condition.getStartTime() == null || condition.getEndTime() == null )
             throw new ReqParmIncorException("TeamName和AreaName的查询不能同时存在");
-        return accidentMapperCustom.queryAreaTotalAccidentNumsForSGType(condition);
+        return accidentMapperCustom.queryAreaTotalAccidentNumsForSGType(ObjectUtil.objectToMap(condition));
     }
 
     /**
@@ -222,10 +222,10 @@ public class AccidentServiceImpl implements IAccidentService {
      * @param condition
      * @return
      */
-    public List<ResMap> queryAreaTotalAccidentNumsSGWeather(AccidentQueryCondition condition) {
+    public List<ResMap> queryAreaTotalAccidentNumsSGWeather(AccidentQueryCondition condition)  throws Exception{
         if(condition.getAreaName() != null && condition.getRoadType() != null)
             throw new ReqParmIncorException();
-        return accidentMapperCustom.queryAreaTotalAccidentNumsSGWeather(condition);
+        return accidentMapperCustom.queryAreaTotalAccidentNumsSGWeather(ObjectUtil.objectToMap(condition));
     }
 
     /**
@@ -234,11 +234,11 @@ public class AccidentServiceImpl implements IAccidentService {
      * @param condition
      * @return
      */
-    public List<ResMap> queryAreaTotalAccidentNumsSGCarType(AccidentQueryCondition condition) {
+    public List<ResMap> queryAreaTotalAccidentNumsSGCarType(AccidentQueryCondition condition) throws Exception{
         if(condition.getAreaName() != null && condition.getTeamName() != null && condition.getRoadType() != null ||
                 condition.getStartTime() == null || condition.getEndTime() == null )
             throw new ReqParmIncorException("TeamName和AreaName的查询不能同时存在");
-        return accidentMapperCustom.queryAreaTotalAccidentNumsSGCarType(condition);
+        return accidentMapperCustom.queryAreaTotalAccidentNumsSGCarType(ObjectUtil.objectToMap(condition));
     }
 
     public List<String> queryCrossings() {

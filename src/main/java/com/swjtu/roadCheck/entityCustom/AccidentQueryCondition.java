@@ -11,7 +11,7 @@ public class AccidentQueryCondition {
 
     private String teamName[];    //大队名称
 
-    private String areaName[];    //行政区名称
+    private String areaName;    //行政区名称
 
     private String roadType;    //道路类型，交叉口还是路段
 
@@ -59,11 +59,11 @@ public class AccidentQueryCondition {
         this.teamName = teamName;
     }
 
-    public String[] getAreaName() {
+    public String getAreaName() {
         return areaName;
     }
 
-    public void setAreaName(String[] areaName) {
+    public void setAreaName(String areaName) {
         this.areaName = areaName;
     }
 

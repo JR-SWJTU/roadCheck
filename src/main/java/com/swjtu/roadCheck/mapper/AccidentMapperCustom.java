@@ -2,7 +2,6 @@ package com.swjtu.roadCheck.mapper;
 
 import com.swjtu.roadCheck.dto.Accident;
 import com.swjtu.roadCheck.dto.ResMap;
-import com.swjtu.roadCheck.entityCustom.AccidentQueryCondition;
 
 import java.util.List;
 import java.util.Map;
@@ -18,14 +17,14 @@ public interface AccidentMapperCustom {
 
     List<Accident> multiConditionQueryAccidentForTime(Map<String,Object> condition);
 
-    Integer areaTotalAccidentNumsQuery(AccidentQueryCondition condition);
+    Integer areaTotalAccidentNumsQuery(Map<String,Object> condition);
 
-    List<ResMap> queryAreaTotalAccidentNumsForYZCD(AccidentQueryCondition condition);
+    List<ResMap> queryAreaTotalAccidentNumsForYZCD(Map<String,Object> condition);
 
-    List<ResMap> queryAreaTotalAccidentNumsForSGType(AccidentQueryCondition condition);
+    List<ResMap> queryAreaTotalAccidentNumsForSGType(Map<String,Object> condition);
 
-    List<ResMap> queryAreaTotalAccidentNumsSGWeather(AccidentQueryCondition condition);
+    List<ResMap> queryAreaTotalAccidentNumsSGWeather(Map<String,Object> condition);
 
-    List<ResMap> queryAreaTotalAccidentNumsSGCarType(AccidentQueryCondition condition);
+    List<ResMap> queryAreaTotalAccidentNumsSGCarType(Map<String,Object> condition);
 
 }
