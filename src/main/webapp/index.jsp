@@ -17,7 +17,7 @@
 
  <!--   <script src="http://webapi.amap.com/maps?v=1.4.0&key=9a1af9cca90cfaf160d5a8d7c0af9187"></script>          -->
     <!-- 地图key -->
-    <script src="http://webapi.amap.com/maps?v=1.4.0&key=396befe7016bef31b674c361915d082e"></script>
+    <script src="http://webapi.amap.com/maps?v=1.4.1&key=396befe7016bef31b674c361915d082e"></script>
 
 </head>
 <body>
@@ -62,12 +62,12 @@
                     <mu-menu-item v-for="text,index in basicData.analysisObj" :key="index" :value="text" :title="text" ></mu-menu-item>
                 </mu-select-field>
                 <div class="mu-text-field-label label-class">选择分析的区域</div>
-                <mu-radio label="大队" name="area1" native-value="gruppe" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 20px;"></mu-radio>
+                <mu-radio label="大队" max-height="10px" scroller name="area1" native-value="gruppe" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 20px;"></mu-radio>
                 <mu-radio label="行政区" name="area1" native-value="administrative" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 50px;"></mu-radio>
-                <mu-select-field v-if="selectData.area.type == 'gruppe'" hint-text="null" v-model="selectData.area.value" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="大队管辖区">
+                <mu-select-field v-if="selectData.area.type == 'gruppe'" max-height="300" scroller hint-text="null" v-model="selectData.area.value" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="大队管辖区">
                     <mu-menu-item v-for="text,index in basicData.area.gruppe" :key="index" :value="text" :title="text" ></mu-menu-item>
                 </mu-select-field>
-                <mu-select-field v-if="selectData.area.type == 'administrative'" hint-text="null" v-model="selectData.area.value" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="行政管辖区">
+                <mu-select-field v-if="selectData.area.type == 'administrative'" max-height="300" scroller hint-text="null" v-model="selectData.area.value" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="行政管辖区">
                     <mu-menu-item v-for="text,index in basicData.area.administrative" :key="index" :value="text" :title="text" ></mu-menu-item>
                 </mu-select-field>
                 <div class="mu-text-field-label label-class" style="padding-top: 12px;">选择分析的时间段</div>
@@ -86,8 +86,20 @@
             <div class="single-body-left single-body-left-float" :class="{'left-float-open': isFirstLoad && isShowItems, 'left-float-close': isFirstLoad && !isShowItems}">
                 <mu-icon-button v-if="!singleShowSelect" icon="navigate_next" tooltip-position="bottom-right" tooltip="筛选条件" class="single-open-btn" @click="openSingleShow"></mu-icon-button>
                 <div v-if="singleShowSelect" class="single-select-left">
-                    <div class="mu-text-field-label label-class" style="padding-top: 12px; display: inline-block;">选择分析的时间段</div>
                     <mu-icon-button icon="navigate_before" tooltip-position="bottom-right" tooltip="收起" class="single-close-btn" @click="closeSingleShow"></mu-icon-button>
+                    <mu-select-field v-if="singleTab == 'gruppe'" max-height="300" scroller hint-text="null" v-model="selectData.area.value" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="大队管辖区">
+                        <mu-menu-item v-for="text,index in basicData.area.gruppe" :key="index" :value="text" :title="text" ></mu-menu-item>
+                    </mu-select-field>
+                    <mu-select-field v-if="singleTab == 'administrative'" max-height="300" scroller hint-text="null" v-model="selectData.area.value" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="行政区">
+                        <mu-menu-item v-for="text,index in basicData.area.administrative" :key="index" :value="text" :title="text" ></mu-menu-item>
+                    </mu-select-field>
+                    <mu-select-field v-if="singleTab == 'intersection'" max-height="300" scroller hint-text="null" v-model="selectData.area.value" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="交叉口">
+                        <mu-menu-item v-for="text,index in basicData.area.intersection" :key="index" :value="text" :title="text" ></mu-menu-item>
+                    </mu-select-field>
+                    <mu-select-field v-if="singleTab == 'crossing'" max-height="300" scroller hint-text="null" v-model="selectData.area.value" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="路段">
+                        <mu-menu-item v-for="text,index in basicData.area.crossing" :key="index" :value="text" :title="text" ></mu-menu-item>
+                    </mu-select-field>
+                    <div class="mu-text-field-label label-class" style="padding-top: 12px;">选择分析的时间段</div>
                     <mu-date-picker auto-ok hint-text="开始监测日期" v-model="selectData.dateTime.start" container="inline" mode="landscape" min-date="2016-09-01" :underline-class="{'underline-class': true}"></mu-date-picker>
                     <mu-date-picker auto-ok hint-text="至截止监测日期" v-model="selectData.dateTime.end" container="inline" mode="landscape" :underline-class="{'underline-class': true, 'end-time-line': true}" style="width: 205px;"></mu-date-picker>
                     <mu-icon-button tooltip="筛选结果" tooltip-position="bottom-right" icon="call_merge" class="right-btn" @click="singlePointGet"></mu-icon-button>
@@ -125,10 +137,10 @@
                 <div class="mu-text-field-label label-class">选择分析的区域</div>
                 <mu-radio label="大队" name="area3" native-value="gruppe" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 20px;"></mu-radio>
                 <mu-radio label="行政区" name="area3" native-value="administrative" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 50px;"></mu-radio>
-                <mu-select-field v-if="selectData.area.type == 'gruppe'" hint-text="null" v-model="selectData.area.value" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="大队管辖区">
+                <mu-select-field v-if="selectData.area.type == 'gruppe'" max-height="300" scroller hint-text="null" v-model="selectData.area.value" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="大队管辖区">
                     <mu-menu-item v-for="text,index in basicData.area.gruppe" :key="index" :value="text" :title="text" ></mu-menu-item>
                 </mu-select-field>
-                <mu-select-field v-if="selectData.area.type == 'administrative'" hint-text="null" v-model="selectData.area.value" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="行政管辖区">
+                <mu-select-field v-if="selectData.area.type == 'administrative'" max-height="300" scroller hint-text="null" v-model="selectData.area.value" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="行政管辖区">
                     <mu-menu-item v-for="text,index in basicData.area.administrative" :key="index" :value="text" :title="text" ></mu-menu-item>
                 </mu-select-field>
                 <div class="mu-text-field-label label-class" style="padding-top: 12px; display: inline-block">选择分析的时间段</div>
@@ -182,10 +194,10 @@
                 <div class="mu-text-field-label label-class">选择分析的区域</div>
                 <mu-radio label="大队" name="area4" native-value="gruppe" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 20px;"></mu-radio>
                 <mu-radio label="行政区" name="area4" native-value="administrative" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 50px;"></mu-radio>
-                <mu-select-field v-if="selectData.area.type == 'gruppe'" hint-text="null" v-model="selectData.area.value" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="大队管辖区">
+                <mu-select-field v-if="selectData.area.type == 'gruppe'" max-height="300" scroller hint-text="null" v-model="selectData.area.value" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="大队管辖区">
                     <mu-menu-item v-for="text,index in basicData.area.gruppe" :key="index" :value="text" :title="text" ></mu-menu-item>
                 </mu-select-field>
-                <mu-select-field v-if="selectData.area.type == 'administrative'" hint-text="null" v-model="selectData.area.value" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="行政管辖区">
+                <mu-select-field v-if="selectData.area.type == 'administrative'" max-height="300" scroller hint-text="null" v-model="selectData.area.value" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="行政管辖区">
                     <mu-menu-item v-for="text,index in basicData.area.administrative" :key="index" :value="text" :title="text" ></mu-menu-item>
                 </mu-select-field>
                 <div class="mu-text-field-label label-class" style="padding-top: 12px;">选择分析的时间段</div>

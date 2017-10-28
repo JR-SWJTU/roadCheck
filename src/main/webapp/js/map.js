@@ -78,8 +78,6 @@ var markerOptions = {
     death                : 10              //死亡数量
 };
 
-var mapMarkers;
-
 setMarker(markerOptions);
 function setMarker(options) {
 
@@ -103,6 +101,7 @@ function setMarker(options) {
     });
     mapMarkers.push(marker);
 }
+
 function addMarker(amap,markerName,position,type,number){
     var Markers = [];
 
@@ -260,7 +259,7 @@ function getHeight(number,allNumbers) {
 //清除marker
 //clearMarker(timeMap)
 function clearMarker(amap) {
-    console.log("mapmarker:"+mapMarkers.length)
+    console.log("mapmarker:"+mapMarkers.length);
     amap.remove(mapMarkers);
     mapMarkers = [];
     // mapMarkers.clear();

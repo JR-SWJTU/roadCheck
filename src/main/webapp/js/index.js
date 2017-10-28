@@ -17,7 +17,9 @@ var app = new Vue({
             accidentalSev: ['仅财损', '轻伤', '重伤', '死亡'],
             area: {
                 gruppe: [],
-                administrative: []
+                administrative: [],
+                intersection: [],
+                crossing: []
             },
 
             roadGrade: ['null', '主干道', '快速路', '次干道', '支路', '高速公路', '国道', '省道', '县道', '乡村公路'],
@@ -146,6 +148,40 @@ var app = new Vue({
                 console.log(error);
             });
         },
+        getIntersections: function () {
+            var that = this;
+            var url = webBase + '/accidentDatas/blackPointDiagnosis/crossings';
+            axios.get(url, {
+            }).then(function (response) {
+                var allData = response.data;
+                if(allData.code == 200){
+                    that.$set(that.basicData.area, 'intersection', allData.data);
+                    // that.basicData.area.administrative = allData.data;
+                }
+                else{
+                    console.log(allData.message);
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
+        },
+        getCorssings: function () {
+            var that = this;
+            var url = webBase + '/accidentDatas/blackPointDiagnosis/ordinaryRoads';
+            axios.get(url, {
+            }).then(function (response) {
+                var allData = response.data;
+                if(allData.code == 200){
+                    that.$set(that.basicData.area, 'crossing', allData.data);
+                    // that.basicData.area.administrative = allData.data;
+                }
+                else{
+                    console.log(allData.message);
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
+        },
 
         checkLogin: function () {
             // this.isLogin = false;
@@ -206,6 +242,26 @@ var app = new Vue({
         singleTabChange: function (val) {
             this.singleShowSelect = false;
             this.singleTab = val;
+            switch(val){
+                case 'gruppe': {
+                    this.getTeams();
+                    break;
+                }
+                case 'administrative': {
+                    this.getRegions();
+                    break;
+                }
+                case 'intersection': {
+                    this.getIntersections();
+                    break;
+                }
+                case 'crossing': {
+                    this.getCorssings();
+                    break;
+                }
+                default:
+                    break;
+            }
         },
         closeSingleShow: function () {
             this.singleShowSelect = false;
@@ -237,11 +293,12 @@ var app = new Vue({
             console.log('resetObj');
         },
         checkInput: function (json) {
-            if(this.nowFuc == 'black-point' || this.nowFuc == 'single-point' || this.nowFuc == 'space' || this.nowFuc == 'time'){
+            if(this.nowFuc == 'black-point' || this.nowFuc == 'space' || this.nowFuc == 'time'){
                 json.roadType = this.selectData.analysisObj;
                 if(this.selectData.area.type == 'gruppe'){
                     if(this.selectData.area.value != ''){
-                        json.teamName = this.selectData.area.value;
+                        json.teamName = [];
+                        json.teamName.push(this.selectData.area.value);
                     }
                     else{
                         this.messageTop = "大队尚未选取！";
@@ -261,6 +318,57 @@ var app = new Vue({
                         return false;
                     }
                 }
+            }
+
+            if(this.nowFuc == 'single-point'){
+                if(this.selectData.area.value == ''){
+                    switch(this.singleTab){
+                        case 'gruppe': {
+                            this.messageTop = "大队管辖区尚未选取！";
+                            break;
+                        }
+                        case 'administrative': {
+                            this.messageTop = "行政区尚未选取！";
+                            break;
+                        }
+                        case 'intersection': {
+                            this.messageTop = "交叉口尚未选取！";
+                            break;
+                        }
+                        case 'crossing': {
+                            this.messageTop = "路段尚未选取！";
+                            break;
+                        }
+                        default:
+                            break;
+                    }
+                    this.textFlag = false;
+                    this.showMessageTop = true;
+                    return false;
+                }
+                switch(this.singleTab){
+                    case 'gruppe': {
+                        json.teamName = this.selectData.area.value;
+                        break;
+                    }
+                    case 'administrative': {
+                        json.areaName = this.selectData.area.value;
+                        break;
+                    }
+                    case 'intersection': {
+                        json.roadType = this.selectData.area.value;
+                        break;
+                    }
+                    case 'crossing': {
+                        json.roadType = this.selectData.area.value;
+                        break;
+                    }
+                    default:
+                        break;
+                }
+            }
+
+            if(this.nowFuc == 'black-point' || this.nowFuc == 'single-point' || this.nowFuc == 'space' || this.nowFuc == 'time'){
                 if(this.selectData.dateTime.start != ''){
                     json.startTime = this.selectData.dateTime.start;
                 }
@@ -382,7 +490,24 @@ var app = new Vue({
             }
         },
         singlePointGet: function () {
-            console.log('single-point-get');
+            var that = this;
+            var url = webBase + '/accidentDatas/analyseData/singlePointAnalyseDataQuery';
+            var json = {};
+            var flag = this.checkInput(json);
+            console.log(json);
+            if(flag){
+                axios.post(url, json).then(function (response) {
+                    var allData = response.data;
+                    if(allData.code == 200){
+                        console.log(allData.data);
+                    }
+                    else{
+                        console.log(allData.message);
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            }
         },
         spaceGet: function () {
             var that = this;
@@ -455,6 +580,8 @@ var app = new Vue({
         this.checkLogin();
         this.getTeams();
         this.getRegions();
+        this.getIntersections();
+        this.getCorssings();
         var that = this;
         addEventListener('resize', function () {
             that.initPage();
