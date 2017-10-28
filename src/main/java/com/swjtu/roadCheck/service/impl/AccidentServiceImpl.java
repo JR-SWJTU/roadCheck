@@ -68,11 +68,13 @@ public class AccidentServiceImpl implements IAccidentService {
                 return o2.getValue() - o1.getValue();
             }
         });
+
        return resultList;
     }
     public List<BlackPointData> getTopTen(Map<String, Object> map){
         List<Map.Entry<String, Integer>> resultList = getAllAccidentdataByCondition(map);
-        int topTenPercent = (int)Math.floor(resultList.size() * 0.1);
+
+        int topTenPercent = resultList.size() < 10 ? resultList.size():(int)Math.floor(resultList.size() * 0.1);
         List<BlackPointData> blackPointDatas = new ArrayList<BlackPointData>();
         for(int i = 0;i < topTenPercent;i++){
             Map.Entry entry = resultList.get(i);
@@ -82,6 +84,7 @@ public class AccidentServiceImpl implements IAccidentService {
             blackPointData.setBlackPointRegion(str.split("\\+")[0]);
             blackPointData.setNumber((Integer)entry.getValue());
             blackPointDatas.add(blackPointData);
+
         }
         return blackPointDatas;
     }

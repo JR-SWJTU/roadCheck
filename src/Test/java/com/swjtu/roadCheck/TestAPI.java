@@ -77,7 +77,7 @@ public class TestAPI {
         map.put("teamName",teamName);
         map.put("roadType","交叉口");
         map.put("areaName","金牛区");
-        map.put("startTime","2017-01-01");
+        map.put("startTime","2017-10-01");
         map.put("endTime","2017-10-30");
         accidentdatas = accidentdata2Mapper.queryAccidentdataByCondition1(map);
         Map<String,Integer> resultMap = new HashMap<String,Integer>();
@@ -104,17 +104,23 @@ public class TestAPI {
                 return o2.getValue() - o1.getValue();
             }
         });
-
-        for(int i = 0;i < resultList.size();i++){
-            System.out.println(resultList.get(i));
+        int topTenPercent = resultList.size() < 10 ? resultList.size():(int)Math.floor(resultList.size() * 0.1);
+        List<BlackPointData> blackPointDatas = new ArrayList<BlackPointData>();
+        for(int i = 0;i < topTenPercent;i++){
+            Map.Entry entry = resultList.get(i);
+            BlackPointData blackPointData = new BlackPointData();
+            String str = (String)entry.getKey();
+            blackPointData.setBlackPointName(str.split("\\+")[1]);
+            blackPointData.setBlackPointRegion(str.split("\\+")[0]);
+            blackPointData.setNumber((Integer)entry.getValue());
+            blackPointDatas.add(blackPointData);
+        }
+        for(BlackPointData blackPointData:blackPointDatas){
+            System.out.println(blackPointData);
         }
 
-        Iterator it = resultMap.entrySet().iterator();
-        while(it.hasNext()){
-            Map.Entry entry = (Map.Entry) it.next();
-            System.out.println((String)entry.getKey() + entry.getValue());
-        }
     }
+
 
     @Test
     public void testExcelExport(){

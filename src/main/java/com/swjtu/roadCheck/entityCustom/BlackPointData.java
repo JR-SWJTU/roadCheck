@@ -42,4 +42,13 @@ public class BlackPointData {
     public void setBlackPointRegion(String blackPointRegion) {
         this.blackPointRegion = blackPointRegion;
     }
+
+    @Override
+    public String toString() {
+        return "BlackPointData{" +
+                "blackPointName='" + blackPointName + '\'' +
+                ", blackPointRegion='" + blackPointRegion + '\'' +
+                ", number=" + number +
+                '}';
+    }
 }
