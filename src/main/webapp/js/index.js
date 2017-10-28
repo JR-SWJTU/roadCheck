@@ -348,7 +348,8 @@ var app = new Vue({
                 }
                 switch(this.singleTab){
                     case 'gruppe': {
-                        json.teamName = this.selectData.area.value;
+                        json.teamName = [];
+                        json.teamName.push(this.selectData.area.value);
                         break;
                     }
                     case 'administrative': {
