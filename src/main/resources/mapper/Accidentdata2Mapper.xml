@@ -10,45 +10,42 @@
     </select>
 
     <select id="queryAccidentdataByCondition1" parameterType="Map" resultType="com.swjtu.roadCheck.entity.Accidentdata">
-        SELECT * FROM accidentdata
-        WHERE xianQu = #{areaName}
-        AND accidencnumber IN (
-          SELECT shigunumber FROM accidencecollectiondata
-          <if test="teamName != null">
-            <where>
-                team_name IN
+        SELECT * FROM accidentdata WHERE accidencnumber IN
+        (SELECT shigunumber FROM accidencecollectiondata
+        <choose>
+            <when test="teamName!=null">
+                where team_name in
                 <foreach collection="teamName" item="team" open="(" separator="," close=")">
                     #{team}
                 </foreach>
-            </where>
-          </if>
-          AND environmentnumber IN (
-            SELECT emnumber FROM emdata
-              WHERE Jcktype LIKE "%"#{roadType}"%"
-            )
-        )
-          AND (DATE(riQI) BETWEEN #{startTime} and #{endTime})
+            </when>
+            <when test="areaName!=null">
+                where xianQu = #{areaName}
+            </when>
+        </choose>
+        AND environmentnumber IN
+        (SELECT emnumber FROM emdata WHERE Jcktype LIKE "%"#{roadType}))
+        and (DATE(riQI) BETWEEN  #{startTime} and #{endTime})
+
     </select>
 
     <select id="queryAccidentdataByCondition2" parameterType="Map" resultType="com.swjtu.roadCheck.entity.Accidentdata">
-        SELECT * FROM accidentdata
-        WHERE xianQu = #{areaName}
-        AND accidencnumber IN (
-        SELECT shigunumber FROM accidencecollectiondata
-        <if test="teamName != null">
-            <where>
-                team_name IN
+        SELECT * FROM accidentdata WHERE accidencnumber IN
+        (SELECT shigunumber FROM accidencecollectiondata
+        <choose>
+            <when test="teamName!=null">
+                where team_name in
                 <foreach collection="teamName" item="team" open="(" separator="," close=")">
                     #{team}
                 </foreach>
-            </where>
-        </if>
-        AND environmentnumber IN (
-        SELECT emnumber FROM emdata
-        WHERE Jcktype NOT LIKE "%"#{roadType}"%"
-        )
-        )
-        AND (DATE(riQI) BETWEEN #{startTime} and #{endTime})
+            </when>
+            <when test="areaName!=null">
+                where xianQu = #{areaName}
+            </when>
+        </choose>
+        AND environmentnumber IN
+        (SELECT emnumber FROM emdata WHERE Jcktype NOT LIKE "%"#{roadType}))
+        and (DATE(riQI) BETWEEN  #{startTime} and #{endTime})
     </select>
 
     <select id="queryCrossing" resultType="String">

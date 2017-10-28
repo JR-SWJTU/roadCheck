@@ -75,11 +75,11 @@ public class TestAPI {
 
         teamName.add("一大队");
         map.put("teamName",teamName);
-        map.put("roadType","交叉口");
-        map.put("areaName","金牛区");
-        map.put("startTime","2017-10-01");
+        map.put("roadType","路段");
+//        map.put("areaName","金牛区");
+        map.put("startTime","2017-01-01");
         map.put("endTime","2017-10-30");
-        accidentdatas = accidentdata2Mapper.queryAccidentdataByCondition1(map);
+        accidentdatas = accidentdata2Mapper.queryAccidentdataByCondition2(map);
         Map<String,Integer> resultMap = new HashMap<String,Integer>();
         for(Accidentdata accidentdata : accidentdatas){
             if(!resultMap.containsKey(accidentdata.getXianqu()+"+"+accidentdata.getDimingbeizhu())){

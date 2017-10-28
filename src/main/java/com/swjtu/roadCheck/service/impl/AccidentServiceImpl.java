@@ -253,5 +253,4 @@ public class AccidentServiceImpl implements IAccidentService {
         return rodaList;
     }
 
-
 }
