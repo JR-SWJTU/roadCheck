@@ -39,7 +39,7 @@ public class AccidentServiceImpl implements IAccidentService {
     public List<Map.Entry<String, Integer>> getAllAccidentdataByCondition(Map<String, Object> map) {
 
         List<Accidentdata> accidentdatas = new ArrayList<Accidentdata>();
-        if(map.get("roadType").equals("交叉口")){
+        if(map.get("roadType").equals("路段")){
             accidentdatas = accidentdata2Mapper.queryAccidentdataByCondition1(map);
         }else{
             accidentdatas = accidentdata2Mapper.queryAccidentdataByCondition2(map);
@@ -74,7 +74,7 @@ public class AccidentServiceImpl implements IAccidentService {
     public List<BlackPointData> getTopTen(Map<String, Object> map){
         List<Map.Entry<String, Integer>> resultList = getAllAccidentdataByCondition(map);
 
-        int topTenPercent = resultList.size() < 10 ? resultList.size():(int)Math.floor(resultList.size() * 0.1);
+        int topTenPercent = resultList.size() <= 10 ? resultList.size():(int)Math.floor(resultList.size() * 0.1);
         List<BlackPointData> blackPointDatas = new ArrayList<BlackPointData>();
         for(int i = 0;i < topTenPercent;i++){
             Map.Entry entry = resultList.get(i);

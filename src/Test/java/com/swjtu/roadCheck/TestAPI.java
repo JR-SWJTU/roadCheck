@@ -74,12 +74,16 @@ public class TestAPI {
         ArrayList<String> teamName = new ArrayList<String>();
 
         teamName.add("一大队");
+        teamName.add("二大队");
+        teamName.add("三大队");
+        teamName.add("四大队");
         map.put("teamName",teamName);
-        map.put("roadType","路段");
-//        map.put("areaName","金牛区");
-        map.put("startTime","2017-01-01");
-        map.put("endTime","2017-10-30");
+        map.put("roadType","交叉口");
+        //map.put("areaName","金牛区");
+        map.put("startTime","2017-10-01");
+        map.put("endTime","2017-10-31");
         accidentdatas = accidentdata2Mapper.queryAccidentdataByCondition2(map);
+        System.out.println("============="+accidentdatas.size());
         Map<String,Integer> resultMap = new HashMap<String,Integer>();
         for(Accidentdata accidentdata : accidentdatas){
             if(!resultMap.containsKey(accidentdata.getXianqu()+"+"+accidentdata.getDimingbeizhu())){
@@ -97,6 +101,7 @@ public class TestAPI {
             s+=score;
             resultMap.put(accidentdata.getXianqu()+"+"+accidentdata.getDimingbeizhu(),s);
         }
+        System.out.println(resultMap.size());
 
         List<Map.Entry<String, Integer>> resultList = new ArrayList<Map.Entry<String, Integer>>(resultMap.entrySet());
         Collections.sort(resultList, new Comparator<Map.Entry<String, Integer>>() {
@@ -104,7 +109,7 @@ public class TestAPI {
                 return o2.getValue() - o1.getValue();
             }
         });
-        int topTenPercent = resultList.size() < 10 ? resultList.size():(int)Math.floor(resultList.size() * 0.1);
+        int topTenPercent = resultList.size() <= 10 ? resultList.size():(int)Math.floor(resultList.size() * 0.1);
         List<BlackPointData> blackPointDatas = new ArrayList<BlackPointData>();
         for(int i = 0;i < topTenPercent;i++){
             Map.Entry entry = resultList.get(i);

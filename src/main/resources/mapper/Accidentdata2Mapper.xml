@@ -9,50 +9,61 @@
         select distinct Xianqu from accidentdata
     </select>
 
+    <!--路段-->
     <select id="queryAccidentdataByCondition1" parameterType="Map" resultType="com.swjtu.roadCheck.entity.Accidentdata">
-        SELECT * FROM accidentdata WHERE accidencnumber IN
-        (SELECT shigunumber FROM accidencecollectiondata
         <choose>
+            <when test="areaName!=null">
+                SELECT * FROM accidentdata WHERE  xianQu = #{areaName}  AND accidencnumber  IN
+                (SELECT shigunumber FROM accidencecollectiondata
+                where  environmentnumber IN
+                (SELECT emnumber FROM emdata WHERE Jcktype  = '非交叉口'))
+                and (DATE(riQI) BETWEEN  #{startTime} and #{endTime})
+            </when>
             <when test="teamName!=null">
-                where team_name in
+                SELECT * FROM accidentdata WHERE accidencnumber IN
+                (SELECT shigunumber FROM accidencecollectiondata WHERE team_name in
                 <foreach collection="teamName" item="team" open="(" separator="," close=")">
                     #{team}
                 </foreach>
-            </when>
-            <when test="areaName!=null">
-                where xianQu = #{areaName}
+                AND environmentnumber IN
+                (SELECT emnumber FROM emdata WHERE Jcktype = '非交叉口'))
+                and (DATE(riQI) BETWEEN  #{startTime} and #{endTime})
             </when>
         </choose>
-        AND environmentnumber IN
-        (SELECT emnumber FROM emdata WHERE Jcktype LIKE "%"#{roadType}))
-        and (DATE(riQI) BETWEEN  #{startTime} and #{endTime})
-
     </select>
 
+    <!--交叉口-->
     <select id="queryAccidentdataByCondition2" parameterType="Map" resultType="com.swjtu.roadCheck.entity.Accidentdata">
-        SELECT * FROM accidentdata WHERE accidencnumber IN
-        (SELECT shigunumber FROM accidencecollectiondata
         <choose>
+            <when test="areaName!=null">
+                SELECT * FROM accidentdata WHERE  xianQu = #{areaName}  AND accidencnumber  IN
+                (SELECT shigunumber FROM accidencecollectiondata
+                where  environmentnumber IN
+                (SELECT emnumber FROM emdata WHERE Jcktype  != '非交叉口'))
+                and (DATE(riQI) BETWEEN  #{startTime} and #{endTime})
+            </when>
             <when test="teamName!=null">
-                where team_name in
+                SELECT * FROM accidentdata WHERE accidencnumber IN
+                (SELECT shigunumber FROM accidencecollectiondata WHERE team_name in
                 <foreach collection="teamName" item="team" open="(" separator="," close=")">
                     #{team}
                 </foreach>
-            </when>
-            <when test="areaName!=null">
-                where xianQu = #{areaName}
+                AND environmentnumber IN
+                (SELECT emnumber FROM emdata WHERE Jcktype != '非交叉口'))
+                and (DATE(riQI) BETWEEN  #{startTime} and #{endTime})
             </when>
         </choose>
-        AND environmentnumber IN
-        (SELECT emnumber FROM emdata WHERE Jcktype NOT LIKE "%"#{roadType}))
-        and (DATE(riQI) BETWEEN  #{startTime} and #{endTime})
     </select>
 
     <select id="queryCrossing" resultType="String">
-        SELECT DISTINCT diMingBeiZhu FROM  accidentdata WHERE diMingBeiZhu LIKE '%交叉口'
+        SELECT DISTINCT diMingBeiZhu FROM  accidentdata WHERE accidencnumber in
+        (select shigunumber from accidencecollectiondata where environmentnumber in(
+        select emnumber from emdata where Jcktype != '非交叉口'))
     </select>
 
     <select id="quueryOrdinayRoad" resultType="String">
-        SELECT DISTINCT diMingBeiZhu FROM  accidentdata WHERE diMingBeiZhu NOT LIKE '%交叉口'
+        SELECT DISTINCT diMingBeiZhu FROM  accidentdata WHERE accidencnumber in
+        (select shigunumber from accidencecollectiondata where environmentnumber in(
+        select emnumber from emdata where Jcktype = '非交叉口'))
     </select>
 </mapper>
