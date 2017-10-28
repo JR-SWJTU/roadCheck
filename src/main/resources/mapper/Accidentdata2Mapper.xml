@@ -24,7 +24,7 @@
           </if>
           AND environmentnumber IN (
             SELECT emnumber FROM emdata
-              WHERE Jcktype LIKE "%"#{jckType}"%"
+              WHERE Jcktype LIKE "%"#{roadType}"%"
             )
         )
           AND (DATE(riQI) BETWEEN #{startTime} and #{endTime})
@@ -45,7 +45,7 @@
         </if>
         AND environmentnumber IN (
         SELECT emnumber FROM emdata
-        WHERE Jcktype NOT LIKE "%"#{jckType}"%"
+        WHERE Jcktype NOT LIKE "%"#{roadType}"%"
         )
         )
         AND (DATE(riQI) BETWEEN #{startTime} and #{endTime})

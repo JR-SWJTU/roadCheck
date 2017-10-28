@@ -76,7 +76,7 @@ public class TestAPI {
         teamName.add("一大队");
         teamName.add("二大队");
         map.put("teamName",teamName);
-        map.put("jckType","非交叉口");
+        map.put("roadType","非交叉口");
         map.put("areaName","金牛区");
         map.put("startTime","2017-01-01");
         map.put("endTime","2017-10-30");
@@ -129,7 +129,7 @@ public class TestAPI {
         teamName.add("一大队");
         teamName.add("二大队");
         map.put("teamName",teamName);
-        map.put("jckType","非交叉口");
+        map.put("roadType","非交叉口");
         map.put("areaName","金牛区");
         map.put("startTime","2017-01-01");
         map.put("endTime","2017-10-30");
