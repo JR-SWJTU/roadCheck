@@ -62,8 +62,8 @@
                     <mu-menu-item v-for="text,index in basicData.analysisObj" :key="index" :value="text" :title="text" ></mu-menu-item>
                 </mu-select-field>
                 <div class="mu-text-field-label label-class">选择分析的区域</div>
-                <mu-radio label="大队" max-height="10px" scroller name="area1" native-value="gruppe" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 20px;"></mu-radio>
-                <mu-radio label="行政区" name="area1" native-value="administrative" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 50px;"></mu-radio>
+                <mu-radio label="大队" max-height="10px" scroller name="area1" native-value="gruppe" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 20px;" @change="areaRadioChange"></mu-radio>
+                <mu-radio label="行政区" name="area1" native-value="administrative" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 50px;" @change="areaRadioChange"></mu-radio>
                 <mu-select-field v-if="selectData.area.type == 'gruppe'" max-height="300" scroller hint-text="null" v-model="selectData.area.value" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="大队管辖区">
                     <mu-menu-item v-for="text,index in basicData.area.gruppe" :key="index" :value="text" :title="text" ></mu-menu-item>
                 </mu-select-field>
@@ -105,7 +105,7 @@
                     <mu-icon-button tooltip="筛选结果" tooltip-position="bottom-right" icon="call_merge" class="right-btn" @click="singlePointGet"></mu-icon-button>
                 </div>
             </div>
-            <div class="body-right" :style="rightStyle" style="background-color: inherit">
+            <div class="single-tabs-fixed" :style="singleRightStyle">
                 <div class="single-tabs-div">
                     <mu-tabs :value="singleTab" class="single-tabs" line-class="single-tabs-line" @change="singleTabChange">
                         <mu-tab value="gruppe" title="大队管辖区" :title-class="{'single-tab-title': singleTab != 'gruppe'}" :class="{'single-tab-active': singleTab == 'gruppe'}"></mu-tab>
@@ -114,17 +114,56 @@
                         <mu-tab value="crossing" title="路口" :title-class="{'single-tab-title': singleTab != 'crossing'}" class="left-split-line" :class="{'single-tab-active': singleTab == 'crossing'}"></mu-tab>
                     </mu-tabs>
                 </div>
-                <mu-divider style="background-color: gainsboro"></mu-divider>
-                <div v-if="singleTab == 'gruppe'" class="single-content">
-                    gruppe
+            </div>
+            <div class="body-right" :style="singleRightStyle" style="background-color: inherit">
+                <div v-show="singleTab == 'gruppe'" class="single-content">
+                    <%--事故数、事故严重程度--%>
+                    <div :style="chartStyle">
+                        <div id="grAccTable" class="table-class">
+                            <div class="title-class">事故数、事故严重程度汇总表</div>
+                            <mu-divider></mu-divider>
+                            <mu-table :fixed-header="true" :height="400" :selectable="false" :show-checkbox="false">
+                                <mu-thead slot="header">
+                                    <mu-tr>
+                                        <mu-th v-for="item, index in singleShowData.grAccTable.key" :key="index">{{item}}</mu-th>
+                                    </mu-tr>
+                                </mu-thead>
+                                <mu-tbody>
+                                    <mu-tr>
+                                        <mu-td v-for="item, index in singleShowData.grAccTable.value" :key="index">{{item}}</mu-td>
+                                    </mu-tr>
+                                </mu-tbody>
+                            </mu-table>
+                        </div>
+                        <div id="grAccHistogram" class="chart-class"></div>
+                        <div id="grAccPie" class="chart-class"></div>
+                    </div>
+                    <%--事故类型--%>
+                        <div :style="chartStyle">
+                            <div id="grAccTypeTable" class="table-class"></div>
+                            <div id="grAccTypeHistogram" class="chart-class"></div>
+                            <div id="grAccTypePie" class="chart-class"></div>
+                        </div>
+                    <%--天气--%>
+                        <div :style="chartStyle">
+                            <div id="grWeaTable" class="table-class"></div>
+                            <div id="grWeaHistogram" class="chart-class"></div>
+                            <div id="grWeaPie" class="chart-class"></div>
+                        </div>
+                    <%--车辆类型--%>
+                        <div :style="chartStyle">
+                            <div id="grCarTable" class="table-class"></div>
+                            <div id="grCarHistogram" class="chart-class"></div>
+                            <div id="grCarPie" class="chart-class"></div>
+                        </div>
                 </div>
-                <div v-if="singleTab == 'administrative'" class="single-content">
+                <div v-show="singleTab == 'administrative'" class="single-content">
                     administrative
                 </div>
-                <div v-if="singleTab == 'intersection'" class="single-content">
+                <div v-show="singleTab == 'intersection'" class="single-content">
                     intersection
                 </div>
-                <div v-if="singleTab == 'crossing'" class="single-content">
+                <div v-show="singleTab == 'crossing'" class="single-content">
                     crossing
                 </div>
             </div>
@@ -135,8 +174,8 @@
                     <mu-menu-item v-for="text,index in basicData.analysisObj" :key="index" :value="text" :title="text" ></mu-menu-item>
                 </mu-select-field>
                 <div class="mu-text-field-label label-class">选择分析的区域</div>
-                <mu-radio label="大队" name="area3" native-value="gruppe" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 20px;"></mu-radio>
-                <mu-radio label="行政区" name="area3" native-value="administrative" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 50px;"></mu-radio>
+                <mu-radio label="大队" name="area3" native-value="gruppe" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 20px;" @change="areaRadioChange"></mu-radio>
+                <mu-radio label="行政区" name="area3" native-value="administrative" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 50px;" @change="areaRadioChange"></mu-radio>
                 <mu-select-field v-if="selectData.area.type == 'gruppe'" max-height="300" scroller hint-text="null" v-model="selectData.area.value" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="大队管辖区">
                     <mu-menu-item v-for="text,index in basicData.area.gruppe" :key="index" :value="text" :title="text" ></mu-menu-item>
                 </mu-select-field>
@@ -149,7 +188,7 @@
                 <mu-date-picker auto-ok hint-text="至截止监测日期" :should-disable-date="disableWeekends" v-model="selectData.dateTime.end" container="inline" mode="landscape" :underline-class="{'underline-class': true}"></mu-date-picker>
                 <div class="mu-text-field-label label-class">图形纵坐标选择</div>
                 <mu-radio label="事故数" name="ordinate1" native-value="accidentCount" :icon-class="{'icon-class': true}" v-model="selectData.yType"></mu-radio>
-                <mu-radio label="事故严重程度" name="ordinate1" native-value="accidentLevel" :icon-class="{'icon-class': true}" v-model="selectData.yType" style="margin-left: 20px;"></mu-radio>
+                <mu-radio label="事故严重程度" name="ordinate1" native-value="accidentLevel" :icon-class="{'icon-class': true}" v-model="selectData.yType" style="margin-left: 20px;" @change="accidentLChange"></mu-radio>
                 <mu-select-field v-if="selectData.yType == 'accidentLevel'" v-model="selectData.accidentalSev" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="事故严重程度" hint-text="null" multiple>
                     <mu-menu-item v-for="text,index in basicData.accidentalSev" :key="index" :value="text" :title="text" ></mu-menu-item>
                 </mu-select-field>
@@ -192,8 +231,8 @@
                     <mu-menu-item v-for="text,index in basicData.analysisObj" :key="index" :value="text" :title="text" ></mu-menu-item>
                 </mu-select-field>
                 <div class="mu-text-field-label label-class">选择分析的区域</div>
-                <mu-radio label="大队" name="area4" native-value="gruppe" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 20px;"></mu-radio>
-                <mu-radio label="行政区" name="area4" native-value="administrative" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 50px;"></mu-radio>
+                <mu-radio label="大队" name="area4" native-value="gruppe" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 20px;" @change="areaRadioChange"></mu-radio>
+                <mu-radio label="行政区" name="area4" native-value="administrative" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 50px;" @change="areaRadioChange"></mu-radio>
                 <mu-select-field v-if="selectData.area.type == 'gruppe'" max-height="300" scroller hint-text="null" v-model="selectData.area.value" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="大队管辖区">
                     <mu-menu-item v-for="text,index in basicData.area.gruppe" :key="index" :value="text" :title="text" ></mu-menu-item>
                 </mu-select-field>
@@ -205,7 +244,7 @@
                 <mu-date-picker auto-ok hint-text="至截止监测日期" v-model="selectData.dateTime.end" container="inline" mode="landscape" :underline-class="{'underline-class': true}"></mu-date-picker>
                 <div class="mu-text-field-label label-class">图形分析纵坐标选择</div>
                 <mu-radio label="事故数" name="ordinate2" native-value="accidentCount" :icon-class="{'icon-class': true}" v-model="selectData.yType"></mu-radio>
-                <mu-radio label="事故严重程度" name="ordinate2" native-value="accidentLevel" :icon-class="{'icon-class': true}" v-model="selectData.yType" style="margin-left: 20px;"></mu-radio>
+                <mu-radio label="事故严重程度" name="ordinate2" native-value="accidentLevel" :icon-class="{'icon-class': true}" v-model="selectData.yType" style="margin-left: 20px;" @change="accidentLChange"></mu-radio>
                 <mu-select-field v-if="selectData.yType == 'accidentLevel'" v-model="selectData.accidentalSev" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="事故严重程度" hint-text="null" multiple>
                     <mu-menu-item v-for="text,index in basicData.accidentalSev" :key="index" :value="text" :title="text" ></mu-menu-item>
                 </mu-select-field>
@@ -272,7 +311,12 @@
 
 <script src="libs/vue/vue.min.js"></script>
 <script src="libs/muse-ui-2.1.0/muse-ui.js"></script>
+
+<script src="libs/Highcharts-6.0.1/highcharts.js"></script>
+<script src="libs/Highcharts-6.0.1/themes/dark-blue.js"></script>
+
 <script src="libs/axios-0.17.0/axios.min.js"></script>
+
 <script src="js/index.js"></script>
 <script src="js/map.js"></script>
 </body>

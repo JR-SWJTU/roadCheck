@@ -80,7 +80,7 @@ var markerOptions = {
 
 var mapMarkers = [];
 
-setMarker(markerOptions);
+// setMarker(markerOptions);
 function setMarker(options) {
 
     if (mapMarkers == null || mapMarkers.length == 0) {

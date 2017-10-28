@@ -81,6 +81,19 @@ var app = new Vue({
             hitAndRun: '否', //'是'
         },
 
+        singleShowData: {
+            grAccTable: {
+                key: ['', '仅财损', '轻伤', '重伤', '死亡', '未知', '总数'],
+                value: ['数量', 0, 0, 0, 0, 0, 0]
+            },
+            grAccHistogram: {
+
+            },
+            grAccPie: {
+
+            }
+        },
+
         loginInfor: {
             userName: '',
             password: ''
@@ -281,6 +294,12 @@ var app = new Vue({
         workDayChange: function (val) {
             this.selectData.workDay = val;
         },
+        areaRadioChange: function (val) {
+            this.selectData.area.value = '';
+        },
+        accidentLChange: function () {
+            this.selectData.accidentalSev = [];
+        },
         disableWeekends: function (date) {
             if(this.selectData.workDay){
                 return date.getDay() === 0 || date.getDay() === 6;
@@ -470,6 +489,55 @@ var app = new Vue({
             }
             return true;
         },
+        singleShow: function (data) {
+            switch(this.singleTab){
+                case 'gruppe': {
+                    //事故数、事故类型汇总
+                    var grat = ['数量'];
+                    data.severity.forEach(function (item, index, arr) {
+                        switch (item.keyRes){
+                            case '仅财损':{
+                                grat[1] = item.num;
+                                break;
+                            }
+                            case '轻伤':{
+                                grat[2] = item.num;
+                                break;
+                            }
+                            case '重伤':{
+                                grat[3] = item.num;
+                                break;
+                            }
+                            case '死亡':{
+                                grat[4] = item.num;
+                                break;
+                            }
+                            case '未知':{
+                                grat[5] = item.num;
+                                break;
+                            }
+                        }
+                    });
+                    grat.push(data.totalNum);
+                    this.$set(this.singleShowData.grAccTable, 'value', grat);
+                    break;
+                }
+                case 'administrative': {
+                    this.messageTop = "行政区尚未选取！";
+                    break;
+                }
+                case 'intersection': {
+                    this.messageTop = "交叉口尚未选取！";
+                    break;
+                }
+                case 'crossing': {
+                    this.messageTop = "路段尚未选取！";
+                    break;
+                }
+                default:
+                    break;
+            }
+        },
         blackPointGet: function () {
             var that = this;
             var url = webBase + '/accidentDatas/blackPointDiagnosis/results';
@@ -501,6 +569,7 @@ var app = new Vue({
                     var allData = response.data;
                     if(allData.code == 200){
                         console.log(allData.data);
+                        that.singleShow(allData.data);
                     }
                     else{
                         console.log(allData.message);
@@ -562,6 +631,16 @@ var app = new Vue({
             return {
                 'width': this.wrapWidth - 30 - (this.isShowItems ? 256 : 8) + 'px',
                 'height': this.wrapHeight - 15 + 'px'
+            }
+        },
+        singleRightStyle: function () {
+            return {
+                'width': this.wrapWidth - 30 - (this.isShowItems ? 256 : 8) + 'px'
+            }
+        },
+        chartStyle: function () {
+            return {
+                'width': this.wrapWidth - 30 - 2 - 20 - (this.isShowItems ? 256 : 8) + 'px'
             }
         }
     },
