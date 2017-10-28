@@ -24,14 +24,14 @@ public interface IAccidentService {
      * @param condition
      * @return
      */
-    List<Accident> areaMultiConditionQuery(AccidentQueryCondition condition);
+    List<Accident> areaMultiConditionQuery(AccidentQueryCondition condition) throws Exception;
 
     /**
      * 时间分析，多条件符合查询
      * @param condition
      * @return
      */
-    List<Accident> timeMultiConditionQuery(AccidentQueryCondition condition);
+    List<Accident> timeMultiConditionQuery(AccidentQueryCondition condition) throws Exception;
 
     /**
      * 查询某大队、某个地区或某个地点发生的事故总数

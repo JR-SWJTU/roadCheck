@@ -9,9 +9,9 @@ import java.util.Date;
  */
 public class AccidentQueryCondition {
 
-    private String teamName;    //大队名称
+    private String teamName[];    //大队名称
 
-    private String areaName;    //行政区名称
+    private String areaName[];    //行政区名称
 
     private String roadType;    //道路类型，交叉口还是路段
 
@@ -50,11 +50,20 @@ public class AccidentQueryCondition {
 
     private Integer dead;   //事故严重程度，死亡，null为不选择该条件进行显示，1为选择该条件显示
 
-    public String getAreaName() {
+
+    public String[] getTeamName() {
+        return teamName;
+    }
+
+    public void setTeamName(String[] teamName) {
+        this.teamName = teamName;
+    }
+
+    public String[] getAreaName() {
         return areaName;
     }
 
-    public void setAreaName(String areaName) {
+    public void setAreaName(String[] areaName) {
         this.areaName = areaName;
     }
 
@@ -160,14 +169,6 @@ public class AccidentQueryCondition {
 
     public void setTimePrecision(int timePrecision) {
         this.timePrecision = timePrecision;
-    }
-
-    public String getTeamName() {
-        return teamName;
-    }
-
-    public void setTeamName(String teamName) {
-        this.teamName = teamName;
     }
 
     public Integer getPropertyLoss() {

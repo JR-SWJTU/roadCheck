@@ -6,7 +6,7 @@
 
 
     <!--多重搜索条件下某路段发生的事故数量搜索-->
-    <select id="multiConditionQueryAccidentForSGS" parameterType="com.swjtu.roadCheck.entityCustom.AccidentQueryCondition"
+    <select id="multiConditionQueryAccidentForSGS" parameterType="Map"
             resultType="com.swjtu.roadCheck.dto.Accident">
 
         SELECT
@@ -52,7 +52,10 @@
             accidencecollectiondata
             <where>
                 <if test="teamName!=null">
-                    team_name = #{teamName}
+                    team_name in
+                    <foreach collection="teamName" index="index" item="teamName" open="(" separator="," close=")">
+                        #{teamName}
+                    </foreach>
                 </if>
                 <if test="startTime!=null">
                     AND riqi <![CDATA[ >= ]]> #{startTime}
@@ -90,7 +93,7 @@
                 AND accidentdata.taoYi = #{troEscape}
             </if>
             <if test="areaName!=null">
-                AND accidentdata.xianQu = #{areaName}
+                AND accidentdata.xianQu in ${areaName}
             </if>
             <if test="isWorkDay!=null">
                 AND accidentdata.is_workday = #{isWorkDay}
@@ -127,7 +130,7 @@
 
 
     <!--事故分析中的空间分析，多重搜索条件下某路段发生的不同事故严重程度的事故的统计-->
-    <select id="multiConditionQueryAccidentForYZCD" parameterType="com.swjtu.roadCheck.entityCustom.AccidentQueryCondition"
+    <select id="multiConditionQueryAccidentForYZCD" parameterType="Map"
             resultType="com.swjtu.roadCheck.dto.Accident">
 
         SELECT
@@ -173,7 +176,10 @@
             accidencecollectiondata
             <where>
                 <if test="teamName!=null">
-                    team_name = #{teamName}
+                    team_name in
+                    <foreach collection="teamName" index="index" item="teamName" open="(" separator="," close=")">
+                        #{teamName}
+                    </foreach>
                 </if>
                 <if test="startTime!=null">
                     AND riqi <![CDATA[ >= ]]> #{startTime}
@@ -260,7 +266,7 @@
 
 
     <!--事故分析中的时间分析，多重搜索条件下某路段发生的不同事故严重程度的事故的统计或者事故数量统计，按照年月日进行统计-->
-    <select id="multiConditionQueryAccidentForTime" parameterType="com.swjtu.roadCheck.entityCustom.AccidentQueryCondition"
+    <select id="multiConditionQueryAccidentForTime" parameterType="Map"
             resultType="com.swjtu.roadCheck.dto.Accident">
 
         SELECT
@@ -318,7 +324,10 @@
             accidencecollectiondata
             <where>
                 <if test="teamName!=null">
-                    team_name = #{teamName}
+                    team_name in
+                    <foreach collection="teamName" index="index" item="teamName" open="(" separator="," close=")">
+                        #{teamName}
+                    </foreach>
                 </if>
                 <if test="startTime!=null">
                     AND riqi <![CDATA[ >= ]]> #{startTime}
