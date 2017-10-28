@@ -142,6 +142,24 @@ public class AccidentServiceImpl implements IAccidentService {
     }
 
     /**
+     * 导出空间分析结果
+     * @param condition
+     * @throws Exception
+     */
+    public void exportAreaAnalyse(AccidentQueryCondition condition) throws Exception{
+//        Map<String,String> titleMap = new LinkedHashMap<String,String>();
+//        titleMap.put("blackPointRegion", "行政区");
+//        titleMap.put("blackPointName", "备注");
+//        titleMap.put("number", "当量");
+//        String sheetName = "信息导出";
+//        try{
+//            ExportExcel.excelExport(blackPointDatas, titleMap, sheetName,"BPResult");
+//        }catch (CustomException cex){
+//            throw new CustomException("信息导出失败");
+//        }
+    }
+
+    /**
      * 时间分析，多条件符合查询
      *
      * @param condition

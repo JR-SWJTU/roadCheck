@@ -43,6 +43,13 @@ public interface IAccidentService {
     List<Accident> areaMultiConditionQuery(AccidentQueryCondition condition) throws Exception;
 
     /**
+     * 导出空间分析结果
+     * @param condition
+     * @throws Exception
+     */
+    void exportAreaAnalyse(AccidentQueryCondition condition) throws Exception;
+
+    /**
      * 时间分析，多条件符合查询
      * @param condition
      * @return

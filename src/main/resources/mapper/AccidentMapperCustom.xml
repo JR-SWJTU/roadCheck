@@ -93,7 +93,7 @@
                 AND accidentdata.taoYi = #{troEscape}
             </if>
             <if test="areaName!=null">
-                AND accidentdata.xianQu in ${areaName}
+                AND accidentdata.xianQu = #{areaName}
             </if>
             <if test="isWorkDay!=null">
                 AND accidentdata.is_workday = #{isWorkDay}
