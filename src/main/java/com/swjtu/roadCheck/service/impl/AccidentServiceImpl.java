@@ -39,7 +39,7 @@ public class AccidentServiceImpl implements IAccidentService {
     public List<Map.Entry<String, Integer>> getAllAccidentdataByCondition(Map<String, Object> map) {
 
         List<Accidentdata> accidentdatas = new ArrayList<Accidentdata>();
-        if(map.get("jckType").equals("路段")){
+        if(map.get("roadType").equals("交叉口")){
             accidentdatas = accidentdata2Mapper.queryAccidentdataByCondition1(map);
         }else{
             accidentdatas = accidentdata2Mapper.queryAccidentdataByCondition2(map);
