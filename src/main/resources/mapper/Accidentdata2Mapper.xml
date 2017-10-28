@@ -50,4 +50,12 @@
         )
         AND (DATE(riQI) BETWEEN #{startTime} and #{endTime})
     </select>
+
+    <select id="queryCrossing" resultType="String">
+        SELECT DISTINCT diMingBeiZhu FROM  accidentdata WHERE diMingBeiZhu LIKE '%交叉口'
+    </select>
+
+    <select id="quueryOrdinayRoad" resultType="String">
+        SELECT DISTINCT diMingBeiZhu FROM  accidentdata WHERE diMingBeiZhu NOT LIKE '%交叉口'
+    </select>
 </mapper>
