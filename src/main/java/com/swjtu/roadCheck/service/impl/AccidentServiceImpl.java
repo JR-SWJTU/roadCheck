@@ -147,16 +147,25 @@ public class AccidentServiceImpl implements IAccidentService {
      * @throws Exception
      */
     public void exportAreaAnalyse(AccidentQueryCondition condition) throws Exception{
-//        Map<String,String> titleMap = new LinkedHashMap<String,String>();
-//        titleMap.put("blackPointRegion", "行政区");
-//        titleMap.put("blackPointName", "备注");
-//        titleMap.put("number", "当量");
-//        String sheetName = "信息导出";
-//        try{
-//            ExportExcel.excelExport(blackPointDatas, titleMap, sheetName,"BPResult");
-//        }catch (CustomException cex){
-//            throw new CustomException("信息导出失败");
-//        }
+        List<Accident> accidentList = areaMultiConditionQuery(condition);
+        Map<String,String> titleMap = new LinkedHashMap<String,String>();
+        //导出各地点事故数量
+        if(condition.isyType()){
+            titleMap.put("diMingBeiZhu", "地名");
+            titleMap.put("num", "事故数量");
+        }
+        //导出各地点各严重程度下的事故数量
+        else{
+            titleMap.put("diMingBeiZhu", "地名");
+            titleMap.put("num", "事故数量");
+        }
+
+        String sheetName = "信息导出";
+        try{
+            ExportExcel.excelExport(accidentList, titleMap, sheetName,"空间分析数据");
+        }catch (CustomException cex){
+            throw new CustomException("信息导出失败");
+        }
     }
 
     /**
@@ -218,7 +227,13 @@ public class AccidentServiceImpl implements IAccidentService {
                 condition.getStartTime() == null || condition.getEndTime() == null )
             throw new ReqParmIncorException("TeamName和AreaName的查询不能同时存在");
 
-        return accidentMapperCustom.queryAreaTotalAccidentNumsForYZCD(ObjectUtil.objectToMap(condition));
+        List<ResMap> resMap = accidentMapperCustom.queryAreaTotalAccidentNumsForYZCD(ObjectUtil.objectToMap(condition));
+
+        String yanZhongCD[] = {"仅财损","轻伤","重伤","死亡","未知"};
+        if(resMap.size() < yanZhongCD.length){
+            resMap = singlePointAnalyseAddNulObject(yanZhongCD,resMap);
+        }
+        return resMap;
     }
 
     /**
@@ -231,7 +246,13 @@ public class AccidentServiceImpl implements IAccidentService {
         if(condition.getAreaName() != null && condition.getTeamName() != null && condition.getRoadType() != null ||
                 condition.getStartTime() == null || condition.getEndTime() == null )
             throw new ReqParmIncorException("TeamName和AreaName的查询不能同时存在");
-        return accidentMapperCustom.queryAreaTotalAccidentNumsForSGType(ObjectUtil.objectToMap(condition));
+
+        List<ResMap> resMap =  accidentMapperCustom.queryAreaTotalAccidentNumsForSGType(ObjectUtil.objectToMap(condition));
+        String sgType[] = {"非碰撞","撞人、撞机动车或其他非固定物","碰撞固定物"};
+        if(resMap.size() < sgType.length){
+           resMap = singlePointAnalyseAddNulObject(sgType,resMap);
+        }
+        return resMap;
     }
 
     /**
@@ -243,7 +264,13 @@ public class AccidentServiceImpl implements IAccidentService {
     public List<ResMap> queryAreaTotalAccidentNumsSGWeather(AccidentQueryCondition condition)  throws Exception{
         if(condition.getAreaName() != null && condition.getRoadType() != null)
             throw new ReqParmIncorException();
-        return accidentMapperCustom.queryAreaTotalAccidentNumsSGWeather(ObjectUtil.objectToMap(condition));
+
+        List<ResMap> resMap =  accidentMapperCustom.queryAreaTotalAccidentNumsSGWeather(ObjectUtil.objectToMap(condition));
+        String weather[] = {"晴天","阴天","雨","雾","雪","冰雹","台风","其它"};
+        if(resMap.size() < weather.length){
+            resMap = singlePointAnalyseAddNulObject(weather,resMap);
+        }
+        return resMap;
     }
 
     /**
@@ -256,7 +283,41 @@ public class AccidentServiceImpl implements IAccidentService {
         if(condition.getAreaName() != null && condition.getTeamName() != null && condition.getRoadType() != null ||
                 condition.getStartTime() == null || condition.getEndTime() == null )
             throw new ReqParmIncorException("TeamName和AreaName的查询不能同时存在");
-        return accidentMapperCustom.queryAreaTotalAccidentNumsSGCarType(ObjectUtil.objectToMap(condition));
+        List<ResMap> resMap =  accidentMapperCustom.queryAreaTotalAccidentNumsSGCarType(ObjectUtil.objectToMap(condition));
+        String carType[] = {"小客车","中客车","大客车","公交","校车","小货车","中货车","大货车","拖挂车","特种车辆","摩托车","非机动车","畜力车"};
+        if(resMap.size() < carType.length){
+            resMap = singlePointAnalyseAddNulObject(carType,resMap);
+        }
+        return resMap;
+    }
+
+    /**
+     * 单点分析时，添加某些事故数量为0的类型进入数据数组中，方便前端操作
+     * @param attribute
+     * @param resMap
+     * @return
+     */
+    public  List<ResMap> singlePointAnalyseAddNulObject(String attribute[], List<ResMap> resMap){
+        int flag = 0;
+        int size = resMap.size();
+        for(int i = 0; i < attribute.length; i++){
+            for(int j = 0; j < size; j++){
+                if(resMap.get(j).getKeyRes().equals( attribute[i])){
+                    flag = 1;
+                    break;
+                }
+            }
+            //当前数据集内部没有该天气对应的数据，则添加进去
+            if(flag == 0){
+                ResMap temp = new ResMap();
+                temp.setKeyRes(attribute[i]);
+                temp.setNum(0);
+                resMap.add(temp);
+            }else{
+                flag = 0;
+            }
+        }
+        return resMap;
     }
 
     public List<String> queryCrossings() {
