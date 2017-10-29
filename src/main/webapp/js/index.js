@@ -82,6 +82,7 @@ var app = new Vue({
         },
 
         isChartShow: false,
+        preChartShowData: null,
         singleShowData: {
             accTable: {
                 key: ['', '仅财损', '轻伤', '重伤', '死亡', '未知', '总数'],
@@ -128,6 +129,12 @@ var app = new Vue({
                 this.isFirstLoad = true;
             }
             this.isShowItems = !this.isShowItems;
+            if(this.nowFuc == 'single-point' && this.isChartShow && this.preChartShowData != null){
+                var that = this;
+                setTimeout(function () {
+                    that.singleShow(that.preChartShowData);
+                }, 500)
+            }
         },
 
         getTeams: function () {
@@ -248,6 +255,13 @@ var app = new Vue({
             this.detailDialog = false;
         },
         detailClose: function () {
+            this.selectData.roadGrade = null;
+            this.selectData.carCollisionType = null;
+            this.selectData.weather = null;
+            this.selectData.workZone.flag = '否'
+            this.selectData.intersectionType = null;
+            this.selectData.vehicleType = null;
+            this.selectData.hitAndRun = '否';
             this.detailDialog = false;
         },
         information: function () {
@@ -587,7 +601,7 @@ var app = new Vue({
         },
         getAccHObj: function (data) {
             var obj = {
-                name: '',
+                name: '事故严重类型',
                 data: []
             };
             obj.data.push(data.totalNum);
@@ -686,7 +700,7 @@ var app = new Vue({
         },
         getAccTHObj: function (data) {
             var obj = {
-                name: '',
+                name: '事故类型',
                 data: []
             };
             obj.data.push(data.totalNum);
@@ -783,7 +797,7 @@ var app = new Vue({
         },
         getWeaHObj: function (data) {
             var obj = {
-                name: '',
+                name: '天气类型',
                 data: []
             };
             obj.data.push(data.totalNum);
@@ -944,7 +958,7 @@ var app = new Vue({
         },
         getCarHObj: function (data) {
             var obj = {
-                name: '',
+                name: '车辆类型',
                 data: []
             };
             obj.data.push(data.totalNum);
@@ -1262,6 +1276,18 @@ var app = new Vue({
                 series: series
             });
         },
+        getMarkers: function (mapId, anObj, data) {
+            var anObjType = '路段' ? 1 : 0;
+            data.forEach(function (item, index, arr) {
+                var obj = {
+                    map: mapId,
+                    type: anObj == anObjType,
+                    name: item.name,
+                    lat: item.lat,
+                    lng: item.lng
+                };
+            });
+        },
         blackPointGet: function () {
             var that = this;
             var url = webBase + '/accidentDatas/blackPointDiagnosis/results';
@@ -1294,6 +1320,7 @@ var app = new Vue({
                 axios.post(url, json).then(function (response) {
                     var allData = response.data;
                     if(allData.code == 200){
+                        that.preChartShowData = allData.data;
                         that.singleShow(allData.data);
                     }
                     else{
@@ -1404,4 +1431,3 @@ var app = new Vue({
         });
     }
 });
-
