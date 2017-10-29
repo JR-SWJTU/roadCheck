@@ -1276,16 +1276,48 @@ var app = new Vue({
                 series: series
             });
         },
-        getMarkers: function (mapId, anObj, data) {
-            var anObjType = '路段' ? 1 : 0;
+        getMarkers: function (mapId, acc, anObj, allnum, data) {
+            var anObjType = (anObj == '路段') ? 1 : 0;
             data.forEach(function (item, index, arr) {
                 var obj = {
                     map: mapId,
-                    type: anObj == anObjType,
-                    name: item.name,
+                    type: anObjType,
+                    name: item.diMingBeiZhu,
                     lat: item.lat,
-                    lng: item.lng
+                    lng: item.lng,
+                    accidentAllNumbers: allnum,
+                    accidentNumbers: item.num
                 };
+                if(acc == 'accidentCount'){
+                    obj.isChenDu = false;
+                }
+                else{
+                    obj.isChenDu = true;
+                    obj.showType = this.selectData.accidentalSev.toString();
+                    this.selectData.accidentalSev.forEach(function (t) {
+                        switch (t){
+                            case '仅财损':{
+                                obj.wealthLoss = item.propertyLoss;
+                                break;
+                            }
+                            case '轻伤':{
+                                obj.slightInjury = item.slightInjury;
+                                break;
+                            }
+                            case '重伤':{
+                                obj.seriousInjury = item.severInjury;
+                                break;
+                            }
+                            case '死亡':{
+                                obj.death = item.dead;
+                                break;
+                            }
+                            default:
+                                break;
+                        }
+                    });
+                }
+                setMarker(obj);
             });
         },
         blackPointGet: function () {
@@ -1315,7 +1347,6 @@ var app = new Vue({
             var url = webBase + '/accidentDatas/analyseData/singlePointAnalyseDataQuery';
             var json = {};
             var flag = this.checkInput(json);
-            console.log(json);
             if(flag){
                 axios.post(url, json).then(function (response) {
                     var allData = response.data;
@@ -1344,6 +1375,7 @@ var app = new Vue({
                     var allData = response.data;
                     if(allData.code == 200){
                         console.log(allData.data);
+                        that.getMarkers('spaceMap', this.selectData.yType, this.selectData.analysisObj, allData.data.allnum, allData.data.arr);
                     }
                     else{
                         this.messageTop = allData.message;
