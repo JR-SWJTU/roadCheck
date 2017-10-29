@@ -1379,9 +1379,10 @@ var app = new Vue({
         },
         getSpaceMarkers: function (acc, anObj, allnum, data) {
             var anObjType = (anObj == '路段') ? 1 : 0;
+            var that = this;
             data.forEach(function (item, index, arr) {
                 var obj = {
-                    map: 'spaceMap',
+                    map: spaceMap,
                     type: anObjType,
                     name: item.diMingBeiZhu,
                     lat: item.lat,
@@ -1394,8 +1395,8 @@ var app = new Vue({
                 }
                 else{
                     obj.isChenDu = true;
-                    obj.showType = this.selectData.accidentalSev.toString();
-                    this.selectData.accidentalSev.forEach(function (t) {
+                    obj.showType = that.selectData.accidentalSev.toString();
+                    that.selectData.accidentalSev.forEach(function (t) {
                         switch (t){
                             case '仅财损':{
                                 obj.wealthLoss = item.propertyLoss;
@@ -1478,6 +1479,7 @@ var app = new Vue({
                     console.log(allData)
                     if(allData.code == 200){
                         console.log(allData.data);
+                        clearMarker(spaceMap);
                         that.getSpaceMarkers(that.selectData.yType, that.selectData.analysisObj, allData.data.allnum, allData.data.arr);
                     }
                     else{
