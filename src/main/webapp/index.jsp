@@ -349,7 +349,7 @@
 <script src="libs/muse-ui-2.1.0/muse-ui.js"></script>
 
 <script src="libs/Highcharts-6.0.1/highcharts.src.js"></script>
-<script src="libs/Highcharts-6.0.1/themes/grid.js"></script>
+<script src="libs/Highcharts-6.0.1/themes/sand-signika.src.js"></script>
 <script src="libs/Highcharts-6.0.1/modules/exporting.src.js"></script>
 
 <script src="libs/axios-0.17.0/axios.min.js"></script>
