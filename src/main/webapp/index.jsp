@@ -291,7 +291,10 @@
                 <%--<mu-icon-button tooltip="筛选数据重置" tooltip-position="bottom-right" icon="grade" class="right-btn" @click="timeGet"></mu-icon-button>--%>
             </div>
             <div class="body-right" :style="rightStyle">
-                <div id="timeMap" class="map">
+               <!-- <div id="timeMap" class="map">
+
+                </div>-->
+                <div id="timeLine" class="map">
 
                 </div>
             </div>

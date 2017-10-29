@@ -755,6 +755,79 @@ var app = new Vue({
             });
             return obj;
         },
+        showLine:function(data,roadType,type,sDate,eDate,width){ //展示折线图
+
+            var title = {
+                text: '月平均气温'
+            };
+            var subtitle = {
+                text: 'Source: runoob.com'
+            };
+            var xname = new Array(width);
+            /*
+            * 设置x轴名称
+            * */
+            var sD = sDate.split("-");
+            if (type == 1) {
+                for(var i = 0 ;i < width ; i++){
+                    xname[i] = parseInt(sD[2])+i;
+                    xname[i] += "年";
+                }
+            }
+            if( type == 2){
+                for(var i = 0 ;i < width ; i++){
+                    var dur = parseInt(sD[1])+i;
+                    xname[i] = dur+"月";
+                }
+            }
+            if (type == 3) {
+                for(var i = 0 ;i < width ; i++){
+                    xname[i] = i;
+                }
+            }
+
+            // var xAxis = {
+            //     categories: xname
+            // };
+            var xAxis = xname;
+            var yAxis = {
+                title: {
+                    text: 'Temperature (\xB0C)'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            };
+
+            var tooltip = {
+                valueSuffix: '\xB0C'
+            }
+
+            var legend = {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle',
+                borderWidth: 0
+            };
+
+            var series =  [
+                {
+                    name: '数量',
+                    data: data
+                }
+            ];
+
+            var json = {};
+
+
+          //  var xAxis = ['总数', '仅损财', '轻伤', '重伤', '死亡', '未知'];
+            this.getLine('timeLine', '事故数、事故严重程度趋势图', xAxis, series);
+            //document.getElementById('#timeLine').highcharts(json);
+
+
+        },
         getWeaObj: function (data) {
             var obj = ['数量'];
             //'晴天', '阴天', '雨', '雾', '雪', '冰雹', '台风'
@@ -1191,6 +1264,31 @@ var app = new Vue({
             this.isChartShow = true;
             this.singleShowSelect = false;
         },
+        getLine:function (id, title, xAxis, series) {
+            return new Highcharts.Chart(id, {
+                chart: {
+                    type: 'line'
+                },
+                title: {
+                    text: title
+                },
+                xAxis: {
+                    categories: xAxis
+                },
+                credites: {
+                    enabled: true
+                },
+                plotOptions:{
+                    column:{
+                        dataLabel:{
+                            enabled: true,
+                            inside: true
+                        }
+                    }
+                },
+                series: series
+            });
+        },
         getHistogram: function (id, title, xAxis, series) {
             return new Highcharts.Chart(id, {
                 chart: {
@@ -1281,9 +1379,10 @@ var app = new Vue({
         },
         getSpaceMarkers: function (acc, anObj, allnum, data) {
             var anObjType = (anObj == '路段') ? 1 : 0;
+            var that = this;
             data.forEach(function (item, index, arr) {
                 var obj = {
-                    map: 'spaceMap',
+                    map: spaceMap,
                     type: anObjType,
                     name: item.diMingBeiZhu,
                     lat: item.lat,
@@ -1296,8 +1395,8 @@ var app = new Vue({
                 }
                 else{
                     obj.isChenDu = true;
-                    obj.showType = this.selectData.accidentalSev.toString();
-                    this.selectData.accidentalSev.forEach(function (t) {
+                    obj.showType = that.selectData.accidentalSev.toString();
+                    that.selectData.accidentalSev.forEach(function (t) {
                         switch (t){
                             case '仅财损':{
                                 obj.wealthLoss = item.propertyLoss;
@@ -1376,8 +1475,11 @@ var app = new Vue({
             if(flag){
                 axios.post(url, json).then(function (response) {
                     var allData = response.data;
+                    console.log(response)
+                    console.log(allData)
                     if(allData.code == 200){
                         console.log(allData.data);
+                        clearMarker(spaceMap);
                         that.getSpaceMarkers(that.selectData.yType, that.selectData.analysisObj, allData.data.allnum, allData.data.arr);
                     }
                     else{
@@ -1391,6 +1493,7 @@ var app = new Vue({
             }
         },
         timeGet: function () {
+            console.log("enter timeGer....")
             var that = this;
             var url = webBase + '/accidentDatas/analyseData/timeMultiConditionQuery';
             var json = {};
@@ -1401,6 +1504,76 @@ var app = new Vue({
                     var allData = response.data;
                     if(allData.code == 200){
                         console.log(allData.data);
+
+                        /*
+                        * 统计年、月、日中人数
+                        *
+                        * */
+                        // console.log(json.endTime);
+                        // console.log(json.startTime);
+                        //获取时间跨度
+                        var eDate = json.endTime.split("-");
+                        var sDate = json.startTime.split("-");
+                        var xYears = eDate[0] - sDate[0]+1;
+                        var xMonths = (xYears-1)*12 + eDate[1]-sDate[1]+1;
+                        var eD = new Date(eDate[1] + "-" + eDate[2] + "-" + eDate[0]);
+                        var sD = new Date(sDate[1] + "-" + sDate[2] + "-" + sDate[0]);
+                        var xDays = parseInt(Math.abs(eD  -  sD)  /  1000  /  60  /  60  /24);
+                        // console.log(xYears)
+                        // console.log(xMonths)
+                        // console.log(xDays)
+                        console.log(json.timePrecision);
+
+                        /*展示方式
+                        * */
+
+                        var data = allData.data;
+                        if (json.timePrecision == 1) {
+                            //按年展示
+                            var yearNumbers = new Array(xYears);
+                            for (var i = 0 ; i < xYears;i++) {
+                                yearNumbers[i] = 0;
+                            }
+                            for(x in data){
+                                yearNumbers[data[x].yearRes-sDate[0]]++;
+                                console.log(data[x].yearRes-sDate[0])
+                                console.log(yearNumbers[data[x].yearRes-sDate[0]]);
+                            }
+                            that.showLine(yearNumbers,json.roadType,json.timePrecision,json.startTime,json.endTime,xYears)
+                        }
+                        if (json.timePrecision == 2) {
+                            //按月展示
+                            var monthNumbers = new Array(xMonths);
+                            for (var i = 0 ; i < xMonths;i++) {
+                                monthNumbers[i] = 0;
+                            }
+
+                            for(x in data){
+                                m = (data[x].yearRes-sDate[0])*12 + data[x].monthRes-sDate[1]+1;
+                                monthNumbers[m]++;
+                                console.log(m)
+                                console.log(monthNumbers[m]);
+                            }
+                            //data,roadType,type,sDate,eDate,width
+                            that.showLine(monthNumbers,json.roadType,json.timePrecision,json.startTime,json.endTime,xMonths)
+                        }
+                        if (json.timePrecision == 3) {
+                            //按日展示
+                            var dayNumbers = new Array(xDays);
+                            for (var i = 0 ; i < xDays;i++) {
+                                dayNumbers[i] = 0;
+                            }
+                            for(x in data){
+                                var eD = new Date(data[x].monthRes + "-" + data[x].dayRes + "-" + data[x].yearRes);
+                                var sD = new Date(sDate[1] + "-" + sDate[2] + "-" + sDate[0]);
+                                var m = parseInt(Math.abs(eD  -  sD)  /  1000  /  60  /  60  /24);
+                               // m = (data[x].yearRes-sDate[0])*12 + data[x].monthRes-sDate[1]+1;
+                                dayNumbers[m]++;
+                                console.log(m)
+                                console.log(dayNumbers[m]);
+                            }
+                            that.showLine(dayNumbers,json.roadType,json.timePrecision,json.startTime,json.endTime,xDays)
+                        }
                     }
                     else{
                         this.messageTop = allData.message;
