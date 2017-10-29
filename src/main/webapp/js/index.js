@@ -1155,9 +1155,9 @@ var app = new Vue({
             this.$set(this.singleShowData.carTable, 'value', this.getCarObj(data));
             //车辆事故柱状图
             xAxis = ['总数', '小客车', '中客车', '大客车', '公交', '校车', '小货车', '中货车', '大货车', '拖挂车', '特种车辆', '摩托车', '非机动车', '畜力车'];
-            this.getHistogram('carHistogram', '天气情况事故柱状图', xAxis, [this.getCarHObj(data)]);
+            this.getHistogram('carHistogram', '车辆事故柱状图', xAxis, [this.getCarHObj(data)]);
             //车辆事故扇形图
-            this.getPie('carPie', '天气情况事故扇形图', {
+            this.getPie('carPie', '车辆事故扇形图', {
                 title: '事故类型',
                 value: ['小客车', '中客车', '大客车', '公交', '校车', '小货车', '中货车', '大货车', '拖挂车', '特种车辆', '摩托车', '非机动车', '畜力车']
             }, {

@@ -162,7 +162,7 @@
                     <%--天气--%>
                         <div class="chart-type-class" :style="chartStyle">
                             <div class="table-class">
-                                <div class="title-class">天气汇总表</div>
+                                <div class="title-class">天气情况事故汇总表</div>
                                 <mu-divider></mu-divider>
                                 <mu-table :fixed-header="true" :selectable="false" :show-checkbox="false">
                                     <mu-thead slot="header">
@@ -183,7 +183,7 @@
                     <%--车辆类型--%>
                         <div class="chart-type-class" :style="chartStyle">
                             <div class="table-class">
-                                <div class="title-class">天气汇总表</div>
+                                <div class="title-class">车辆事故汇总表</div>
                                 <mu-divider></mu-divider>
                                 <mu-table :fixed-header="true" :selectable="false" :show-checkbox="false">
                                     <mu-thead slot="header">
