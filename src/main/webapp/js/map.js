@@ -164,7 +164,7 @@ function setIntersectionContent(options) {
         getHeight(options.accidentNumbers,options.accidentAllNumbers)/2+"px;background: red"+
        ";border-radius:50%\"></div>" +
         "    <p style=\"width:100%;margin: auto;text-align: center;color:white;\">事故数："+options.accidentNumbers+"</p>\n" +
-        "    <p style=\"width:100%;margin: auto;background:white;text-align: center;\">"+options.name+"</p>\n" +
+        "    <p style=\"width:100%;margin: auto;color:white;text-align: center;\">"+options.name+"</p>\n" +
         "</div>";
 
     if (options.isChenDu) {
@@ -178,7 +178,7 @@ function setRoadContent (options) {
         "    <div id=\"bar\" style=\"width: 20px;height: "+getHeight(options.accidentNumbers,options.accidentAllNumbers)+"px;background: red"+
              "; margin: auto\"></div>\n" +
         "    <p style=\"width:100%;margin: auto;text-align: center;color: "+"white"+"\">事故数："+options.accidentNumbers+"</p>\n" +
-        "    <p style=\"width:100%;margin: auto;background:white;text-align: center;\">"+options.name+"</p>\n" +
+        "    <p style=\"width:100%;margin: auto;color:white;text-align: center;\">"+options.name+"</p>\n" +
         "</div>";
     if (options.isChenDu) {
         return getContent(options);
