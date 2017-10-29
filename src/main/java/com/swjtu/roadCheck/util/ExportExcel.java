@@ -1,20 +1,17 @@
 package com.swjtu.roadCheck.util;
 
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.lang.reflect.Method;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
 import com.swjtu.roadCheck.web.exception.base.CustomException;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.util.CellRangeAddress;
+
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Map;
 /**
  * Created by windows on 2017/10/21.
  */
@@ -157,7 +154,6 @@ import org.apache.poi.ss.util.CellRangeAddress;
                 }
                 i++;
             }
-
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -172,4 +168,5 @@ import org.apache.poi.ss.util.CellRangeAddress;
             sheet.autoSizeColumn(j);
         }
     }
+
 }

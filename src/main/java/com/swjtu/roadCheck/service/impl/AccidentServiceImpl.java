@@ -13,7 +13,6 @@ import com.swjtu.roadCheck.util.ExportExcel;
 import com.swjtu.roadCheck.util.ObjectUtil;
 import com.swjtu.roadCheck.web.exception.base.CustomException;
 import com.swjtu.roadCheck.web.exception.base.ReqParmIncorException;
-import net.sf.json.JSONArray;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -145,7 +144,8 @@ public class AccidentServiceImpl implements IAccidentService {
         if ( condition.isyType() )
             return accidentMapperCustom.multiConditionQueryAccidentForSGS(ObjectUtil.objectToMap(condition));
         else
-            return accidentMapperCustom.multiConditionQueryAccidentForYZCD(ObjectUtil.objectToMap(condition));
+            return  accidentMapperCustom.multiConditionQueryAccidentForYZCD(ObjectUtil.objectToMap(condition));
+
     }
 
     /**
@@ -160,6 +160,12 @@ public class AccidentServiceImpl implements IAccidentService {
         if(condition.isyType()){
             titleMap.put("diMingBeiZhu", "地名");
             titleMap.put("num", "事故数量");
+            String sheetName = "信息导出";
+            try{
+                ExportExcel.excelExport(accidentList, titleMap, sheetName,"空间分析数据");
+            }catch (CustomException cex){
+                throw new CustomException("信息导出失败");
+            }
         }
         //导出各地点各严重程度下的事故数量
         else{
@@ -167,12 +173,6 @@ public class AccidentServiceImpl implements IAccidentService {
             titleMap.put("num", "事故数量");
         }
 
-        String sheetName = "信息导出";
-        try{
-            ExportExcel.excelExport(accidentList, titleMap, sheetName,"空间分析数据");
-        }catch (CustomException cex){
-            throw new CustomException("信息导出失败");
-        }
     }
 
     /**
