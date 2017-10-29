@@ -114,7 +114,10 @@ public class AccidentController {
     public JsonResult analyseBlackPoint(@RequestBody Map map) throws Exception{
         List<BlackPointData> blackPointDatas = new ArrayList<BlackPointData>();
         blackPointDatas = accidentService.getTopTen(map);
-        return JsonResult.build(StatusCode.SUCCESS,blackPointDatas);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("arr",blackPointDatas);
+        jsonObject.put("allnum",blackPointDatas.size());
+        return JsonResult.build(StatusCode.SUCCESS,jsonObject);
     }
 
     @RequestMapping(value = "/blackPointDiagnosis/exportaion", method = RequestMethod.POST)
