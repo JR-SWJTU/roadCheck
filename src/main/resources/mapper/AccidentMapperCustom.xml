@@ -133,12 +133,16 @@
     <select id="multiConditionQueryAccidentForYZCD" parameterType="Map"
             resultType="com.swjtu.roadCheck.dto.Accident">
         SELECT
+        diMingBeiZhu,propertyLoss ,slightInjury, severInjury,dead,lat,lng,
+        propertyLoss + slightInjury+severInjury+dead as num from
+        (
+        SELECT
         diMingBeiZhu,
         MAX(CASE yanZhongCd WHEN '仅财损' THEN num ELSE 0 END) AS propertyLoss,
         MAX(CASE yanZhongCd WHEN '轻伤' THEN num ELSE 0 END) AS slightInjury,
         MAX(CASE yanZhongCd WHEN '重伤' THEN num ELSE 0 END) AS severInjury,
         MAX(CASE yanZhongCd WHEN '死亡' THEN num ELSE 0 END) AS dead,
-        num,lat,lng
+        lat,lng
         from(
 
         SELECT
@@ -271,6 +275,7 @@
         </if>
         GROUP BY diMingBeiZhu,yanZhongCd
         )res
+        )lastRes
     </select>
 
 
@@ -278,6 +283,20 @@
     <select id="multiConditionQueryAccidentForTime" parameterType="Map"
             resultType="com.swjtu.roadCheck.dto.Accident">
         <if test="yType==false">
+            SELECT
+            diMingBeiZhu,propertyLoss ,slightInjury, severInjury,dead,lat,lng,
+            propertyLoss + slightInjury+severInjury+dead as num
+            <if test="timePrecision==0 || timePrecision>0">
+                ,yearRes
+            </if>
+            <if test="timePrecision>1">
+                , monthRes
+            </if>
+            <if test="timePrecision>2">
+                , dayRes
+            </if>
+            from
+            (
             SELECT
             diMingBeiZhu,
             MAX(CASE yanZhongCd WHEN '仅财损' THEN num ELSE 0 END) AS propertyLoss,
@@ -438,8 +457,7 @@
         </if>
 
         GROUP BY diMingBeiZhu
-        <if test="yType==false">
-        ,yanZhongCd
+        <if test="yType==false">,yanZhongCd
         </if>
         <if test="timePrecision==0 || timePrecision>=1">
             ,YEAR (riqi)
@@ -451,6 +469,7 @@
             ,DAY(riqi)
         </if>
         )res
+        )lastRes
     </select>
 
 

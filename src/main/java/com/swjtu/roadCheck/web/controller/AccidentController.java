@@ -2,6 +2,7 @@ package com.swjtu.roadCheck.web.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.swjtu.roadCheck.dto.Accident;
 import com.swjtu.roadCheck.entity.Accidentdata;
 import com.swjtu.roadCheck.entityCustom.AccidentQueryCondition;
 import com.swjtu.roadCheck.entityCustom.BlackPointData;
@@ -41,7 +42,19 @@ public class AccidentController {
      */
     @RequestMapping(value = "/analyseData/areaMultiConditionQuery", method = RequestMethod.POST)
     public JsonResult areaMultiConditionQuery(@RequestBody AccidentQueryCondition condition) throws Exception{
-        return JsonResult.build(StatusCode.SUCCESS, accidentService.areaMultiConditionQuery(condition));
+        if( condition.isyType()){
+            return JsonResult.build(StatusCode.SUCCESS, accidentService.areaMultiConditionQuery(condition));
+        }else{
+            JSONObject jsonObject = new JSONObject();
+            List<Accident> list =  accidentService.areaMultiConditionQuery(condition);
+            int allnum = 0;
+            for(int i = 0 ; i < list.size(); i++){
+                allnum += list.get(i).getNum();
+            }
+            jsonObject.put("arr", list);
+            jsonObject.put("allnum",allnum);
+            return JsonResult.build(StatusCode.SUCCESS, jsonObject);
+        }
     }
 
     /**
@@ -52,8 +65,20 @@ public class AccidentController {
      */
     @RequestMapping(value = "/analyseData/timeMultiConditionQuery", method = RequestMethod.POST)
     public JsonResult timeMultiConditionQuery(@RequestBody AccidentQueryCondition condition) throws Exception{
-        System.out.println(new Gson().toJson(condition));
-        return JsonResult.build(StatusCode.SUCCESS, accidentService.timeMultiConditionQuery(condition));
+        if( condition.isyType()){
+            return JsonResult.build(StatusCode.SUCCESS, accidentService.timeMultiConditionQuery(condition));
+        }else{
+            JSONObject jsonObject = new JSONObject();
+            List<Accident> list =  accidentService.timeMultiConditionQuery(condition);
+            int allnum = 0;
+            for(int i = 0 ; i < list.size(); i++){
+                allnum += list.get(i).getNum();
+            }
+            jsonObject.put("arr", list);
+            jsonObject.put("allnum",allnum);
+            return JsonResult.build(StatusCode.SUCCESS, jsonObject);
+        }
+
     }
 
     /**
