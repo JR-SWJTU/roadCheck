@@ -1516,7 +1516,7 @@ var app = new Vue({
                 axios.post(url, json).then(function (response) {
                     var allData = response.data;
                     if(allData.code == 200){
-                        console.log(allData.data);
+                        console.log(allData.data.arr);
 
                         /*
                         * 统计年、月、日中人数
@@ -1540,7 +1540,7 @@ var app = new Vue({
                         /*展示方式
                         * */
 
-                        var data = allData.data;
+                        var data = allData.data.arr;
                         if (json.timePrecision == 1) {
                             //按年展示
                             var yearNumbers = new Array(xYears);
