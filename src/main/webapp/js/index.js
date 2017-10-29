@@ -81,16 +81,23 @@ var app = new Vue({
             hitAndRun: '否', //'是'
         },
 
+        isChartShow: false,
         singleShowData: {
-            grAccTable: {
+            accTable: {
                 key: ['', '仅财损', '轻伤', '重伤', '死亡', '未知', '总数'],
                 value: ['数量', 0, 0, 0, 0, 0, 0]
             },
-            grAccHistogram: {
-
+            accTypeTable: {
+                key: ['', '撞人、撞机动车或其他非固定物', '碰撞固定物', '非碰撞', '总数'],
+                value: ['数量', 0, 0, 0, 0]
             },
-            grAccPie: {
-
+            weaTable: {
+                key: ['', '晴天', '阴天', '雨', '雾', '雪', '冰雹', '台风', '总数'],
+                value: ['数量', 0, 0, 0, 0, 0, 0, 0, 0]
+            },
+            carTable: {
+                key: ['', '小客车', '中客车', '大客车', '公交', '校车', '小货车', '中货车', '大货车', '拖挂车', '特种车辆', '摩托车', '非机动车', '畜力车', '总数'],
+                value: ['数量', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             }
         },
 
@@ -248,13 +255,17 @@ var app = new Vue({
         },
         blackPointDiagnose: function () {
             this.nowFuc = 'black-point';
+            this.resetObj();
         },
         singleAnalysis: function () {
             this.nowFuc = 'single-point';
+            this.resetObj();
         },
         singleTabChange: function (val) {
             this.singleShowSelect = false;
             this.singleTab = val;
+            this.resetSingleShowData();
+            this.resetObj();
             switch(val){
                 case 'gruppe': {
                     this.getTeams();
@@ -284,9 +295,11 @@ var app = new Vue({
         },
         spaceAnalysis: function () {
             this.nowFuc = 'space';
+            this.resetObj();
         },
         timeAnalysis: function () {
             this.nowFuc = 'time';
+            this.resetObj();
         },
         highStatistics: function () {
             this.nowFuc = 'statistics';
@@ -309,7 +322,38 @@ var app = new Vue({
             }
         },
         resetObj: function () {
-            console.log('resetObj');
+            this.selectData = {
+                analysisObj: '交叉口', //'交叉口',
+                    area: {
+                    type: 'gruppe', //'gruppe',
+                        value: ''
+                },
+                accidentalSev: [], //'仅财损',
+                    workDay: false,
+                    dateTime: {
+                    start: '',
+                        end: ''
+                },
+                yType: 'accidentCount',
+                    timePrecision: 1,
+
+                    roadGrade: 'null', //'主干道',
+                    accident: {
+                    type: '',
+                        value: ''
+                },
+                carCollisionType: 'null', //'追尾碰撞',
+                    weather: 'null', //'晴天',
+                    workZone: {
+                    flag: '否',
+                        controlMode: '',
+                        worker: '',
+                        lawEnfor: ''
+                },
+                intersectionType: 'null', //'非交叉口',
+                    vehicleType: 'null', //'小客车',
+                    hitAndRun: '否', //'是'
+            };
         },
         checkInput: function (json) {
             if(this.nowFuc == 'black-point' || this.nowFuc == 'space' || this.nowFuc == 'time'){
@@ -489,54 +533,728 @@ var app = new Vue({
             }
             return true;
         },
+        resetSingleShowData: function () {
+            this.singleShowData = {
+                accTable: {
+                    key: ['', '仅财损', '轻伤', '重伤', '死亡', '未知', '总数'],
+                        value: ['数量', 0, 0, 0, 0, 0, 0]
+                },
+                accTypeTable: {
+                    key: ['', '撞人、撞机动车或其他非固定物', '碰撞固定物', '非碰撞', '总数'],
+                        value: ['数量', 0, 0, 0, 0]
+                },
+                weaTable: {
+                    key: ['', '晴天', '阴天', '雨', '雾', '雪', '冰雹', '台风', '总数'],
+                        value: ['数量', 0, 0, 0, 0, 0, 0, 0, 0]
+                },
+                carTable: {
+                    key: ['', '小客车', '中客车', '大客车', '公交', '校车', '小货车', '中货车', '大货车', '拖挂车', '特种车辆', '摩托车', '非机动车', '畜力车', '总数'],
+                        value: ['数量', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                }
+            };
+            this.isChartShow = false;
+        },
+        getAccObj: function (data) {
+            var obj = ['数量'];
+            data.severity.forEach(function (item, index, arr) {
+                switch (item.keyRes){
+                    case '仅财损':{
+                        obj[1] = item.num;
+                        break;
+                    }
+                    case '轻伤':{
+                        obj[2] = item.num;
+                        break;
+                    }
+                    case '重伤':{
+                        obj[3] = item.num;
+                        break;
+                    }
+                    case '死亡':{
+                        obj[4] = item.num;
+                        break;
+                    }
+                    case '未知':{
+                        obj[5] = item.num;
+                        break;
+                    }
+                    default:
+                        break;
+                }
+            });
+            obj.push(data.totalNum);
+            return obj;
+        },
+        getAccHObj: function (data) {
+            var obj = {
+                name: '',
+                data: []
+            };
+            obj.data.push(data.totalNum);
+            data.severity.forEach(function (item, index, arr) {
+                switch (item.keyRes){
+                    case '仅财损':{
+                        obj.data[1] = item.num;
+                        break;
+                    }
+                    case '轻伤':{
+                        obj.data[2] = item.num;
+                        break;
+                    }
+                    case '重伤':{
+                        obj.data[3] = item.num;
+                        break;
+                    }
+                    case '死亡':{
+                        obj.data[4] = item.num;
+                        break;
+                    }
+                    case '未知':{
+                        obj.data[5] = item.num;
+                        break;
+                    }
+                    default:
+                        break;
+                }
+            });
+            return obj;
+        },
+        getAccPObj: function (data) {
+            var obj = [];
+            data.severity.forEach(function (item, index, arr) {
+                var temp;
+                switch (item.keyRes){
+                    case '仅财损':{
+                        temp = ['仅财损'];
+                        temp.push(item.num / data.totalNum);
+                        obj[0] = temp;
+                        break;
+                    }
+                    case '轻伤':{
+                        temp = ['轻伤'];
+                        temp.push(item.num / data.totalNum);
+                        obj[1] = temp;
+                        break;
+                    }
+                    case '重伤':{
+                        temp = ['重伤'];
+                        temp.push(item.num / data.totalNum);
+                        obj[2] = temp;
+                        break;
+                    }
+                    case '死亡':{
+                        temp = ['死亡'];
+                        temp.push(item.num / data.totalNum);
+                        obj[3] = temp;
+                        break;
+                    }
+                    case '未知':{
+                        temp = ['未知'];
+                        temp.push(item.num / data.totalNum);
+                        obj[4] = temp;
+                        break;
+                    }
+                    default:
+                        break;
+                }
+            });
+            return obj;
+        },
+        getAccTObj: function (data) {
+            var obj = ['数量'];
+            //'撞人、撞机动车或其他非固定物', '碰撞固定物', '非碰撞'
+            data.accidentType.forEach(function (item, index, arr) {
+                switch (item.keyRes){
+                    case '撞人、撞机动车或其他非固定物':{
+                        obj[1] = item.num;
+                        break;
+                    }
+                    case '碰撞固定物':{
+                        obj[2] = item.num;
+                        break;
+                    }
+                    case '非碰撞':{
+                        obj[3] = item.num;
+                        break;
+                    }
+                    default:
+                        break;
+                }
+            });
+            obj.push(data.totalNum);
+            return obj;
+        },
+        getAccTHObj: function (data) {
+            var obj = {
+                name: '',
+                data: []
+            };
+            obj.data.push(data.totalNum);
+            //'撞人、撞机动车或其他非固定物', '碰撞固定物', '非碰撞'
+            data.accidentType.forEach(function (item, index, arr) {
+                switch (item.keyRes){
+                    case '撞人、撞机动车或其他非固定物':{
+                        obj.data[1] = item.num;
+                        break;
+                    }
+                    case '碰撞固定物':{
+                        obj.data[2] = item.num;
+                        break;
+                    }
+                    case '非碰撞':{
+                        obj.data[3] = item.num;
+                        break;
+                    }
+                    default:
+                        break;
+                }
+            });
+            return obj;
+        },
+        getAccTPObj: function (data) {
+            var obj = [];
+            //'撞人、撞机动车或其他非固定物', '碰撞固定物', '非碰撞'
+            data.accidentType.forEach(function (item, index, arr) {
+                var temp;
+                switch (item.keyRes){
+                    case '撞人、撞机动车或其他非固定物':{
+                        temp = ['撞人、撞机动车或其他非固定物'];
+                        temp.push(item.num / data.totalNum);
+                        obj[0] = temp;
+                        break;
+                    }
+                    case '碰撞固定物':{
+                        temp = ['碰撞固定物'];
+                        temp.push(item.num / data.totalNum);
+                        obj[1] = temp;
+                        break;
+                    }
+                    case '非碰撞':{
+                        temp = ['非碰撞'];
+                        temp.push(item.num / data.totalNum);
+                        obj[2] = temp;
+                        break;
+                    }
+                    default:
+                        break;
+                }
+            });
+            return obj;
+        },
+        getWeaObj: function (data) {
+            var obj = ['数量'];
+            //'晴天', '阴天', '雨', '雾', '雪', '冰雹', '台风'
+            data.weather.forEach(function (item, index, arr) {
+                switch (item.keyRes){
+                    case '晴天':{
+                        obj[1] = item.num;
+                        break;
+                    }
+                    case '阴天':{
+                        obj[2] = item.num;
+                        break;
+                    }
+                    case '雨':{
+                        obj[3] = item.num;
+                        break;
+                    }
+                    case '雾':{
+                        obj[4] = item.num;
+                        break;
+                    }
+                    case '雪':{
+                        obj[5] = item.num;
+                        break;
+                    }
+                    case '冰雹':{
+                        obj[6] = item.num;
+                        break;
+                    }
+                    case '台风':{
+                        obj[7] = item.num;
+                        break;
+                    }
+                    default:
+                        break;
+                }
+            });
+            obj.push(data.totalNum);
+            return obj;
+        },
+        getWeaHObj: function (data) {
+            var obj = {
+                name: '',
+                data: []
+            };
+            obj.data.push(data.totalNum);
+            //'晴天', '阴天', '雨', '雾', '雪', '冰雹', '台风'
+            data.weather.forEach(function (item, index, arr) {
+                switch (item.keyRes){
+                    case '晴天':{
+                        obj.data[1] = item.num;
+                        break;
+                    }
+                    case '阴天':{
+                        obj.data[2] = item.num;
+                        break;
+                    }
+                    case '雨':{
+                        obj.data[3] = item.num;
+                        break;
+                    }
+                    case '雾':{
+                        obj.data[4] = item.num;
+                        break;
+                    }
+                    case '雪':{
+                        obj.data[5] = item.num;
+                        break;
+                    }
+                    case '冰雹':{
+                        obj.data[6] = item.num;
+                        break;
+                    }
+                    case '台风':{
+                        obj.data[7] = item.num;
+                        break;
+                    }
+                    default:
+                        break;
+                }
+            });
+            return obj;
+        },
+        getWeaPObj: function (data) {
+            var obj = [];
+            //'晴天', '阴天', '雨', '雾', '雪', '冰雹', '台风'
+            data.weather.forEach(function (item, index, arr) {
+                var temp;
+                switch (item.keyRes){
+                    case '晴天':{
+                        temp = ['晴天'];
+                        temp.push(item.num / data.totalNum);
+                        obj[0] = temp;
+                        break;
+                    }
+                    case '阴天':{
+                        temp = ['阴天'];
+                        temp.push(item.num / data.totalNum);
+                        obj[1] = temp;
+                        break;
+                    }
+                    case '雨':{
+                        temp = ['雨'];
+                        temp.push(item.num / data.totalNum);
+                        obj[2] = temp;
+                        break;
+                    }
+                    case '雾':{
+                        temp = ['雾'];
+                        temp.push(item.num / data.totalNum);
+                        obj[3] = temp;
+                        break;
+                    }
+                    case '雪':{
+                        temp = ['雪'];
+                        temp.push(item.num / data.totalNum);
+                        obj[4] = temp;
+                        break;
+                    }
+                    case '冰雹':{
+                        temp = ['冰雹'];
+                        temp.push(item.num / data.totalNum);
+                        obj[5] = temp;
+                        break;
+                    }
+                    case '台风':{
+                        temp = ['台风'];
+                        temp.push(item.num / data.totalNum);
+                        obj[6] = temp;
+                        break;
+                    }
+                    default:
+                        break;
+                }
+            });
+            return obj;
+        },
+        getCarObj: function (data) {
+            var obj = ['数量'];
+            //'小客车', '中客车', '大客车', '公交', '校车', '小货车', '中货车', '大货车', '拖挂车', '特种车辆', '摩托车', '非机动车', '畜力车'
+            data.carType.forEach(function (item, index, arr) {
+                switch (item.keyRes){
+                    case '小客车':{
+                        obj[1] = item.num;
+                        break;
+                    }
+                    case '中客车':{
+                        obj[2] = item.num;
+                        break;
+                    }
+                    case '大客车':{
+                        obj[3] = item.num;
+                        break;
+                    }
+                    case '公交':{
+                        obj[4] = item.num;
+                        break;
+                    }
+                    case '校车':{
+                        obj[5] = item.num;
+                        break;
+                    }
+                    case '小货车':{
+                        obj[6] = item.num;
+                        break;
+                    }
+                    case '中货车':{
+                        obj[7] = item.num;
+                        break;
+                    }
+                    case '大货车':{
+                        obj[8] = item.num;
+                        break;
+                    }
+                    case '拖挂车':{
+                        obj[9] = item.num;
+                        break;
+                    }
+                    case '特种车辆':{
+                        obj[10] = item.num;
+                        break;
+                    }
+                    case '摩托车':{
+                        obj[11] = item.num;
+                        break;
+                    }
+                    case '非机动车':{
+                        obj[12] = item.num;
+                        break;
+                    }
+                    case '畜力车':{
+                        obj[13] = item.num;
+                        break;
+                    }
+                    default:
+                        break;
+                }
+            });
+            obj.push(data.totalNum);
+            return obj;
+        },
+        getCarHObj: function (data) {
+            var obj = {
+                name: '',
+                data: []
+            };
+            obj.data.push(data.totalNum);
+            //'小客车', '中客车', '大客车', '公交', '校车', '小货车', '中货车', '大货车', '拖挂车', '特种车辆', '摩托车', '非机动车', '畜力车'
+            data.carType.forEach(function (item, index, arr) {
+                switch (item.keyRes){
+                    case '小客车':{
+                        obj.data[1] = item.num;
+                        break;
+                    }
+                    case '中客车':{
+                        obj.data[2] = item.num;
+                        break;
+                    }
+                    case '大客车':{
+                        obj.data[3] = item.num;
+                        break;
+                    }
+                    case '公交':{
+                        obj.data[4] = item.num;
+                        break;
+                    }
+                    case '校车':{
+                        obj.data[5] = item.num;
+                        break;
+                    }
+                    case '小货车':{
+                        obj.data[6] = item.num;
+                        break;
+                    }
+                    case '中货车':{
+                        obj.data[7] = item.num;
+                        break;
+                    }
+                    case '大货车':{
+                        obj.data[8] = item.num;
+                        break;
+                    }
+                    case '拖挂车':{
+                        obj.data[9] = item.num;
+                        break;
+                    }
+                    case '特种车辆':{
+                        obj.data[10] = item.num;
+                        break;
+                    }
+                    case '摩托车':{
+                        obj.data[11] = item.num;
+                        break;
+                    }
+                    case '非机动车':{
+                        obj.data[12] = item.num;
+                        break;
+                    }
+                    case '畜力车':{
+                        obj.data[13] = item.num;
+                        break;
+                    }
+                    default:
+                        break;
+                }
+            });
+            return obj;
+        },
+        getCarPObj: function (data) {
+            var obj = [];
+            //'小客车', '中客车', '大客车', '公交', '校车', '小货车', '中货车', '大货车', '拖挂车', '特种车辆', '摩托车', '非机动车', '畜力车'
+            data.carType.forEach(function (item, index, arr) {
+                var temp;
+                switch (item.keyRes){
+                    case '小客车':{
+                        temp = ['小客车'];
+                        temp.push(item.num / data.totalNum);
+                        obj[0] = temp;
+                        break;
+                    }
+                    case '中客车':{
+                        temp = ['中客车'];
+                        temp.push(item.num / data.totalNum);
+                        obj[1] = temp;
+                        break;
+                    }
+                    case '大客车':{
+                        temp = ['大客车'];
+                        temp.push(item.num / data.totalNum);
+                        obj[2] = temp;
+                        break;
+                    }
+                    case '公交':{
+                        temp = ['公交'];
+                        temp.push(item.num / data.totalNum);
+                        obj[3] = temp;
+                        break;
+                    }
+                    case '校车':{
+                        temp = ['校车'];
+                        temp.push(item.num / data.totalNum);
+                        obj[4] = temp;
+                        break;
+                    }
+                    case '小货车':{
+                        temp = ['小货车'];
+                        temp.push(item.num / data.totalNum);
+                        obj[5] = temp;
+                        break;
+                    }
+                    case '中货车':{
+                        temp = ['中货车'];
+                        temp.push(item.num / data.totalNum);
+                        obj[6] = temp;
+                        break;
+                    }
+                    case '大货车':{
+                        temp = ['大货车'];
+                        temp.push(item.num / data.totalNum);
+                        obj[7] = temp;
+                        break;
+                    }
+                    case '拖挂车':{
+                        temp = ['拖挂车'];
+                        temp.push(item.num / data.totalNum);
+                        obj[8] = temp;
+                        break;
+                    }
+                    case '特种车辆':{
+                        temp = ['特种车辆'];
+                        temp.push(item.num / data.totalNum);
+                        obj[9] = temp;
+                        break;
+                    }
+                    case '摩托车':{
+                        temp = ['摩托车'];
+                        temp.push(item.num / data.totalNum);
+                        obj[10] = temp;
+                        break;
+                    }
+                    case '非机动车':{
+                        temp = ['非机动车'];
+                        temp.push(item.num / data.totalNum);
+                        obj[11] = temp;
+                        break;
+                    }
+                    case '畜力车':{
+                        temp = ['畜力车'];
+                        temp.push(item.num / data.totalNum);
+                        obj[12] = temp;
+                        break;
+                    }
+                    default:
+                        break;
+                }
+            });
+            return obj;
+        },
         singleShow: function (data) {
-            switch(this.singleTab){
-                case 'gruppe': {
-                    //事故数、事故类型汇总
-                    var grat = ['数量'];
-                    data.severity.forEach(function (item, index, arr) {
-                        switch (item.keyRes){
-                            case '仅财损':{
-                                grat[1] = item.num;
-                                break;
+            //事故数、事故严重程度汇总
+            this.$set(this.singleShowData.accTable, 'value', this.getAccObj(data));
+            //事故数、事故严重程度柱状图
+            var xAxis = ['总数', '仅损财', '轻伤', '重伤', '死亡', '未知'];
+            this.getHistogram('accHistogram', '事故数、事故严重程度柱状图', xAxis, [this.getAccHObj(data)]);
+            //事故数、事故严重程度扇形图
+            this.getPie('accPie', '事故数、事故严重程度扇形图', {
+                title: '事故严重程度',
+                value: ['仅财损', '轻伤', '重伤', '死亡', '未知']
+            }, {
+                title: '事故数'
+            }, [{
+                type: 'pie',
+                name: '所属严重程度事故数占比',
+                data: this.getAccPObj(data)
+            }]);
+
+            //事故类型汇总
+            this.$set(this.singleShowData.accTypeTable, 'value', this.getAccTObj(data));
+            //事故类型柱状图
+            xAxis = ['总数', '撞人、撞机动车或其他非固定物', '碰撞固定物', '非碰撞'];
+            this.getHistogram('accTypeHistogram', '事故类型柱状图', xAxis, [this.getAccTHObj(data)]);
+            //事故类型扇形图
+            this.getPie('accTypePie', '事故类型扇形图', {
+                title: '事故类型',
+                value: ['撞人、撞机动车或其他非固定物', '碰撞固定物', '非碰撞']
+            }, {
+                title: '事故数'
+            }, [{
+                type: 'pie',
+                name: '所属事故类型事故数占比',
+                data: this.getAccPObj(data)
+            }]);
+
+            //天气情况事故汇总
+            this.$set(this.singleShowData.weaTable, 'value', this.getWeaObj(data));
+            //天气情况事故柱状图
+            xAxis = ['总数', '晴天', '阴天', '雨', '雾', '雪', '冰雹', '台风'];
+            this.getHistogram('weaHistogram', '天气情况事故柱状图', xAxis, [this.getWeaHObj(data)]);
+            //天气情况事故扇形图
+            this.getPie('weaPie', '天气情况事故扇形图', {
+                title: '事故类型',
+                value: ['晴天', '阴天', '雨', '雾', '雪', '冰雹', '台风']
+            }, {
+                title: '事故数'
+            }, [{
+                type: 'pie',
+                name: '所属天气事故数占比',
+                data: this.getWeaPObj(data)
+            }]);
+
+            //车辆事故汇总
+            this.$set(this.singleShowData.carTable, 'value', this.getCarObj(data));
+            //车辆事故柱状图
+            xAxis = ['总数', '小客车', '中客车', '大客车', '公交', '校车', '小货车', '中货车', '大货车', '拖挂车', '特种车辆', '摩托车', '非机动车', '畜力车'];
+            this.getHistogram('carHistogram', '天气情况事故柱状图', xAxis, [this.getCarHObj(data)]);
+            //车辆事故扇形图
+            this.getPie('carPie', '天气情况事故扇形图', {
+                title: '事故类型',
+                value: ['小客车', '中客车', '大客车', '公交', '校车', '小货车', '中货车', '大货车', '拖挂车', '特种车辆', '摩托车', '非机动车', '畜力车']
+            }, {
+                title: '事故数'
+            }, [{
+                type: 'pie',
+                name: '该车辆事故数占比',
+                data: this.getCarPObj(data)
+            }]);
+
+            this.isChartShow = true;
+            this.singleShowSelect = false;
+        },
+        getHistogram: function (id, title, xAxis, series) {
+            return new Highcharts.Chart(id, {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: title
+                },
+                xAxis: {
+                    categories: xAxis
+                },
+                credites: {
+                    enabled: true
+                },
+                plotOptions:{
+                    column:{
+                        dataLabel:{
+                            enabled: true,
+                            inside: true
+                        }
+                    }
+                },
+                series: series
+            });
+        },
+        getPie: function (id, title, xAxis, yAxis, series) {
+            return new Highcharts.Chart(id, {
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false
+                },
+                title: {
+                    text: title
+                },
+                tooltip: {
+                    headerFormat: '{series.name}<br>',
+                    pointFormat: '{point.name}: 事故数占<b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                            style: {
+                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
                             }
-                            case '轻伤':{
-                                grat[2] = item.num;
-                                break;
+                        },
+                        states: {
+                            hover: {
+                                enabled: false
                             }
-                            case '重伤':{
-                                grat[3] = item.num;
-                                break;
-                            }
-                            case '死亡':{
-                                grat[4] = item.num;
-                                break;
-                            }
-                            case '未知':{
-                                grat[5] = item.num;
-                                break;
+                        },
+                        slicedOffset: 20,
+                        point: {
+                            events: {
+                                mouseOver: function() {
+                                    this.slice();
+                                },
+                                mouseOut: function() {
+                                    this.slice();
+                                },
+                                click: function() {
+                                    return false;
+                                }
                             }
                         }
-                    });
-                    grat.push(data.totalNum);
-                    this.$set(this.singleShowData.grAccTable, 'value', grat);
-                    break;
-                }
-                case 'administrative': {
-                    this.messageTop = "行政区尚未选取！";
-                    break;
-                }
-                case 'intersection': {
-                    this.messageTop = "交叉口尚未选取！";
-                    break;
-                }
-                case 'crossing': {
-                    this.messageTop = "路段尚未选取！";
-                    break;
-                }
-                default:
-                    break;
-            }
+                    }
+                },
+                xAxis: {
+                    title: {
+                        text: xAxis.title
+                    },
+                    categories: xAxis.value
+                },
+                yAxis: {
+                    title: {
+                        text: yAxis.title
+                    }
+                },
+                series: series
+            });
         },
         blackPointGet: function () {
             var that = this;
@@ -635,12 +1353,17 @@ var app = new Vue({
         },
         singleRightStyle: function () {
             return {
-                'width': this.wrapWidth - 30 - (this.isShowItems ? 256 : 8) + 'px'
+                'width': this.wrapWidth - 30 - (this.isShowItems ? 256 : 8) + 'px',
             }
         },
         chartStyle: function () {
             return {
                 'width': this.wrapWidth - 30 - 2 - 20 - (this.isShowItems ? 256 : 8) + 'px'
+            }
+        },
+        singleContent: function () {
+            return {
+                'min-height': this.wrapHeight - 63 + 'px'
             }
         }
     },

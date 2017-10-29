@@ -116,55 +116,91 @@
                 </div>
             </div>
             <div class="body-right" :style="singleRightStyle" style="background-color: inherit">
-                <div v-show="singleTab == 'gruppe'" class="single-content">
+                <div class="single-content" :style="singleContent">
                     <%--事故数、事故严重程度--%>
-                    <div :style="chartStyle">
-                        <div id="grAccTable" class="table-class">
+                    <div class="chart-type-class" :style="chartStyle">
+                        <div class="table-class">
                             <div class="title-class">事故数、事故严重程度汇总表</div>
                             <mu-divider></mu-divider>
-                            <mu-table :fixed-header="true" :height="400" :selectable="false" :show-checkbox="false">
+                            <mu-table :fixed-header="true" :selectable="false" :show-checkbox="false">
                                 <mu-thead slot="header">
                                     <mu-tr>
-                                        <mu-th v-for="item, index in singleShowData.grAccTable.key" :key="index">{{item}}</mu-th>
+                                        <mu-th v-for="item, index in singleShowData.accTable.key" :key="index">{{item}}</mu-th>
                                     </mu-tr>
                                 </mu-thead>
                                 <mu-tbody>
                                     <mu-tr>
-                                        <mu-td v-for="item, index in singleShowData.grAccTable.value" :key="index">{{item}}</mu-td>
+                                        <mu-td v-for="item, index in singleShowData.accTable.value" :key="index">{{item}}</mu-td>
                                     </mu-tr>
                                 </mu-tbody>
                             </mu-table>
                         </div>
-                        <div id="grAccHistogram" class="chart-class"></div>
-                        <div id="grAccPie" class="chart-class"></div>
+                        <div v-show="isChartShow" id="accHistogram" class="chart-class"></div>
+                        <div v-show="isChartShow"  id="accPie" class="chart-class"></div>
                     </div>
                     <%--事故类型--%>
-                        <div :style="chartStyle">
-                            <div id="grAccTypeTable" class="table-class"></div>
-                            <div id="grAccTypeHistogram" class="chart-class"></div>
-                            <div id="grAccTypePie" class="chart-class"></div>
+                        <div class="chart-type-class" :style="chartStyle">
+                            <div class="table-class">
+                                <div class="title-class">事故类型汇总表</div>
+                                <mu-divider></mu-divider>
+                                <mu-table :fixed-header="true" :selectable="false" :show-checkbox="false">
+                                    <mu-thead slot="header">
+                                        <mu-tr>
+                                            <mu-th v-for="item, index in singleShowData.accTypeTable.key" :key="index">{{item}}</mu-th>
+                                        </mu-tr>
+                                    </mu-thead>
+                                    <mu-tbody>
+                                        <mu-tr>
+                                            <mu-td v-for="item, index in singleShowData.accTypeTable.value" :key="index">{{item}}</mu-td>
+                                        </mu-tr>
+                                    </mu-tbody>
+                                </mu-table>
+                            </div>
+                            <div v-show="isChartShow" id="accTypeHistogram" class="chart-class"></div>
+                            <div v-show="isChartShow" id="accTypePie" class="chart-class"></div>
                         </div>
                     <%--天气--%>
-                        <div :style="chartStyle">
-                            <div id="grWeaTable" class="table-class"></div>
-                            <div id="grWeaHistogram" class="chart-class"></div>
-                            <div id="grWeaPie" class="chart-class"></div>
+                        <div class="chart-type-class" :style="chartStyle">
+                            <div class="table-class">
+                                <div class="title-class">天气汇总表</div>
+                                <mu-divider></mu-divider>
+                                <mu-table :fixed-header="true" :selectable="false" :show-checkbox="false">
+                                    <mu-thead slot="header">
+                                        <mu-tr>
+                                            <mu-th v-for="item, index in singleShowData.weaTable.key" :key="index">{{item}}</mu-th>
+                                        </mu-tr>
+                                    </mu-thead>
+                                    <mu-tbody>
+                                        <mu-tr>
+                                            <mu-td v-for="item, index in singleShowData.weaTable.value" :key="index">{{item}}</mu-td>
+                                        </mu-tr>
+                                    </mu-tbody>
+                                </mu-table>
+                            </div>
+                            <div v-show="isChartShow" id="weaHistogram" class="chart-class"></div>
+                            <div v-show="isChartShow" id="weaPie" class="chart-class"></div>
                         </div>
                     <%--车辆类型--%>
-                        <div :style="chartStyle">
-                            <div id="grCarTable" class="table-class"></div>
-                            <div id="grCarHistogram" class="chart-class"></div>
-                            <div id="grCarPie" class="chart-class"></div>
+                        <div class="chart-type-class" :style="chartStyle">
+                            <div class="table-class">
+                                <div class="title-class">天气汇总表</div>
+                                <mu-divider></mu-divider>
+                                <mu-table :fixed-header="true" :selectable="false" :show-checkbox="false">
+                                    <mu-thead slot="header">
+                                        <mu-tr>
+                                            <mu-th v-for="item, index in singleShowData.carTable.key" :key="index">{{item}}</mu-th>
+                                        </mu-tr>
+                                    </mu-thead>
+                                    <mu-tbody>
+                                        <mu-tr>
+                                            <mu-td v-for="item, index in singleShowData.carTable.value" :key="index">{{item}}</mu-td>
+                                        </mu-tr>
+                                    </mu-tbody>
+                                </mu-table>
+                            </div>
+                            <div v-show="isChartShow" id="carHistogram" class="chart-class"></div>
+                            <div v-show="isChartShow" id="carPie" class="chart-class"></div>
                         </div>
-                </div>
-                <div v-show="singleTab == 'administrative'" class="single-content">
-                    administrative
-                </div>
-                <div v-show="singleTab == 'intersection'" class="single-content">
-                    intersection
-                </div>
-                <div v-show="singleTab == 'crossing'" class="single-content">
-                    crossing
                 </div>
             </div>
         </div>
@@ -312,8 +348,9 @@
 <script src="libs/vue/vue.min.js"></script>
 <script src="libs/muse-ui-2.1.0/muse-ui.js"></script>
 
-<script src="libs/Highcharts-6.0.1/highcharts.js"></script>
-<script src="libs/Highcharts-6.0.1/themes/dark-blue.js"></script>
+<script src="libs/Highcharts-6.0.1/highcharts.src.js"></script>
+<script src="libs/Highcharts-6.0.1/themes/grid.js"></script>
+<script src="libs/Highcharts-6.0.1/modules/exporting.src.js"></script>
 
 <script src="libs/axios-0.17.0/axios.min.js"></script>
 
