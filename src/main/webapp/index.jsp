@@ -14,11 +14,6 @@
     <link rel="stylesheet" href="libs/muse-ui-2.1.0/muse-ui.css" />
     <link rel="stylesheet" href="libs/muse-ui-2.1.0/theme-light.css" />
     <link rel="stylesheet" href="css/index.css" />
-
- <!--   <script src="http://webapi.amap.com/maps?v=1.4.0&key=9a1af9cca90cfaf160d5a8d7c0af9187"></script>          -->
-    <!-- 地图key -->
-    <script src="http://webapi.amap.com/maps?v=1.4.1&key=396befe7016bef31b674c361915d082e"></script>
-
 </head>
 <body>
 <div id="app">
@@ -336,8 +331,8 @@
         <mu-select-field v-model="selectData.hitAndRun" :full-width="true" label="肇事逃逸">
             <mu-menu-item v-for="text,index in basicData.hitAndRun" :key="index" :value="text" :title="text" ></mu-menu-item>
         </mu-select-field>
-        <mu-flat-button slot="actions" primary @click="detailConfirm" label="取消"></mu-flat-button>
-        <mu-flat-button slot="actions" primary @click="detailClose" label="确认"></mu-flat-button>
+        <mu-flat-button slot="actions" primary @click="detailClose" label="取消"></mu-flat-button>
+        <mu-flat-button slot="actions" primary @click="detailConfirm" label="确认"></mu-flat-button>
     </mu-dialog>
 
     <mu-popup position="top" v-cloak :overlay="false" :open="showMessageTop" popup-class="popup-top">
@@ -353,6 +348,8 @@
 <script src="libs/Highcharts-6.0.1/modules/exporting.src.js"></script>
 
 <script src="libs/axios-0.17.0/axios.min.js"></script>
+
+<script src="http://webapi.amap.com/maps?v=1.4.1&key=396befe7016bef31b674c361915d082e"></script>
 
 <script src="js/index.js"></script>
 <script src="js/map.js"></script>
