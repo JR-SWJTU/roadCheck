@@ -10,6 +10,7 @@
     <meta http-equiv="keywords" content="keyword1, keyword2, keyword3">
     <meta http-equiv="description" content="交科地图可视化">
 
+    <link rel="shortcut icon" type="image/ico" href="source/favicon.ico"/>
     <link rel="stylesheet" href="libs/muse-ui-2.1.0/fonts.css" />
     <link rel="stylesheet" href="libs/muse-ui-2.1.0/muse-ui.css" />
     <link rel="stylesheet" href="libs/muse-ui-2.1.0/theme-light.css" />
