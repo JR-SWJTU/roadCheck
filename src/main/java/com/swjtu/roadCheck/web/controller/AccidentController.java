@@ -42,19 +42,15 @@ public class AccidentController {
      */
     @RequestMapping(value = "/analyseData/areaMultiConditionQuery", method = RequestMethod.POST)
     public JsonResult areaMultiConditionQuery(@RequestBody AccidentQueryCondition condition) throws Exception{
-        if( condition.isyType()){
-            return JsonResult.build(StatusCode.SUCCESS, accidentService.areaMultiConditionQuery(condition));
-        }else{
-            JSONObject jsonObject = new JSONObject();
-            List<Accident> list =  accidentService.areaMultiConditionQuery(condition);
-            int allnum = 0;
-            for(int i = 0 ; i < list.size(); i++){
-                allnum += list.get(i).getNum();
-            }
-            jsonObject.put("arr", list);
-            jsonObject.put("allnum",allnum);
-            return JsonResult.build(StatusCode.SUCCESS, jsonObject);
+        JSONObject jsonObject = new JSONObject();
+        List<Accident> list =  accidentService.areaMultiConditionQuery(condition);
+        int allnum = 0;
+        for(int i = 0 ; i < list.size(); i++){
+            allnum += list.get(i).getNum();
         }
+        jsonObject.put("arr", list);
+        jsonObject.put("allnum",allnum);
+        return JsonResult.build(StatusCode.SUCCESS, jsonObject);
     }
 
     /**
@@ -65,20 +61,15 @@ public class AccidentController {
      */
     @RequestMapping(value = "/analyseData/timeMultiConditionQuery", method = RequestMethod.POST)
     public JsonResult timeMultiConditionQuery(@RequestBody AccidentQueryCondition condition) throws Exception{
-        if( condition.isyType()){
-            return JsonResult.build(StatusCode.SUCCESS, accidentService.timeMultiConditionQuery(condition));
-        }else{
-            JSONObject jsonObject = new JSONObject();
-            List<Accident> list =  accidentService.timeMultiConditionQuery(condition);
-            int allnum = 0;
-            for(int i = 0 ; i < list.size(); i++){
-                allnum += list.get(i).getNum();
-            }
-            jsonObject.put("arr", list);
-            jsonObject.put("allnum",allnum);
-            return JsonResult.build(StatusCode.SUCCESS, jsonObject);
+        JSONObject jsonObject = new JSONObject();
+        List<Accident> list =  accidentService.timeMultiConditionQuery(condition);
+        int allnum = 0;
+        for(int i = 0 ; i < list.size(); i++){
+            allnum += list.get(i).getNum();
         }
-
+        jsonObject.put("arr", list);
+        jsonObject.put("allnum",allnum);
+        return JsonResult.build(StatusCode.SUCCESS, jsonObject);
     }
 
     /**
