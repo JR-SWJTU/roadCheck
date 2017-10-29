@@ -1444,8 +1444,13 @@ var app = new Vue({
                 axios.post(url, json).then(function (response) {
                     var allData = response.data;
                     if(allData.code == 200){
+                        console.log(allData.data);
                         clearMarker(blackPointMap);
-                        that.getBlackMarkers(that.selectData.yType, that.selectData.analysisObj, allData.data.allnum, allData.data.arr);
+                        var allnum = 0;
+                        allData.data.arr.forEach(function (t) {
+                            allnum += t.number;
+                        });
+                        that.getBlackMarkers(that.selectData.yType, that.selectData.analysisObj, allnum, allData.data.arr);
                     }
                     else{
                         this.messageTop = allData.message;

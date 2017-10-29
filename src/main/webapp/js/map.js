@@ -159,7 +159,7 @@ function addMarker(amap,markerName,position,type,number){
 
 function setIntersectionContent(options) {
 
-    var content = "<div style=\"height: 150px;width: 100px\">\n" +
+    var content = "<div style=\"height: 150px;width: 150px\">\n" +
         "<div  style=\"margin: auto;width: "+getHeight(options.accidentNumbers,options.accidentAllNumbers)/2+"px;height: "+
         getHeight(options.accidentNumbers,options.accidentAllNumbers)/2+"px;background: red"+
        ";border-radius:50%\"></div>" +
@@ -174,7 +174,7 @@ function setIntersectionContent(options) {
 }
 
 function setRoadContent (options) {
-    var content = "<div style=\"height: 200px;width: 100px\">\n" +
+    var content = "<div style=\"height: 200px;width: 150px\">\n" +
         "    <div id=\"bar\" style=\"width: 20px;height: "+getHeight(options.accidentNumbers,options.accidentAllNumbers)+"px;background: red"+
              "; margin: auto\"></div>\n" +
         "    <p style=\"width:100%;margin: auto;text-align: center;color: "+"white"+"\">事故数："+options.accidentNumbers+"</p>\n" +
@@ -214,7 +214,7 @@ function getContent(options) {
     }
     // console.log("marginLeft:" + marginLeft);
     // console.log(indexs);
-    var content2 = "<div style=\"height: 200px;width: 100px;\">\n" +
+    var content2 = "<div style=\"height: 200px;width: 150px;\">\n" +
         "         <div class=\"barcontain\">\n" +
         "            <div class=\"barchild\" style=\"left:" + marginLeft[0] * 20 + "px;display: " + dis[0] + ";\">\n" +
         "               <p style=\"margin:auto;text-align: center;color: white;\">" + options.wealthLoss + "</p>\n" +
@@ -255,7 +255,7 @@ function getColor(number,allNumbers) {
     }
 }
 function getHeight(number,allNumbers) {
-    var lev = (number / allNumbers)*20;
+    var lev = (number / allNumbers)*100;
     return lev;
 }
 //清除marker
