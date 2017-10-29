@@ -468,8 +468,11 @@
         <if test="timePrecision>=3">
             ,DAY(riqi)
         </if>
+
+        <if test="yType==false">
         )res
         )lastRes
+        </if>
     </select>
 
 
