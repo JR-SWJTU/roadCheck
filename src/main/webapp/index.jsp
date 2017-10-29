@@ -132,7 +132,7 @@
                                 </mu-table>
                             </div>
                             <div v-show="isChartShow" id="accHistogram" class="chart-class"></div>
-                            <div v-show="isChartShow"  id="accPie" class="chart-class"></div>
+                            <div v-show="isChartShow" id="accPie" class="chart-class"></div>
                         </div>
                     <%--事故类型--%>
                         <div class="chart-type-class" :style="chartStyle">

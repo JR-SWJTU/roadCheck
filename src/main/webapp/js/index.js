@@ -82,6 +82,7 @@ var app = new Vue({
         },
 
         isChartShow: false,
+        preChartShowData: null,
         singleShowData: {
             accTable: {
                 key: ['', '仅财损', '轻伤', '重伤', '死亡', '未知', '总数'],
@@ -128,6 +129,12 @@ var app = new Vue({
                 this.isFirstLoad = true;
             }
             this.isShowItems = !this.isShowItems;
+            if(this.nowFuc == 'single-point' && this.isChartShow && this.preChartShowData != null){
+                var that = this;
+                setTimeout(function () {
+                    that.singleShow(that.preChartShowData);
+                }, 500)
+            }
         },
 
         getTeams: function () {
@@ -1313,6 +1320,7 @@ var app = new Vue({
                 axios.post(url, json).then(function (response) {
                     var allData = response.data;
                     if(allData.code == 200){
+                        that.preChartShowData = allData.data;
                         that.singleShow(allData.data);
                     }
                     else{
