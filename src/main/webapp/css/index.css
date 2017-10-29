@@ -2,21 +2,6 @@
     margin: 0px;
     padding: 0px;
 }
-/*覆盖原muse-ui*/
-.mu-radio-ripple-wrapper {
-    left: -16px;
-}
-.popup-top
-{
-    min-width: 30%;
-    max-width: 80%;
-    min-height: 48px;
-    padding: 0 10px;
-    opacity: 0.8;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 .items-class{
     width: 256px;
     height: 100%;
@@ -36,21 +21,6 @@
     -moz-animation: items-close .5s linear 0s 1 alternate;
     animation: items-close .5s linear 0s 1 alternate;
     left: -256px;
-}
-.items-active{
-    background-color: rgba(0, 0, 200, 0.05);
-}
-.item-active{
-    background-color: rgba(0, 0, 200, 0.1);
-}
-.barcontain{
-    position: relative;
-    height: 200px;
-}
-.barchild{
-    width: 40px;
-    position: absolute;
-    bottom: 0;
 }
 @-webkit-keyframes items-open {
     0% { left: -256px; }
@@ -175,9 +145,6 @@
 .underline-class{
     background-color: olivedrab;
 }
-.end-time-line{
-    width: 205px;
-}
 .icon-class{
     width: 16px;
 }
@@ -206,52 +173,12 @@
     font-weight: 900;
 }
 .body-left{
-    width: 288px;
+    width: 298px;
     padding: 15px;
     margin: 10px 0px 0px 20px;
     border: 1px solid lightblue;
     -webkit-border-radius: 10px;
     border-radius: 10px;
-}
-.single-body-left{
-    margin: 6px 0px 0px 20px;
-}
-.single-select-left{
-    width: 288px;
-    padding: 25px 15px 15px 15px;
-    border: 1px solid darkseagreen;
-    background-color: aliceblue;
-}
-.single-open-btn{
-    width: 38px;
-    height: 38px;
-    padding: 7px;
-    background: cadetblue;
-}
-.single-close-btn{
-    position: absolute;
-    top: 6px;
-    right: 15px;
-    z-index: 20;
-    width: 38px;
-    height: 38px;
-    padding: 7px;
-    background: lightblue;
-}
-.right-btn{
-    float: right;
-    background-color: lavender;
-    width: 38px;
-    height: 38px;
-    padding: 7px;
-}
-.detail-btn{
-    width: 205px;
-}
-.work-checkbox{
-    float: right;
-    position: relative;
-    top: 5px;
 }
 .body-left-float{
     position: absolute;
@@ -315,97 +242,17 @@
     100% { left: 0px; }
 }
 
-.single-body-left-float{
-    position: absolute;
-    top: 118px;
-    z-index: 20;
-}
-
-.succeed-text{
-    color: limegreen;
-}
-.failure-text{
-    color: red;
-}
 .body-right{
     position: relative;
     left: 0px;
     top: 0px;
-    background-color: aliceblue;
+    background-color: #7cb5ec;
     margin: 5px 15px;
     border: 1px solid lightblue;
     -webkit-border-radius: 10px;
     border-radius: 10px;
 }
-.single-tabs-fixed{
-    position: fixed;
-    margin-left: 15px;
-    background-color: whitesmoke;
-    z-index: 20;
-}
-.single-tabs-div{
-    width: 100%;
-    margin-top: 6px;
-    background-color: lightsteelblue;
-    -webkit-border-radius: 10px 10px 0px 0px;
-    -moz-border-radius: 10px 10px 0px 0px;
-    border-radius: 10px 10px 0px 0px;
-}
-.single-tabs{
-    background-color: lightsteelblue;
-    width: 512px;
-    border-right: 1px solid gainsboro;
-    -webkit-border-radius: 10px 10px 0px 0px;
-    -moz-border-radius: 10px 10px 0px 0px;
-    border-radius: 10px 10px 0px 0px;
-}
-.single-tabs-line{
-    background-color: darkblue;
-}
-.single-tab-title{
-    color: black;
-}
-.single-tab-title-active{
-    color: white;
-}
-.left-split-line{
-    border-left: 1px solid gainsboro;
-}
-.single-tab-active{
-    background-color: #2196f3;
-    -webkit-border-radius: 10px 10px 0px 0px;
-    -moz-border-radius: 10px 10px 0px 0px;
-    border-radius: 10px 10px 0px 0px;
-}
-.single-content{
-    margin-top: 48px;
-    padding: 6px 10px 6px 10px;
-    background-color: lightblue;
-    -webkit-border-radius: 0px 0px 10px 10px;
-    -moz-border-radius: 0px 0px 10px 10px;
-    border-radius: 0px 0px 10px 10px;
-}
-.title-class{
-    width: 100%;
-    height: 40px;
-    background-color: white;
-    text-align: center;
-    line-height: 40px;
-    font-size: medium;
-}
-.table-class{
-    width: 100%;
-}
-.chart-type-class{
-    padding-top: 20px;
-}
-.chart-class{
-    padding-top: 10px;
-    width: 100%;
-}
 .map{
     width: 100%;
     height: 100%;
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
 }
