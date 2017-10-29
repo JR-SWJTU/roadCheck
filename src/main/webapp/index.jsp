@@ -233,7 +233,7 @@
                 <div id="spaceMap" class="map">
 
                 </div>
-                <div style="position: absolute;left:300px;top:50px;height: 50px;">
+                <div v-show="selectData.yType == 'accidentLevel'" style="position: absolute;left:300px;top:50px;height: 50px;">
                     <div class="barchild">
                         <div style="margin:auto;width:30px;height:20px;background: red;"></div>
                         <p style="margin:auto;text-align: center;color: white">总数</p>

@@ -755,8 +755,7 @@ var app = new Vue({
             });
             return obj;
         },
-        showLine:function(data,roadType,type,sDate,eDate,width){ //展示折线图
-
+        showLine: function(data, roadType, type, sDate, eDate, width){ //展示折线图
             var title = {
                 text: '月平均气温'
             };
@@ -1374,8 +1373,21 @@ var app = new Vue({
                 series: series
             });
         },
-        getBlackMarkers: function () {
-
+        getBlackMarkers: function (acc, anObj, allnum, data) {
+            var anObjType = (anObj == '路段') ? 1 : 0;
+            var that = this;
+            data.forEach(function (item, index, arr) {
+                var obj = {
+                    map: blackPointMap,
+                    type: anObjType,
+                    name: item.blackPointName,
+                    lat: item.lat,
+                    lng: item.lng,
+                    accidentAllNumbers: allnum,
+                    accidentNumbers: item.number
+                };
+                setMarker(obj);
+            });
         },
         getSpaceMarkers: function (acc, anObj, allnum, data) {
             var anObjType = (anObj == '路段') ? 1 : 0;
@@ -1432,7 +1444,8 @@ var app = new Vue({
                 axios.post(url, json).then(function (response) {
                     var allData = response.data;
                     if(allData.code == 200){
-                        console.log(allData.data);
+                        clearMarker(blackPointMap);
+                        that.getBlackMarkers(that.selectData.yType, that.selectData.analysisObj, allData.data.allnum, allData.data.arr);
                     }
                     else{
                         this.messageTop = allData.message;
@@ -1535,11 +1548,11 @@ var app = new Vue({
                                 yearNumbers[i] = 0;
                             }
                             for(x in data){
-                                yearNumbers[data[x].yearRes-sDate[0]]++;
-                                console.log(data[x].yearRes-sDate[0])
-                                console.log(yearNumbers[data[x].yearRes-sDate[0]]);
+                                yearNumbers[data[x].yearRes - sDate[0]]++;
+                                console.log(data[x].yearRes - sDate[0])
+                                console.log(yearNumbers[data[x].yearRes - sDate[0]]);
                             }
-                            that.showLine(yearNumbers,json.roadType,json.timePrecision,json.startTime,json.endTime,xYears)
+                            that.showLine(yearNumbers, json.roadType, json.timePrecision, json.startTime, json.endTime, xYears)
                         }
                         if (json.timePrecision == 2) {
                             //按月展示
@@ -1555,7 +1568,7 @@ var app = new Vue({
                                 console.log(monthNumbers[m]);
                             }
                             //data,roadType,type,sDate,eDate,width
-                            that.showLine(monthNumbers,json.roadType,json.timePrecision,json.startTime,json.endTime,xMonths)
+                            that.showLine(monthNumbers, json.roadType, json.timePrecision, json.startTime, json.endTime, xMonths)
                         }
                         if (json.timePrecision == 3) {
                             //按日展示
@@ -1572,7 +1585,7 @@ var app = new Vue({
                                 console.log(m)
                                 console.log(dayNumbers[m]);
                             }
-                            that.showLine(dayNumbers,json.roadType,json.timePrecision,json.startTime,json.endTime,xDays)
+                            that.showLine(dayNumbers, json.roadType, json.timePrecision, json.startTime, json.endTime, xDays)
                         }
                     }
                     else{
