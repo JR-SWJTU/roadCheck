@@ -1276,11 +1276,14 @@ var app = new Vue({
                 series: series
             });
         },
-        getMarkers: function (mapId, acc, anObj, allnum, data) {
+        getBlackMarkers: function () {
+
+        },
+        getSpaceMarkers: function (acc, anObj, allnum, data) {
             var anObjType = (anObj == '路段') ? 1 : 0;
             data.forEach(function (item, index, arr) {
                 var obj = {
-                    map: mapId,
+                    map: 'spaceMap',
                     type: anObjType,
                     name: item.diMingBeiZhu,
                     lat: item.lat,
@@ -1375,7 +1378,7 @@ var app = new Vue({
                     var allData = response.data;
                     if(allData.code == 200){
                         console.log(allData.data);
-                        that.getMarkers('spaceMap', this.selectData.yType, this.selectData.analysisObj, allData.data.allnum, allData.data.arr);
+                        that.getSpaceMarkers(that.selectData.yType, that.selectData.analysisObj, allData.data.allnum, allData.data.arr);
                     }
                     else{
                         this.messageTop = allData.message;
