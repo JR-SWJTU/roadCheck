@@ -53,10 +53,10 @@
         <mu-flat-button v-if="isLogin" label="退出登录" slot="right" @click="logout"></mu-flat-button>
     </mu-appbar>
     <div class="main-body" :class="{'header-class-open': isFirstLoad && isShowItems, 'header-class-close': isFirstLoad && !isShowItems}">
-        <div v-if="nowFuc == 'main-page'" :style="bodyContent">
+        <div v-if="nowFuc == 'main-page'" v-cloak :style="bodyContent">
 
         </div>
-        <div v-show="nowFuc == 'black-point'" :style="bodyContent">
+        <div v-show="nowFuc == 'black-point'"  v-cloak :style="bodyContent">
             <div class="body-left body-left-float" :class="{'left-float-open': isFirstLoad && isShowItems, 'left-float-close': isFirstLoad && !isShowItems}">
                 <mu-select-field v-model="selectData.analysisObj" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="选择交叉口或路段黑点诊断">
                     <mu-menu-item v-for="text,index in basicData.analysisObj" :key="index" :value="text" :title="text" ></mu-menu-item>
@@ -82,7 +82,7 @@
                 </div>
             </div>
         </div>
-        <div v-show="nowFuc == 'single-point'" :style="bodyContent">
+        <div v-show="nowFuc == 'single-point'" v-cloak :style="bodyContent">
             <div class="single-body-left single-body-left-float" :class="{'left-float-open': isFirstLoad && isShowItems, 'left-float-close': isFirstLoad && !isShowItems}">
                 <mu-icon-button v-if="!singleShowSelect" icon="navigate_next" tooltip-position="bottom-right" tooltip="筛选条件" class="single-open-btn" @click="openSingleShow"></mu-icon-button>
                 <div v-if="singleShowSelect" class="single-select-left">
@@ -118,26 +118,26 @@
             <div class="body-right" :style="singleRightStyle" style="background-color: inherit">
                 <div class="single-content" :style="singleContent">
                     <%--事故数、事故严重程度--%>
-                    <div class="chart-type-class" :style="chartStyle">
-                        <div class="table-class">
-                            <div class="title-class">事故数、事故严重程度汇总表</div>
-                            <mu-divider></mu-divider>
-                            <mu-table :fixed-header="true" :selectable="false" :show-checkbox="false">
-                                <mu-thead slot="header">
-                                    <mu-tr>
-                                        <mu-th v-for="item, index in singleShowData.accTable.key" :key="index">{{item}}</mu-th>
-                                    </mu-tr>
-                                </mu-thead>
-                                <mu-tbody>
-                                    <mu-tr>
-                                        <mu-td v-for="item, index in singleShowData.accTable.value" :key="index">{{item}}</mu-td>
-                                    </mu-tr>
-                                </mu-tbody>
-                            </mu-table>
+                        <div class="chart-type-class" :style="chartStyle">
+                            <div class="table-class">
+                                <div class="title-class">事故数、事故严重程度汇总表</div>
+                                <mu-divider></mu-divider>
+                                <mu-table :fixed-header="true" :selectable="false" :show-checkbox="false">
+                                    <mu-thead slot="header">
+                                        <mu-tr>
+                                            <mu-th v-for="item, index in singleShowData.accTable.key" :key="index">{{item}}</mu-th>
+                                        </mu-tr>
+                                    </mu-thead>
+                                    <mu-tbody>
+                                        <mu-tr>
+                                            <mu-td v-for="item, index in singleShowData.accTable.value" :key="index">{{item}}</mu-td>
+                                        </mu-tr>
+                                    </mu-tbody>
+                                </mu-table>
+                            </div>
+                            <div v-show="isChartShow" id="accHistogram" class="chart-class"></div>
+                            <div v-show="isChartShow"  id="accPie" class="chart-class"></div>
                         </div>
-                        <div v-show="isChartShow" id="accHistogram" class="chart-class"></div>
-                        <div v-show="isChartShow"  id="accPie" class="chart-class"></div>
-                    </div>
                     <%--事故类型--%>
                         <div class="chart-type-class" :style="chartStyle">
                             <div class="table-class">
@@ -204,7 +204,7 @@
                 </div>
             </div>
         </div>
-        <div v-show="nowFuc == 'space'" :style="bodyContent">
+        <div v-show="nowFuc == 'space'" v-cloak :style="bodyContent">
             <div class="body-left body-left-float" :class="{'left-float-open': isFirstLoad && isShowItems, 'left-float-close': isFirstLoad && !isShowItems}">
                 <mu-select-field v-model="selectData.analysisObj" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="选择交叉口或路段黑点诊断">
                     <mu-menu-item v-for="text,index in basicData.analysisObj" :key="index" :value="text" :title="text" ></mu-menu-item>
@@ -261,7 +261,7 @@
                 </div>
             </div>
         </div>
-        <div v-show="nowFuc == 'time'" :style="bodyContent">
+        <div v-show="nowFuc == 'time'" v-cloak :style="bodyContent">
             <div class="body-left body-left-float" :class="{'left-float-open': isFirstLoad && isShowItems, 'left-float-close': isFirstLoad && !isShowItems}">
                 <mu-select-field v-model="selectData.analysisObj" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="选择交叉口或路段黑点诊断">
                     <mu-menu-item v-for="text,index in basicData.analysisObj" :key="index" :value="text" :title="text" ></mu-menu-item>
@@ -300,7 +300,7 @@
                 </div>
             </div>
         </div>
-        <div v-if="nowFuc == 'statistics'" class="statistics" :style="bodyContent">
+        <div v-if="nowFuc == 'statistics'" v-cloak class="statistics" :style="bodyContent">
             <span>此功能尚未开通！</span>
         </div>
     </div>

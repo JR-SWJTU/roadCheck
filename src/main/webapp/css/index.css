@@ -2,6 +2,10 @@
     margin: 0px;
     padding: 0px;
 }
+/*修复渲染bug*/
+[v-cloak] {
+    display: none;
+}
 /*覆盖原muse-ui*/
 .mu-radio-ripple-wrapper {
     left: -16px;

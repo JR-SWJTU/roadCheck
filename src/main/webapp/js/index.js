@@ -1100,6 +1100,12 @@ var app = new Vue({
             return obj;
         },
         singleShow: function (data) {
+            if(data.totalNum == 0){
+                this.messageTop = "为查找到相应数据项！";
+                this.textFlag = false;
+                this.showMessageTop = true;
+                return;
+            }
             //事故数、事故严重程度汇总
             this.$set(this.singleShowData.accTable, 'value', this.getAccObj(data));
             //事故数、事故严重程度柱状图
