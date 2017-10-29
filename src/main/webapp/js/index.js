@@ -1275,7 +1275,9 @@ var app = new Vue({
                         console.log(allData.data);
                     }
                     else{
-                        console.log(allData.message);
+                        this.messageTop = allData.message;
+                        this.textFlag = false;
+                        this.showMessageTop = true;
                     }
                 }).catch(function (error) {
                     console.log(error);
@@ -1292,11 +1294,12 @@ var app = new Vue({
                 axios.post(url, json).then(function (response) {
                     var allData = response.data;
                     if(allData.code == 200){
-                        console.log(allData.data);
                         that.singleShow(allData.data);
                     }
                     else{
-                        console.log(allData.message);
+                        this.messageTop = allData.message;
+                        this.textFlag = false;
+                        this.showMessageTop = true;
                     }
                 }).catch(function (error) {
                     console.log(error);
@@ -1316,7 +1319,9 @@ var app = new Vue({
                         console.log(allData.data);
                     }
                     else{
-                        console.log(allData.message);
+                        this.messageTop = allData.message;
+                        this.textFlag = false;
+                        this.showMessageTop = true;
                     }
                 }).catch(function (error) {
                     console.log(error);
@@ -1336,7 +1341,9 @@ var app = new Vue({
                         console.log(allData.data);
                     }
                     else{
-                        console.log(allData.message);
+                        this.messageTop = allData.message;
+                        this.textFlag = false;
+                        this.showMessageTop = true;
                     }
                 }).catch(function (error) {
                     console.log(error);
@@ -1359,7 +1366,7 @@ var app = new Vue({
         },
         singleRightStyle: function () {
             return {
-                'width': this.wrapWidth - 30 - (this.isShowItems ? 256 : 8) + 'px',
+                'width': this.wrapWidth - 30 - (this.isShowItems ? 256 : 8) + 'px'
             }
         },
         chartStyle: function () {

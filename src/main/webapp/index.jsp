@@ -115,7 +115,7 @@
                     </mu-tabs>
                 </div>
             </div>
-            <div class="body-right" :style="singleRightStyle" style="background-color: inherit">
+            <div class="body-right" :style="singleRightStyle" style="background-color: inherit;">
                 <div class="single-content" :style="singleContent">
                     <%--事故数、事故严重程度--%>
                         <div class="chart-type-class" :style="chartStyle">
@@ -340,7 +340,7 @@
         <mu-flat-button slot="actions" primary @click="detailClose" label="确认"></mu-flat-button>
     </mu-dialog>
 
-    <mu-popup position="top" :overlay="false" :open="showMessageTop" popup-class="popup-top">
+    <mu-popup position="top" v-cloak :overlay="false" :open="showMessageTop" popup-class="popup-top">
         <span :class="{'succeed-text': textFlag, 'failure-text': !textFlag}">{{ messageTop }}</span>
     </mu-popup>
 </div>
