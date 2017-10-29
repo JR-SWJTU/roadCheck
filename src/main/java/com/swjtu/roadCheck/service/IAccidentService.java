@@ -4,6 +4,7 @@ import com.swjtu.roadCheck.dto.Accident;
 import com.swjtu.roadCheck.dto.ResMap;
 import com.swjtu.roadCheck.entityCustom.AccidentQueryCondition;
 import com.swjtu.roadCheck.entityCustom.BlackPointData;
+import com.swjtu.roadCheck.entityCustom.BlackPointDataForWeb;
 
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,7 @@ public interface IAccidentService {
      * @param map
      * @return
      */
-    List<BlackPointData> getTopTen(Map<String, Object> map);
+    List<BlackPointDataForWeb> getTopTen(Map<String, Object> map);
 
     /**
      * 导出数据

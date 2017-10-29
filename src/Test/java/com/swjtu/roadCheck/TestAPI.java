@@ -1,16 +1,16 @@
 package com.swjtu.roadCheck;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.swjtu.roadCheck.dto.Accident;
 import com.swjtu.roadCheck.entity.*;
 import com.swjtu.roadCheck.entityCustom.BlackPointData;
-import com.swjtu.roadCheck.mapper.Accidentdata2Mapper;
-import com.swjtu.roadCheck.mapper.AccidentdataMapper;
-import com.swjtu.roadCheck.mapper.AdminMapper;
-import com.swjtu.roadCheck.mapper.TeamMapper;
+import com.swjtu.roadCheck.mapper.*;
 import com.swjtu.roadCheck.util.ExportExcel;
 import com.swjtu.roadCheck.util.JsonResult;
 import com.swjtu.roadCheck.util.enums.StatusCode;
 import com.swjtu.roadCheck.web.exception.base.CustomException;
 
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.search.aggregations.metrics.percentiles.hdr.InternalHDRPercentileRanks;
 import org.junit.Test;
@@ -73,21 +73,24 @@ public class TestAPI {
         Map<String,Object> map = new HashMap<String,Object>();
         ArrayList<String> teamName = new ArrayList<String>();
 
-        teamName.add("一大队");
-        teamName.add("二大队");
-        teamName.add("三大队");
-        teamName.add("四大队");
-        map.put("teamName",teamName);
+//        teamName.add("一大队");
+//        teamName.add("二大队");
+//        teamName.add("三大队");
+//        teamName.add("四大队");
+//        map.put("teamName",teamName);
+
         map.put("roadType","交叉口");
-        //map.put("areaName","金牛区");
+        map.put("areaName","金牛区");
         map.put("startTime","2017-10-01");
         map.put("endTime","2017-10-31");
         accidentdatas = accidentdata2Mapper.queryAccidentdataByCondition2(map);
         System.out.println("============="+accidentdatas.size());
         Map<String,Integer> resultMap = new HashMap<String,Integer>();
         for(Accidentdata accidentdata : accidentdatas){
-            if(!resultMap.containsKey(accidentdata.getXianqu()+"+"+accidentdata.getDimingbeizhu())){
-                resultMap.put(accidentdata.getXianqu()+"+"+accidentdata.getDimingbeizhu(),0);
+            if(!resultMap.containsKey(accidentdata.getXianqu()+"+"
+                    +accidentdata.getDimingbeizhu()+"+"+accidentdata.getLat()+"+"+accidentdata.getLng())){
+                resultMap.put(accidentdata.getXianqu()+"+"
+                        +accidentdata.getDimingbeizhu()+"+"+accidentdata.getLat()+"+"+accidentdata.getLng(),0);
             }
             int score = 0;
             if(accidentdata.getYanzhongcd().equals("死亡")){
@@ -97,9 +100,11 @@ public class TestAPI {
             }else if(accidentdata.getYanzhongcd().equals("仅财损")){
                 score = 1;
             }
-            int s = (Integer) resultMap.get(accidentdata.getXianqu()+"+"+accidentdata.getDimingbeizhu());
+            int s = (Integer) resultMap.get(accidentdata.getXianqu()+"+"
+                    +accidentdata.getDimingbeizhu()+"+"+accidentdata.getLat()+"+"+accidentdata.getLng());
             s+=score;
-            resultMap.put(accidentdata.getXianqu()+"+"+accidentdata.getDimingbeizhu(),s);
+            resultMap.put(accidentdata.getXianqu()+"+"
+                    +accidentdata.getDimingbeizhu()+"+"+accidentdata.getLat()+"+"+accidentdata.getLng(),s);
         }
         System.out.println(resultMap.size());
 
@@ -136,14 +141,12 @@ public class TestAPI {
         Map<String,Object> map = new HashMap<String,Object>();
         ArrayList<String> teamName = new ArrayList<String>();
 
-        teamName.add("一大队");
-        teamName.add("二大队");
-        map.put("teamName",teamName);
-        map.put("roadType","非交叉口");
+
+        map.put("roadType","交叉口");
         map.put("areaName","金牛区");
-        map.put("startTime","2017-01-01");
-        map.put("endTime","2017-10-30");
-        accidentdatas = accidentdata2Mapper.queryAccidentdataByCondition1(map);
+        map.put("startTime","2017-10-01");
+        map.put("endTime","2017-10-31");
+        accidentdatas = accidentdata2Mapper.queryAccidentdataByCondition2(map);
         Map<String,Integer> resultMap = new HashMap<String,Integer>();
         for(Accidentdata accidentdata : accidentdatas){
             if(!resultMap.containsKey(accidentdata.getXianqu()+"+"+accidentdata.getDimingbeizhu())){
@@ -183,7 +186,7 @@ public class TestAPI {
         titleMap.put("blackPointRegion", "行政区");
         titleMap.put("blackPointName", "备注");
         titleMap.put("number", "当量");
-        String sheetName = "信息导出";
+        String sheetName = "查询结果";
         /**模拟数据结束*/
 
         System.out.println("start导出");
@@ -204,6 +207,86 @@ public class TestAPI {
         for (String s  : roadsList){
             System.out.println(s);
         }
+    }
+
+    @Test
+    public void testExport2(){
+        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:/spring/applicationContext-*.xml");
+         AccidentMapperCustom accidentMapperCustom = ctx.getBean(AccidentMapperCustom.class);
+         Map<String,Object> map = new HashMap();
+         /*
+         "areaName": "金牛区",
+
+    "startTime": "2017-10-01",
+    "endTime": "2017-10-31",
+    "roadType":"交叉口",
+    "troEscape":"否",
+    "workPlaceRel":"否",
+
+    "yType": false
+          */
+         map.put("areaName","金牛区");
+         map.put("startTime","2017-10-01");
+         map.put("endTime","2017-10-31");
+         map.put("roadType","交叉口");
+         map.put("troEscape","否");
+         map.put("workPlaceRel","否");
+         map.put("yType",true);
+         List<Accident> accidentList = accidentMapperCustom.multiConditionQueryAccidentForTime(map);
+         Map<String,Object> titleMap = new HashMap();
+         titleMap.put("teamName","大队");
+         titleMap.put("areaName","行政区");
+         titleMap.put("startTime","开始日期");
+         titleMap.put("endTime","结束日期");
+         titleMap.put("roadType","道路类型");
+         titleMap.put("troEscape","是否肇事逃逸");
+         titleMap.put("workPlaceRel","是否与作业区相关");
+         titleMap.put("roadLevel","道路等级");
+         titleMap.put("carCollisionType","车辆碰撞类型");
+         titleMap.put("isWorkDay","是否工作日");
+         titleMap.put("carType","车辆类型");
+         titleMap.put("intersectionType","交叉口类型");
+         titleMap.put("weather","天气");
+         titleMap.put("diMingBeiZhu","地名备注");
+         titleMap.put("num","总数");
+         List<AccidentDataCollectionByNumber> accidentDataCollectionByNumberList = new ArrayList<AccidentDataCollectionByNumber>();
+
+    }
+
+    class AccidentDataCollectionByNumber{
+        private int num;  //总的事故数量
+
+        private String diMingBeiZhu;   //事故发生所在的地名
+
+        private String teamName[];    //大队名称
+
+        private String areaName;    //行政区名称
+
+        private String roadType;    //道路类型，交叉口还是路段
+
+        //    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        private Date startTime;
+
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        private Date endTime;
+
+        private String roadLevel;   //道路等级
+
+        private String carCollisionType;    //车辆碰撞类型
+
+        private String weather; //天气
+
+        private String workPlaceRel;    //是否与作业区相关
+
+        private String intersectionType;    //交叉口类型
+
+        private String carType;     //车辆类型
+
+        private String troEscape;   //是否肇事逃逸
+
+        private Integer isWorkDay; //是否工作日
+
     }
 
 }

@@ -40,11 +40,6 @@ import org.apache.poi.ss.util.CellRangeAddress;
      */
     private static final int TITLE_START_POSITION = 0;
 
-    /***
-     * 时间行开始位置
-     */
-//    private static final int DATEHEAD_START_POSITION = 1;
-//
 //    /***
 //     * 表头行开始位置
 //     */

@@ -5,6 +5,7 @@ import com.swjtu.roadCheck.dto.ResMap;
 import com.swjtu.roadCheck.entity.Accidentdata;
 import com.swjtu.roadCheck.entityCustom.AccidentQueryCondition;
 import com.swjtu.roadCheck.entityCustom.BlackPointData;
+import com.swjtu.roadCheck.entityCustom.BlackPointDataForWeb;
 import com.swjtu.roadCheck.mapper.AccidentMapperCustom;
 import com.swjtu.roadCheck.mapper.Accidentdata2Mapper;
 import com.swjtu.roadCheck.service.IAccidentService;
@@ -46,8 +47,10 @@ public class AccidentServiceImpl implements IAccidentService {
         }
         Map<String,Integer> resultMap = new HashMap<String,Integer>();
         for(Accidentdata accidentdata : accidentdatas){
-            if(!resultMap.containsKey(accidentdata.getXianqu()+"+"+accidentdata.getDimingbeizhu())){
-                resultMap.put(accidentdata.getXianqu()+"+"+accidentdata.getDimingbeizhu(),0);
+            if(!resultMap.containsKey(accidentdata.getXianqu()+"+"
+                    +accidentdata.getDimingbeizhu()+"+"+accidentdata.getLat()+"+"+accidentdata.getLng())){
+                resultMap.put(accidentdata.getXianqu()+"+"
+                        +accidentdata.getDimingbeizhu()+"+"+accidentdata.getLat()+"+"+accidentdata.getLng(),0);
             }
             int score = 0;
             if(accidentdata.getYanzhongcd().equals("死亡")){
@@ -57,9 +60,11 @@ public class AccidentServiceImpl implements IAccidentService {
             }else if(accidentdata.getYanzhongcd().equals("仅财损")){
                 score = 1;
             }
-            int s = (Integer) resultMap.get(accidentdata.getXianqu()+"+"+accidentdata.getDimingbeizhu());
+            int s = (Integer) resultMap.get(accidentdata.getXianqu()+"+"
+                    +accidentdata.getDimingbeizhu()+"+"+accidentdata.getLat()+"+"+accidentdata.getLng());
             s+=score;
-            resultMap.put(accidentdata.getXianqu()+"+"+accidentdata.getDimingbeizhu(),s);
+            resultMap.put(accidentdata.getXianqu()+"+"
+                    +accidentdata.getDimingbeizhu()+"+"+accidentdata.getLat()+"+"+accidentdata.getLng(),s);
         }
 
         List<Map.Entry<String, Integer>> resultList = new ArrayList<Map.Entry<String, Integer>>(resultMap.entrySet());
@@ -71,22 +76,24 @@ public class AccidentServiceImpl implements IAccidentService {
 
        return resultList;
     }
-    public List<BlackPointData> getTopTen(Map<String, Object> map){
+    public List<BlackPointDataForWeb> getTopTen(Map<String, Object> map){
         List<Map.Entry<String, Integer>> resultList = getAllAccidentdataByCondition(map);
 
         int topTenPercent = resultList.size() <= 10 ? resultList.size():(int)Math.floor(resultList.size() * 0.1);
-        List<BlackPointData> blackPointDatas = new ArrayList<BlackPointData>();
+        List<BlackPointDataForWeb> blackPointDataForWebs = new ArrayList<BlackPointDataForWeb>();
         for(int i = 0;i < topTenPercent;i++){
             Map.Entry entry = resultList.get(i);
-            BlackPointData blackPointData = new BlackPointData();
+            BlackPointDataForWeb blackPointDataForWeb = new BlackPointDataForWeb();
             String str = (String)entry.getKey();
-            blackPointData.setBlackPointName(str.split("\\+")[1]);
-            blackPointData.setBlackPointRegion(str.split("\\+")[0]);
-            blackPointData.setNumber((Integer)entry.getValue());
-            blackPointDatas.add(blackPointData);
+            blackPointDataForWeb.setBlackPointName(str.split("\\+")[1]);
+            blackPointDataForWeb.setBlackPointRegion(str.split("\\+")[0]);
+            blackPointDataForWeb.setLat(Double.parseDouble(str.split("\\+")[2]));
+            blackPointDataForWeb.setLng(Double.parseDouble(str.split("\\+")[3]));
+            blackPointDataForWeb.setNumber((Integer)entry.getValue());
+            blackPointDataForWebs.add(blackPointDataForWeb);
 
         }
-        return blackPointDatas;
+        return blackPointDataForWebs;
     }
 
     public void exportAccidentData(Map<String, Object> map) {
