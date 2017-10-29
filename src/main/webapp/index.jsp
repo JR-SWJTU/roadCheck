@@ -107,7 +107,7 @@
                         <mu-tab value="gruppe" title="大队管辖区" :title-class="{'single-tab-title': singleTab != 'gruppe'}" :class="{'single-tab-active': singleTab == 'gruppe'}"></mu-tab>
                         <mu-tab value="administrative" title="行政区" :title-class="{'single-tab-title': singleTab != 'administrative'}" class="left-split-line" :class="{'single-tab-active': singleTab == 'administrative'}"></mu-tab>
                         <mu-tab value="intersection" title="交叉口" :title-class="{'single-tab-title': singleTab != 'intersection'}" class="left-split-line" :class="{'single-tab-active': singleTab == 'intersection'}"></mu-tab>
-                        <mu-tab value="crossing" title="路口" :title-class="{'single-tab-title': singleTab != 'crossing'}" class="left-split-line" :class="{'single-tab-active': singleTab == 'crossing'}"></mu-tab>
+                        <mu-tab value="crossing" title="路段" :title-class="{'single-tab-title': singleTab != 'crossing'}" class="left-split-line" :class="{'single-tab-active': singleTab == 'crossing'}"></mu-tab>
                     </mu-tabs>
                 </div>
             </div>

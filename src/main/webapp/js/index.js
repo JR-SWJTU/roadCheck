@@ -1187,7 +1187,7 @@ var app = new Vue({
         },
         singleShow: function (data) {
             if(data.totalNum == 0){
-                this.messageTop = "为查找到相应数据项！";
+                this.messageTop = "未查找到相应数据项！";
                 this.textFlag = false;
                 this.showMessageTop = true;
                 return;
@@ -1445,6 +1445,12 @@ var app = new Vue({
                     var allData = response.data;
                     if(allData.code == 200){
                         console.log(allData.data);
+                        if(allData.data.arr.length == 0){
+                            that.messageTop = "未查找到相应数据项！";
+                            that.textFlag = false;
+                            that.showMessageTop = true;
+                            return;
+                        }
                         clearMarker(blackPointMap);
                         var allnum = 0;
                         allData.data.arr.forEach(function (t) {
@@ -1497,6 +1503,12 @@ var app = new Vue({
                     console.log(allData)
                     if(allData.code == 200){
                         console.log(allData.data);
+                        if(alldata.data.arr.length == 0){
+                            this.messageTop = "未查找到相应数据项！";
+                            this.textFlag = false;
+                            this.showMessageTop = true;
+                            return;
+                        }
                         clearMarker(spaceMap);
                         that.getSpaceMarkers(that.selectData.yType, that.selectData.analysisObj, allData.data.allnum, allData.data.arr);
                     }
@@ -1522,7 +1534,12 @@ var app = new Vue({
                     var allData = response.data;
                     if(allData.code == 200){
                         console.log(allData.data.arr);
-
+                        if(allData.data.arr.length == 0){
+                            this.messageTop = "未查找到相应数据项！";
+                            this.textFlag = false;
+                            this.showMessageTop = true;
+                            return;
+                        }
                         /*
                         * 统计年、月、日中人数
                         *
