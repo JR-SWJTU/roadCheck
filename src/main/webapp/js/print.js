@@ -36,9 +36,9 @@ document.ready(function () {
         }
         var zoom = localStorage.width * 25.4 / (210 - 30) / xDPI; // A4纸像素宽度 = 210 * xDPI / 25.4;
         document.getElementsByTagName('body')[0].style.zoom = 1 / zoom;
-        // setTimeout(function () {
-        //     window.print();
-        //     window.close();
-        // }, 10);
+        setTimeout(function () {
+            window.print();
+            window.close();
+        }, 10);
     }
 })
