@@ -40,12 +40,12 @@ import java.util.Map;
 //    /***
 //     * 表头行开始位置
 //     */
-    private static final int HEAD_START_POSITION = 0;
+    private static final int HEAD_START_POSITION = 1;
 
     /***
      * 文本行开始位置
      */
-    private static final int CONTENT_START_POSITION = 1;
+    private static final int CONTENT_START_POSITION = 2;
 
 
     /**
@@ -65,11 +65,37 @@ import java.util.Map;
 //        // 时间行
 //        createDateHeadRow(titleMap);
         // 表头行
-        createHeadRow(titleMap);
+        createHeadRow(titleMap,0);
         // 文本行
-        createContentRow(dataList, titleMap);
+        createContentRow(dataList, titleMap,0);
         //设置自动伸缩
         //autoSizeColumn(titleMap.size());
+        // 写入处理结果
+        try {
+            String filedisplay = filename + ".xls";
+            //如果web项目，1、设置下载框的弹出（设置response相关参数)；2、通过httpservletresponse.getOutputStream()获取
+            OutputStream out = new FileOutputStream(filedisplay);
+            workbook.write(out);
+            out.close();
+        }
+        catch (Exception e) {
+            throw new CustomException("导出失败");
+        }
+    }
+
+    public static void excelExport2(List<?> dataList,Map<String, String> resultMap,Map<String, Object> conditionMap, Map<String, String> titleMap, String sheetName,String filename) throws CustomException {
+        // 初始化workbook
+        initHSSFWorkbook(sheetName);
+        // 标题行
+        createTitleRow("查询条件",0);
+        // 表头行
+        createHeadRow(titleMap,0);
+        // 文本行
+        createConditionContentRow(conditionMap, titleMap);
+
+       createTitleRow( "查询结果",3);
+       createHeadRow(resultMap,3);
+       createContentRow(dataList, resultMap,3);
         // 写入处理结果
         try {
             String filedisplay = filename + ".xls";
@@ -95,15 +121,14 @@ import java.util.Map;
 
     /**
      * 生成标题（第零行创建）
-     * @param titleMap 对象属性名称->表头显示名称
-     * @param sheetName sheet名称
+     * @param titleName sheet名称
      */
-    private static void createTitleRow(Map<String, String> titleMap, String sheetName) {
-        CellRangeAddress titleRange = new CellRangeAddress(0, 0, 0, titleMap.size() - 1);
-        sheet.addMergedRegion(titleRange);
-        HSSFRow titleRow = sheet.createRow(TITLE_START_POSITION);
+    private static void createTitleRow(String titleName,int i) {
+        //CellRangeAddress titleRange = new CellRangeAddress(0, 0, 0, titleMap.size() - 1);
+        //sheet.addMergedRegion(titleRange);
+        HSSFRow titleRow = sheet.createRow(TITLE_START_POSITION+i);
         HSSFCell titleCell = titleRow.createCell(0);
-        titleCell.setCellValue(sheetName);
+        titleCell.setCellValue(titleName);
     }
 
     /**
@@ -122,9 +147,9 @@ import java.util.Map;
      * 创建表头行（第二行创建）
      * @param titleMap 对象属性名称->表头显示名称
      */
-    private static void createHeadRow(Map<String, String> titleMap) {
+    private static void createHeadRow(Map<String, String> titleMap,int s) {
         // 第1行创建
-        HSSFRow headRow = sheet.createRow(HEAD_START_POSITION);
+        HSSFRow headRow = sheet.createRow(HEAD_START_POSITION+s);
         int i = 0;
         for (String entry : titleMap.keySet()) {
             HSSFCell headCell = headRow.createCell(i);
@@ -138,22 +163,69 @@ import java.util.Map;
      * @param dataList 对象数据集合
      * @param titleMap 表头信息
      */
-    private static void createContentRow(List<?> dataList, Map<String, String> titleMap) {
+    private static void createContentRow(List<?> dataList, Map<String, String> titleMap,int s) {
         try {
-            int i=0;
+            int i=s;
             for (Object obj : dataList) {
                 HSSFRow textRow = sheet.createRow(CONTENT_START_POSITION + i);
                 int j = 0;
                 for (String entry : titleMap.keySet()) {
                     String method = "get" + entry.substring(0, 1).toUpperCase() + entry.substring(1);
                     Method m = obj.getClass().getMethod(method, null);
-                    String value =   m.invoke(obj, null).toString();
+                    Object o =   m.invoke(obj, null);
+                    String value = "";
+                    if(o == null){
+                        value = "未知";
+                    }else{
+                        value = o.toString();
+                    }
                     HSSFCell textcell = textRow.createCell(j);
                     textcell.setCellValue(value);
                     j++;
                 }
                 i++;
             }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void createConditionContentRow(Map<String, Object> conditionMap, Map<String, String> titleMap) {
+        try {
+                HSSFRow textRow = sheet.createRow(CONTENT_START_POSITION);
+                int j = 0;
+                for (String key : titleMap.keySet()) {
+                    String value="";
+                    if(key.equals("teamName")){
+                        String[] teams = (String[])conditionMap.get(key);
+                        StringBuilder sb = new StringBuilder();
+                        for(String s : teams){
+                            sb.append(s+" ");
+                        }
+                        value = sb.toString().trim();
+                    }else if(key.equals("isWorkDay")){
+                        Integer isWorkday = (Integer)conditionMap.get(key);
+                        if(isWorkday == 1){
+                            value = "是";
+                        }else{
+                            value = "否";
+                        }
+
+                    }else if(key.equals("yType")){
+                        Boolean b = (Boolean)conditionMap.get(key);
+                        if(b){
+                            value="以事故数为纵轴";
+                        }else{
+                            value = "以事故严重程度为纵轴";
+                        }
+                    }else {
+                        value = conditionMap.get(key).toString();
+                    }
+                    HSSFCell textcell = textRow.createCell(j);
+                    textcell.setCellValue(value);
+                    j++;
+                }
         }
         catch (Exception e) {
             e.printStackTrace();

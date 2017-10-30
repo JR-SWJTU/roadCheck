@@ -107,7 +107,11 @@ public class AccidentController {
         blackPointDatas = accidentService.getTopTen(map);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("arr",blackPointDatas);
-        jsonObject.put("allnum",blackPointDatas.size());
+        int number = 0;
+        for(BlackPointData blackPointData:blackPointDatas){
+            number+=blackPointData.getNumber();
+        }
+        jsonObject.put("allnum",number);
         return JsonResult.build(StatusCode.SUCCESS,jsonObject);
     }
 
