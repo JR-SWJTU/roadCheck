@@ -66,6 +66,3 @@ hr{
 .highcharts-legend tspan{
     font-size: 18px;
 }
-svg text:last-child{
-    display: none;
-}

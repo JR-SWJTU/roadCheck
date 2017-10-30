@@ -848,6 +848,7 @@ var app = new Vue({
 
             this.timeShowSelect = false;
             this.timeDownShow = true;
+            this.deleteChartLogo();
         },
         getWeaObj: function (data) {
             var obj = ['数量'];
@@ -1285,6 +1286,7 @@ var app = new Vue({
             this.isChartShow = true;
             this.singleShowSelect = false;
             this.chartPrintShow = true;
+            this.deleteChartLogo();
         },
         getLine:function (id, title, xAxis, series) {
             return new Highcharts.Chart(id, {
@@ -1653,6 +1655,17 @@ var app = new Vue({
                 }).catch(function (error) {
                     console.log(error);
                 });
+            }
+        },
+        deleteChartLogo: function () {
+            var text = document.getElementsByTagName('text');
+            var size = text.length;
+            for(var i = 0; i < size; i++){
+                if(text[i].innerHTML == 'Highcharts.com'){
+                    text[i].parentNode.removeChild(text[i]);
+                    i--;
+                    size--;
+                }
             }
         }
     },

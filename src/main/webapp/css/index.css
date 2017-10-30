@@ -480,6 +480,3 @@
 .highcharts-legend tspan{
     font-size: 16px;
 }
-svg text:last-child{
-    display: none;
-}
