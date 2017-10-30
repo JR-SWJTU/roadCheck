@@ -1401,6 +1401,17 @@ var app = new Vue({
         getBlackMarkers: function (acc, anObj, allnum, data) {
             var anObjType = (anObj == '路段') ? 1 : 0;
             var that = this;
+            var yMax = 0;
+            var yMin = 111111111;
+            data.forEach(function (item, index, arr) {
+                if (item.number < yMin) {
+                    yMin = item.number;
+                }
+                if (item.number > yMax) {
+                    yMax = item.number;
+                }
+            });
+            //console.log(yMin+" ymax:"+yMax)
             data.forEach(function (item, index, arr) {
                 var obj = {
                     map: blackPointMap,
@@ -1411,12 +1422,23 @@ var app = new Vue({
                     accidentAllNumbers: allnum,
                     accidentNumbers: item.number
                 };
-                setMarker(obj);
+                setMarker(obj,yMin,yMax);
             });
         },
         getSpaceMarkers: function (acc, anObj, allnum, data) {
             var anObjType = (anObj == '路段') ? 1 : 0;
             var that = this;
+            var yMax = 0;
+            var yMin = 111111111;
+            data.forEach(function (item, index, arr) {
+                if (item.num <= yMin) {
+                    yMin = item.num;
+                }
+                if (item.num >= yMax) {
+                    yMax = item.num;
+                }
+            });
+           // console.log(yMin+" ymax:"+yMax)
             data.forEach(function (item, index, arr) {
                 var obj = {
                     map: spaceMap,
@@ -1437,26 +1459,52 @@ var app = new Vue({
                         switch (t){
                             case '仅财损':{
                                 obj.wealthLoss = item.propertyLoss;
+                                if (yMin > obj.wealthLoss) {
+                                    yMin = obj.wealthLoss;
+                                }
+                                if (yMax < obj.wealthLoss) {
+                                    yMax = obj.wealthLoss
+                                }
                                 break;
                             }
                             case '轻伤':{
                                 obj.slightInjury = item.slightInjury;
+                                if (yMin > obj.slightInjury) {
+                                    yMin = obj.slightInjury;
+                                }
+                                if (yMax < obj.slightInjury) {
+                                    yMax = obj.slightInjury
+                                }
                                 break;
                             }
                             case '重伤':{
                                 obj.seriousInjury = item.severInjury;
+                                if (yMin > obj.severInjury) {
+                                    yMin = obj.severInjury;
+                                }
+                                if (yMax < obj.seriousInjury) {
+                                    yMax = obj.seriousInjury
+                                }
                                 break;
                             }
                             case '死亡':{
                                 obj.death = item.dead;
+                                if (yMin > obj.death) {
+                                    yMin = obj.death;
+                                }
+                                if (yMax < obj.death) {
+                                    yMax = obj.death
+                                }
                                 break;
                             }
                             default:
                                 break;
                         }
                     });
+
                 }
-                setMarker(obj);
+                console.log(yMax+"ym:"+yMin)
+                setMarker(obj,yMin,yMax);
             });
         },
         blackPointDown: function () {

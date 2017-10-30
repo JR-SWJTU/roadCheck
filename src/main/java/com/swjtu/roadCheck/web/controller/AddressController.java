@@ -289,7 +289,7 @@ public class AddressController {
                 * */
                 emdata.setId(index);
                 emdata.setEmnumber(sgId);
-                emdata.setJcktype(intersection[(int) (Math.random()*(intersection.length-1)+1)]);
+                emdata.setJcktype("交叉口");
                 emdataMapper.insert(emdata);
 
                 /*

@@ -84,6 +84,13 @@
     position: absolute;
     bottom: 0;
 }
+.showmap-number{
+    display: block;
+}
+
+.showmap-name{
+    display: block;
+}
 @-webkit-keyframes items-open {
     0% { left: -256px; }
     25% { left: -192px; }
