@@ -11,6 +11,7 @@ var app = new Vue({
 
         singleTab: 'gruppe',
         singleShowSelect: false,
+        timeShowSelect: false,
 
         basicData: {
             analysisObj: ['交叉口', '路段'],
@@ -80,6 +81,8 @@ var app = new Vue({
             vehicleType: 'null', //'小客车',
             hitAndRun: '否', //'是'
         },
+
+        timeDownShow: false,
 
         isChartShow: false,
         chartPrintShow: false,
@@ -265,14 +268,16 @@ var app = new Vue({
         blackPointDiagnose: function () {
             if(this.nowFuc != 'black-point'){
                 this.nowFuc = 'black-point';
-                this.chartPrintShow = false;
+                this.chartPrintShow = this.chartPrintShow ? true : false;
+                this.timeDownShow = this.timeDownShow ? true : false;
             }
             this.resetObj();
         },
         singleAnalysis: function () {
             if(this.nowFuc != 'single-point'){
                 this.nowFuc = 'single-point';
-                this.chartPrintShow = false;
+                this.chartPrintShow = this.chartPrintShow ? true : false;
+                this.timeDownShow = this.timeDownShow ? true : false;
             }
             this.resetObj();
         },
@@ -306,20 +311,28 @@ var app = new Vue({
         closeSingleShow: function () {
             this.singleShowSelect = false;
         },
+        closeTimeShow: function () {
+            this.timeShowSelect = false;
+        },
         openSingleShow: function () {
             this.singleShowSelect = true;
+        },
+        openTimeShow: function () {
+            this.timeShowSelect = true;
         },
         spaceAnalysis: function () {
             if(this.nowFuc != 'space'){
                 this.nowFuc = 'space';
-                this.chartPrintShow = false;
+                this.chartPrintShow = this.chartPrintShow ? true : false;
+                this.timeDownShow = this.timeDownShow ? true : false;
             }
             this.resetObj();
         },
         timeAnalysis: function () {
             if(this.nowFuc != 'time'){
                 this.nowFuc = 'time';
-                this.chartPrintShow = false;
+                this.chartPrintShow = this.chartPrintShow ? true : false;
+                this.timeDownShow = this.timeDownShow ? true : false;
             }
             this.resetObj();
         },
@@ -833,7 +846,8 @@ var app = new Vue({
             this.getLine('timeLine', '事故数、事故严重程度趋势图', xAxis, series);
             //document.getElementById('#timeLine').highcharts(json);
 
-
+            this.timeShowSelect = false;
+            this.timeDownShow = true;
         },
         getWeaObj: function (data) {
             var obj = ['数量'];
@@ -1446,15 +1460,18 @@ var app = new Vue({
         blackPointDown: function () {
 
         },
-        chartPrint: function () {
-            localStorage.obj = document.getElementById('printId').innerHTML;
+        singleChartPrint: function () {
+            var printDiv = document.getElementById('singlePrintId');
+            localStorage.obj = printDiv.innerHTML;
+            localStorage.width = printDiv.offsetWidth;
             window.open("http://localhost:8080/roadCheck/print.jsp", "_blank");
         },
         spaceDown: function () {
 
         },
-        timeDown: function () {
-
+        timeChartPrint: function () {
+            localStorage.obj = document.getElementById('timePrintId').innerHTML;
+            window.open("http://localhost:8080/roadCheck/print.jsp", "_blank");
         },
         blackPointGet: function () {
             var that = this;

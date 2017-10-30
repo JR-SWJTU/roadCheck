@@ -84,7 +84,7 @@
             <div class="single-body-left single-body-left-float no-print" :class="{'left-float-open': isFirstLoad && isShowItems, 'left-float-close': isFirstLoad && !isShowItems}">
                 <div v-if="!singleShowSelect">
                     <mu-icon-button icon="navigate_next" tooltip-position="bottom-right" tooltip="筛选条件" class="single-open-btn" @click="openSingleShow"></mu-icon-button>
-                    <mu-icon-button v-show="chartPrintShow" tooltip="导出当前pdf报告" tooltip-position="bottom-right" icon="print" class="single-open-btn" class="right-btn" @click="chartPrint"></mu-icon-button>
+                    <mu-icon-button v-show="chartPrintShow" tooltip="导出当前pdf报告" tooltip-position="bottom-right" icon="print" class="single-open-btn" class="right-btn" @click="singleChartPrint" style="margin-left: 10px;"></mu-icon-button>
                 </div>
                 <div v-if="singleShowSelect" class="single-select-left">
                     <mu-icon-button icon="navigate_before" tooltip-position="bottom-right" tooltip="收起" class="single-close-btn" @click="closeSingleShow"></mu-icon-button>
@@ -118,7 +118,7 @@
             </div>
             <div class="no-print" style="height: 48px"></div>
             <div class="body-right print-scroll border-none" :style="singleRightStyle" style="background-color: inherit;">
-                <div id="printId" class="single-content" :style="singleContent">
+                <div id="singlePrintId" class="single-content page-next" :style="singleContent">
                     <%--事故数、事故严重程度--%>
                         <div class="chart-type-class" :style="chartStyle">
                             <div class="table-class">
@@ -141,7 +141,7 @@
                             <div v-show="isChartShow" id="accPie" class="chart-class"></div>
                         </div>
                     <%--事故类型--%>
-                        <div class="chart-type-class" :style="chartStyle">
+                        <div class="chart-type-class page-next" :style="chartStyle">
                             <div class="table-class">
                                 <div class="title-class">各事故类型下事故数汇总</div>
                                 <hr/>
@@ -183,7 +183,7 @@
                             <div v-show="isChartShow" id="weaPie" class="chart-class"></div>
                         </div>
                     <%--车辆类型--%>
-                        <div class="chart-type-class" :style="chartStyle">
+                        <div class="chart-type-class page-next" :style="chartStyle">
                             <div class="table-class">
                                 <div class="title-class">各车辆类型事故数汇总</div>
                                 <hr/>
@@ -231,7 +231,7 @@
                     <mu-menu-item v-for="text,index in basicData.accidentalSev" :key="index" :value="text" :title="text" ></mu-menu-item>
                 </mu-select-field>
                 <div v-if="selectData.yType == 'accidentCount'" style="height: 10px;"></div>
-                <mu-raised-button label="细节筛选" icon="widgets" label-position="before" primary class="detail-btn" @click="details"></mu-raised-button>
+                <mu-raised-button label="细节筛选" icon="widgets" label-position="before" primary class="detail-two-btn" @click="details"></mu-raised-button>
                 <mu-icon-button tooltip="筛选结果" tooltip-position="bottom-right" icon="call_merge" class="right-btn" @click="spaceGet"></mu-icon-button>
                 <mu-icon-button tooltip="下载excel报告" tooltip-position="bottom-right" icon="file_download" class="right-btn" @click="spaceDown" style="margin-right: 13px;"></mu-icon-button>
                 <%--<mu-icon-button tooltip="筛选数据重置" tooltip-position="bottom-right" icon="grade" class="right-btn" @click="spaceGet"></mu-icon-button>--%>
@@ -265,45 +265,52 @@
             </div>
         </div>
         <div v-show="nowFuc == 'time'" v-cloak :style="bodyContent">
-            <div class="body-left body-left-float no-print" :class="{'left-float-open': isFirstLoad && isShowItems, 'left-float-close': isFirstLoad && !isShowItems}">
-                <mu-select-field v-model="selectData.analysisObj" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="选择交叉口或路段黑点诊断">
-                    <mu-menu-item v-for="text,index in basicData.analysisObj" :key="index" :value="text" :title="text" ></mu-menu-item>
-                </mu-select-field>
-                <div class="mu-text-field-label label-class">选择分析的区域</div>
-                <mu-radio label="大队" name="area4" native-value="gruppe" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 20px;" @change="areaRadioChange"></mu-radio>
-                <mu-radio label="行政区" name="area4" native-value="administrative" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 50px;" @change="areaRadioChange"></mu-radio>
-                <mu-select-field v-if="selectData.area.type == 'gruppe'" max-height="300" scroller hint-text="null" v-model="selectData.area.value" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="大队管辖区">
-                    <mu-menu-item v-for="text,index in basicData.area.gruppe" :key="index" :value="text" :title="text" ></mu-menu-item>
-                </mu-select-field>
-                <mu-select-field v-if="selectData.area.type == 'administrative'" max-height="300" scroller hint-text="null" v-model="selectData.area.value" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="行政管辖区">
-                    <mu-menu-item v-for="text,index in basicData.area.administrative" :key="index" :value="text" :title="text" ></mu-menu-item>
-                </mu-select-field>
-                <div class="mu-text-field-label label-class" style="padding-top: 12px;">选择分析的时间段</div>
-                <mu-date-picker auto-ok hint-text="开始监测日期" v-model="selectData.dateTime.start" container="inline" mode="landscape" min-date="2016-09-01" :underline-class="{'underline-class': true}"></mu-date-picker>
-                <mu-date-picker auto-ok hint-text="至截止监测日期" v-model="selectData.dateTime.end" container="inline" mode="landscape" :underline-class="{'underline-class': true}"></mu-date-picker>
-                <div class="mu-text-field-label label-class">图形分析纵坐标选择</div>
-                <mu-radio label="事故数" name="ordinate2" native-value="accidentCount" :icon-class="{'icon-class': true}" v-model="selectData.yType"></mu-radio>
-                <mu-radio label="事故严重程度" name="ordinate2" native-value="accidentLevel" :icon-class="{'icon-class': true}" v-model="selectData.yType" style="margin-left: 20px;" @change="accidentLChange"></mu-radio>
-                <mu-select-field v-if="selectData.yType == 'accidentLevel'" v-model="selectData.accidentalSev" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="事故严重程度" hint-text="null" multiple>
-                    <mu-menu-item v-for="text,index in basicData.accidentalSev" :key="index" :value="text" :title="text" ></mu-menu-item>
-                </mu-select-field>
-                <div v-if="selectData.yType == 'accidentCount'" style="height: 10px;"></div>
-                <div class="mu-text-field-label label-class">图形分析时间精度选取</div>
-                <mu-radio label="年" name="timePre" native-value="1" :icon-class="{'icon-class': true}" v-model="selectData.timePrecision"></mu-radio>
-                <mu-radio label="月" name="timePre" native-value="2" :icon-class="{'icon-class': true}" v-model="selectData.timePrecision" style="margin-left: 35px;"></mu-radio>
-                <mu-radio label="日" name="timePre" native-value="3" :icon-class="{'icon-class': true}" v-model="selectData.timePrecision" style="margin-left: 35px;"></mu-radio>
-                <div style="height: 10px;"></div>
-                <mu-raised-button label="细节筛选" icon="widgets" label-position="before" primary class="detail-btn" @click="details"></mu-raised-button>
-                <mu-icon-button tooltip="筛选结果" tooltip-position="bottom-right" icon="call_merge" class="right-btn" @click="timeGet"></mu-icon-button>
-                <mu-icon-button tooltip="下载excel报告" tooltip-position="bottom-right" icon="file_download" class="right-btn" @click="timeDown" style="margin-right: 13px;"></mu-icon-button>
-                <%--<mu-icon-button tooltip="筛选数据重置" tooltip-position="bottom-right" icon="grade" class="right-btn" @click="timeGet"></mu-icon-button>--%>
+            <div class="time-body-left time-body-left-float no-print" :class="{'left-float-open': isFirstLoad && isShowItems, 'left-float-close': isFirstLoad && !isShowItems}">
+                <div v-if="!timeShowSelect">
+                    <mu-icon-button icon="navigate_next" tooltip-position="bottom-right" tooltip="筛选条件" class="single-open-btn" @click="openTimeShow"></mu-icon-button>
+                    <mu-icon-button v-show="timeDownShow" tooltip="导出当前pdf报告" tooltip-position="bottom-right" icon="print" class="single-open-btn" class="right-btn" @click="timeChartPrint" style="margin-left: 10px;"></mu-icon-button>
+                </div>
+                <div v-if="timeShowSelect" class="single-select-left">
+                    <mu-icon-button icon="navigate_before" tooltip-position="bottom-right" tooltip="收起" class="single-close-btn" @click="closeTimeShow"></mu-icon-button>
+                    <mu-select-field v-model="selectData.analysisObj" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="选择交叉口或路段黑点诊断">
+                        <mu-menu-item v-for="text,index in basicData.analysisObj" :key="index" :value="text" :title="text" ></mu-menu-item>
+                    </mu-select-field>
+                    <div class="mu-text-field-label label-class">选择分析的区域</div>
+                    <mu-radio label="大队" name="area4" native-value="gruppe" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 20px;" @change="areaRadioChange"></mu-radio>
+                    <mu-radio label="行政区" name="area4" native-value="administrative" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 50px;" @change="areaRadioChange"></mu-radio>
+                    <mu-select-field v-if="selectData.area.type == 'gruppe'" max-height="300" scroller hint-text="null" v-model="selectData.area.value" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="大队管辖区">
+                        <mu-menu-item v-for="text,index in basicData.area.gruppe" :key="index" :value="text" :title="text" ></mu-menu-item>
+                    </mu-select-field>
+                    <mu-select-field v-if="selectData.area.type == 'administrative'" max-height="300" scroller hint-text="null" v-model="selectData.area.value" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="行政管辖区">
+                        <mu-menu-item v-for="text,index in basicData.area.administrative" :key="index" :value="text" :title="text" ></mu-menu-item>
+                    </mu-select-field>
+                    <div class="mu-text-field-label label-class" style="padding-top: 12px;">选择分析的时间段</div>
+                    <mu-date-picker auto-ok hint-text="开始监测日期" v-model="selectData.dateTime.start" container="inline" mode="landscape" min-date="2016-09-01" :underline-class="{'underline-class': true}"></mu-date-picker>
+                    <mu-date-picker auto-ok hint-text="至截止监测日期" v-model="selectData.dateTime.end" container="inline" mode="landscape" :underline-class="{'underline-class': true}"></mu-date-picker>
+                    <div class="mu-text-field-label label-class">图形分析纵坐标选择</div>
+                    <mu-radio label="事故数" name="ordinate2" native-value="accidentCount" :icon-class="{'icon-class': true}" v-model="selectData.yType"></mu-radio>
+                    <mu-radio label="事故严重程度" name="ordinate2" native-value="accidentLevel" :icon-class="{'icon-class': true}" v-model="selectData.yType" style="margin-left: 20px;" @change="accidentLChange"></mu-radio>
+                    <mu-select-field v-if="selectData.yType == 'accidentLevel'" v-model="selectData.accidentalSev" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="事故严重程度" hint-text="null" multiple>
+                        <mu-menu-item v-for="text,index in basicData.accidentalSev" :key="index" :value="text" :title="text" ></mu-menu-item>
+                    </mu-select-field>
+                    <div v-if="selectData.yType == 'accidentCount'" style="height: 10px;"></div>
+                    <div class="mu-text-field-label label-class">图形分析时间精度选取</div>
+                    <mu-radio label="年" name="timePre" native-value="1" :icon-class="{'icon-class': true}" v-model="selectData.timePrecision"></mu-radio>
+                    <mu-radio label="月" name="timePre" native-value="2" :icon-class="{'icon-class': true}" v-model="selectData.timePrecision" style="margin-left: 35px;"></mu-radio>
+                    <mu-radio label="日" name="timePre" native-value="3" :icon-class="{'icon-class': true}" v-model="selectData.timePrecision" style="margin-left: 35px;"></mu-radio>
+                    <div style="height: 10px;"></div>
+                    <mu-raised-button label="细节筛选" icon="widgets" label-position="before" primary class="detail-one-btn" @click="details"></mu-raised-button>
+                    <mu-icon-button tooltip="筛选结果" tooltip-position="bottom-right" icon="call_merge" class="right-btn" @click="timeGet"></mu-icon-button>
+                    <%--<mu-icon-button tooltip="筛选数据重置" tooltip-position="bottom-right" icon="grade" class="right-btn" @click="timeGet"></mu-icon-button>--%>
+                </div>
             </div>
+
             <div class="body-right" :style="rightStyle">
                <!-- <div id="timeMap" class="map">
-
                 </div>-->
-                <div id="timeLine" class="map">
-
+                <div id="timePrintId">
+                    <div id="timeLine" class="map">
+                    </div>
                 </div>
             </div>
         </div>

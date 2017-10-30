@@ -247,6 +247,9 @@
 .single-body-left{
     margin: 6px 0px 0px 20px;
 }
+.time-body-left{
+    margin: 6px 0px 0px 20px;
+}
 .single-select-left{
     width: 288px;
     padding: 25px 15px 15px 15px;
@@ -276,7 +279,10 @@
     height: 38px;
     padding: 7px;
 }
-.detail-btn{
+.detail-one-btn{
+    width: 205px;
+}
+.detail-two-btn{
     width: 154px;
 }
 .work-checkbox{
@@ -349,6 +355,11 @@
 .single-body-left-float{
     position: absolute;
     top: 118px;
+    z-index: 20;
+}
+.time-body-left-float{
+    position: absolute;
+    top: 70px;
     z-index: 20;
 }
 
