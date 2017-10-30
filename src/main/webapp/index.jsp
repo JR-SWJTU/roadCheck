@@ -82,7 +82,10 @@
         </div>
         <div v-show="nowFuc == 'single-point'" v-cloak :style="bodyContent">
             <div class="single-body-left single-body-left-float no-print" :class="{'left-float-open': isFirstLoad && isShowItems, 'left-float-close': isFirstLoad && !isShowItems}">
-                <mu-icon-button v-if="!singleShowSelect" icon="navigate_next" tooltip-position="bottom-right" tooltip="筛选条件" class="single-open-btn" @click="openSingleShow"></mu-icon-button>
+                <div v-if="!singleShowSelect">
+                    <mu-icon-button icon="navigate_next" tooltip-position="bottom-right" tooltip="筛选条件" class="single-open-btn" @click="openSingleShow"></mu-icon-button>
+                    <mu-icon-button v-show="chartPrintShow" tooltip="导出当前pdf报告" tooltip-position="bottom-right" icon="print" class="single-open-btn" class="right-btn" @click="chartPrint"></mu-icon-button>
+                </div>
                 <div v-if="singleShowSelect" class="single-select-left">
                     <mu-icon-button icon="navigate_before" tooltip-position="bottom-right" tooltip="收起" class="single-close-btn" @click="closeSingleShow"></mu-icon-button>
                     <mu-select-field v-if="singleTab == 'gruppe'" max-height="300" scroller hint-text="null" v-model="selectData.area.value" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="大队管辖区">
@@ -98,8 +101,7 @@
                         <mu-menu-item v-for="text,index in basicData.area.crossing" :key="index" :value="text" :title="text" ></mu-menu-item>
                     </mu-select-field>
                     <div class="mu-text-field-label label-class" style="padding-top: 12px;">选择分析的时间段</div>
-                    <mu-date-picker auto-ok hint-text="开始监测日期" v-model="selectData.dateTime.start" container="inline" mode="landscape" min-date="2016-09-01" :underline-class="{'underline-class': true, 'end-time-line': true}" style="width: 205px;"></mu-date-picker>
-                    <mu-icon-button tooltip="导出pdf报告" tooltip-position="bottom-right" icon="print" class="right-btn" @click="chartPrint"></mu-icon-button>
+                    <mu-date-picker auto-ok hint-text="开始监测日期" v-model="selectData.dateTime.start" container="inline" mode="landscape" min-date="2016-09-01" :underline-class="{'underline-class': true}"></mu-date-picker>
                     <mu-date-picker auto-ok hint-text="至截止监测日期" v-model="selectData.dateTime.end" container="inline" mode="landscape" :underline-class="{'underline-class': true, 'end-time-line': true}" style="width: 205px;"></mu-date-picker>
                     <mu-icon-button tooltip="筛选结果" tooltip-position="bottom-right" icon="call_merge" class="right-btn" @click="singlePointGet"></mu-icon-button>
                 </div>
@@ -120,7 +122,7 @@
                     <%--事故数、事故严重程度--%>
                         <div class="chart-type-class" :style="chartStyle">
                             <div class="table-class">
-                                <div class="title-class">事故数、事故严重程度汇总表</div>
+                                <div class="title-class">各事故严重程度下事故数汇总</div>
                                 <hr/>
                                 <mu-table :fixed-header="true" :selectable="false" :show-checkbox="false">
                                     <mu-thead slot="header">
@@ -141,7 +143,7 @@
                     <%--事故类型--%>
                         <div class="chart-type-class" :style="chartStyle">
                             <div class="table-class">
-                                <div class="title-class">事故类型汇总表</div>
+                                <div class="title-class">各事故类型下事故数汇总</div>
                                 <hr/>
                                 <mu-table :fixed-header="true" :selectable="false" :show-checkbox="false">
                                     <mu-thead slot="header">
@@ -160,9 +162,9 @@
                             <div v-show="isChartShow" id="accTypePie" class="chart-class"></div>
                         </div>
                     <%--天气--%>
-                        <div class="chart-type-class" :style="chartStyle">
+                        <div class="chart-type-class page-next" :style="chartStyle">
                             <div class="table-class">
-                                <div class="title-class">天气情况事故汇总表</div>
+                                <div class="title-class">各天气情况下事故数汇总</div>
                                 <hr/>
                                 <mu-table :fixed-header="true" :selectable="false" :show-checkbox="false">
                                     <mu-thead slot="header">
@@ -183,7 +185,7 @@
                     <%--车辆类型--%>
                         <div class="chart-type-class" :style="chartStyle">
                             <div class="table-class">
-                                <div class="title-class">车辆事故汇总表</div>
+                                <div class="title-class">各车辆类型事故数汇总</div>
                                 <hr/>
                                 <mu-table :fixed-header="true" :selectable="false" :show-checkbox="false">
                                     <mu-thead slot="header">

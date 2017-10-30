@@ -1,3 +1,9 @@
+/*打印分页*/
+@media print{
+    .page-next {
+        page-break-before: always;
+    }
+}
 /*覆盖原muse-ui*/
 .mu-th{
     color: black;

@@ -82,6 +82,7 @@ var app = new Vue({
         },
 
         isChartShow: false,
+        chartPrintShow: false,
         preChartShowData: null,
         singleShowData: {
             accTable: {
@@ -262,15 +263,22 @@ var app = new Vue({
             console.log('information');
         },
         blackPointDiagnose: function () {
-            this.nowFuc = 'black-point';
+            if(this.nowFuc != 'black-point'){
+                this.nowFuc = 'black-point';
+                this.chartPrintShow = false;
+            }
             this.resetObj();
         },
         singleAnalysis: function () {
-            this.nowFuc = 'single-point';
+            if(this.nowFuc != 'single-point'){
+                this.nowFuc = 'single-point';
+                this.chartPrintShow = false;
+            }
             this.resetObj();
         },
         singleTabChange: function (val) {
             this.singleShowSelect = false;
+            this.chartPrintShow = false;
             this.singleTab = val;
             this.resetSingleShowData();
             this.resetObj();
@@ -302,11 +310,17 @@ var app = new Vue({
             this.singleShowSelect = true;
         },
         spaceAnalysis: function () {
-            this.nowFuc = 'space';
+            if(this.nowFuc != 'space'){
+                this.nowFuc = 'space';
+                this.chartPrintShow = false;
+            }
             this.resetObj();
         },
         timeAnalysis: function () {
-            this.nowFuc = 'time';
+            if(this.nowFuc != 'time'){
+                this.nowFuc = 'time';
+                this.chartPrintShow = false;
+            }
             this.resetObj();
         },
         highStatistics: function () {
@@ -1256,6 +1270,7 @@ var app = new Vue({
 
             this.isChartShow = true;
             this.singleShowSelect = false;
+            this.chartPrintShow = true;
         },
         getLine:function (id, title, xAxis, series) {
             return new Highcharts.Chart(id, {

@@ -23,9 +23,9 @@ document.ready(function () {
     console.log(localStorage.obj);
     if(localStorage.obj){
         document.getElementById('printDiv').innerHTML = localStorage.obj;
-        // setTimeout(function () {
-        //     window.print();
-        //     window.close();
-        // }, 10);
+        setTimeout(function () {
+            window.print();
+            window.close();
+        }, 10);
     }
 })
