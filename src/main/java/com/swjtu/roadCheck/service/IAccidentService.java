@@ -3,9 +3,9 @@ package com.swjtu.roadCheck.service;
 import com.swjtu.roadCheck.dto.Accident;
 import com.swjtu.roadCheck.dto.ResMap;
 import com.swjtu.roadCheck.entityCustom.AccidentQueryCondition;
-import com.swjtu.roadCheck.entityCustom.BlackPointData;
 import com.swjtu.roadCheck.entityCustom.BlackPointDataForWeb;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -48,7 +48,7 @@ public interface IAccidentService {
      * @param condition
      * @throws Exception
      */
-    void exportAreaAnalyse(AccidentQueryCondition condition) throws Exception;
+    void exportAreaAnalyse(AccidentQueryCondition condition, HttpServletResponse res) throws Exception;
 
     /**
      * 时间分析，多条件符合查询

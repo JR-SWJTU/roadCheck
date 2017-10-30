@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -60,12 +61,12 @@ public class AccidentController {
      * @throws Exception
      */
     @RequestMapping(value = "/analyseData/areaAnalyseDataExport", method = RequestMethod.POST)
-    public JsonResult areaAnalyseDataExport(@RequestBody AccidentQueryCondition condition) throws Exception{
+    public JsonResult areaAnalyseDataExport(@RequestBody AccidentQueryCondition condition, HttpServletResponse res) throws Exception{
         condition.setPropertyLoss(1);
         condition.setSlightInjury(1);
         condition.setSeverInjury(1);
         condition.setDead(1);
-        accidentService.exportAreaAnalyse(condition);
+        accidentService.exportAreaAnalyse(condition, res);
         return JsonResult.build(StatusCode.SUCCESS);
     }
 

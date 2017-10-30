@@ -16,6 +16,7 @@ import com.swjtu.roadCheck.web.exception.base.ReqParmIncorException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 /**
@@ -153,7 +154,7 @@ public class AccidentServiceImpl implements IAccidentService {
      * @param condition
      * @throws Exception
      */
-    public void exportAreaAnalyse(AccidentQueryCondition condition) throws Exception{
+    public void exportAreaAnalyse(AccidentQueryCondition condition, HttpServletResponse res) throws Exception{
         Map<String,String> conditionTitleMap = new HashMap();
         Map<String,String> resultTitleMap = new LinkedHashMap<String, String>();
         Map<String, Object> conditionMap = ObjectUtil.objectToMap(condition);
@@ -168,7 +169,7 @@ public class AccidentServiceImpl implements IAccidentService {
             resultTitleMap.put("dead","死亡");
         }
 
-        ExportExcel.excelExport2( areaMultiConditionQuery(condition),resultTitleMap,conditionMap,conditionTitleMap,"sheet1","空间分析数据");
+        ExportExcel.excelExport2( areaMultiConditionQuery(condition),resultTitleMap,conditionMap,conditionTitleMap,"sheet1","空间分析数据", res);
     }
 
     /**

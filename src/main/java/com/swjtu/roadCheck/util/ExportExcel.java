@@ -5,13 +5,14 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.util.CellRangeAddress;
 
-import java.io.FileOutputStream;
-import java.io.OutputStream;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
+
 /**
  * Created by windows on 2017/10/21.
  */
@@ -83,7 +84,7 @@ import java.util.Map;
         }
     }
 
-    public static void excelExport2(List<?> dataList,Map<String, String> resultMap,Map<String, Object> conditionMap, Map<String, String> titleMap, String sheetName,String filename) throws CustomException {
+    public static void excelExport2(List<?> dataList, Map<String, String> resultMap, Map<String, Object> conditionMap, Map<String, String> titleMap, String sheetName, String filename, HttpServletResponse res) throws CustomException {
         // 初始化workbook
         initHSSFWorkbook(sheetName);
         // 标题行
@@ -100,9 +101,37 @@ import java.util.Map;
         try {
             String filedisplay = filename + ".xls";
             //如果web项目，1、设置下载框的弹出（设置response相关参数)；2、通过httpservletresponse.getOutputStream()获取
-            OutputStream out = new FileOutputStream(filedisplay);
-            workbook.write(out);
-            out.close();
+//            OutputStream out = new FileOutputStream(filedisplay);
+//            workbook.write(out);
+//            out.close();
+
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            workbook.write(os);
+            byte[] content = os.toByteArray();
+            InputStream is = new ByteArrayInputStream(content);
+            // 设置response参数，可以打开下载页面
+            res.reset();
+            res.setContentType("application/vnd.ms-excel;charset=utf-8");
+            res.setHeader("Content-Disposition", "attachment;filename=" + new String((filedisplay ).getBytes(), "utf-8"));
+            ServletOutputStream out = res.getOutputStream();
+            BufferedInputStream bis = null;
+            BufferedOutputStream bos = null;
+            try {
+                bis = new BufferedInputStream(is);
+                bos = new BufferedOutputStream(out);
+                byte[] buff = new byte[2048];
+                int bytesRead;
+                // Simple read/write loop.
+                while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
+                    bos.write(buff, 0, bytesRead);
+                }
+            } catch (Exception e) {
+                // TODO: handle exception
+                e.printStackTrace();
+            } finally {
+                if (bis != null) bis.close();
+                if (bos != null) bos.close();
+            }
         }
         catch (Exception e) {
             throw new CustomException("导出失败");
