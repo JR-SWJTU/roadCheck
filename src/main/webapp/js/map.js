@@ -39,6 +39,7 @@ timeMap.setMapStyle('amap://styles/'+"dark");
 
 var features = ['road'];
 spaceMap.setFeatures(features);
+blackPointMap.setFeatures(features);
 /*
 *  value='dark'>幻影
  value='light'>月

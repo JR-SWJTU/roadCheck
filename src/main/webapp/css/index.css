@@ -6,9 +6,33 @@
 [v-cloak] {
     display: none;
 }
+/*打印*/
+@media print{
+    .no-print{
+        display: none;
+    }
+    ::-webkit-scrollbar {
+        display: none;
+    }
+    .border-none{
+        border: 0px !important;
+    }
+}
+@page{
+
+}
 /*覆盖原muse-ui*/
 .mu-radio-ripple-wrapper {
     left: -16px;
+}
+.mu-th{
+    font-size: 14px;
+    color: black;
+}
+.mu-th, .mu-td {
+    text-align: center;
+    padding-left: 0px;
+    padding-right: 0px;
 }
 .popup-top
 {
@@ -166,7 +190,6 @@
     width: auto;
 }
 .main-body{
-    padding-top: 64px;
 }
 .label-class{
     color: black;
@@ -382,7 +405,6 @@
     border-radius: 10px 10px 0px 0px;
 }
 .single-content{
-    margin-top: 48px;
     padding: 6px 10px 6px 10px;
     background-color: lightblue;
     -webkit-border-radius: 0px 0px 10px 10px;
@@ -399,13 +421,17 @@
 }
 .table-class{
     width: 100%;
+    padding: 2px;
+    border: 1px solid lightblue;
 }
 .chart-type-class{
     padding-top: 20px;
 }
 .chart-class{
     width: 100%;
-    padding-top: 10px;
+    padding: 2px;
+    border: 1px solid lightblue;
+    margin-top: 10px;
 }
 .map{
     width: 100%;

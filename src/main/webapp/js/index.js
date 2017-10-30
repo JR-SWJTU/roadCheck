@@ -1499,11 +1499,9 @@ var app = new Vue({
             if(flag){
                 axios.post(url, json).then(function (response) {
                     var allData = response.data;
-                    console.log(response)
-                    console.log(allData)
                     if(allData.code == 200){
                         console.log(allData.data);
-                        if(alldata.data.arr.length == 0){
+                        if(allData.data.arr.length == 0){
                             this.messageTop = "未查找到相应数据项！";
                             this.textFlag = false;
                             this.showMessageTop = true;
@@ -1641,7 +1639,7 @@ var app = new Vue({
         },
         chartStyle: function () {
             return {
-                'width': this.wrapWidth - 30 - 2 - 20 - (this.isShowItems ? 256 : 8) + 'px'
+                'width': this.wrapWidth - 30 - 4 - 20 - (this.isShowItems ? 256 : 8) + 'px'
             }
         },
         singleContent: function () {

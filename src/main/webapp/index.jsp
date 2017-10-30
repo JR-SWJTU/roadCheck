@@ -18,7 +18,7 @@
 </head>
 <body>
 <div id="app">
-    <div class="items-class" :class="{'items-class-open': isFirstLoad && isShowItems, 'items-class-close': isFirstLoad && !isShowItems}">
+    <div class="items-class no-print" :class="{'items-class-open': isFirstLoad && isShowItems, 'items-class-close': isFirstLoad && !isShowItems}">
         <mu-appbar title="功能列表">
         </mu-appbar>
         <mu-list class="list-class">
@@ -42,18 +42,19 @@
             </mu-list-item>
         </mu-list>
     </div>
-    <mu-appbar title="泸州市交通事故数据分析系统" class="main-header" :class="{'header-class-open': isFirstLoad && isShowItems, 'header-class-close': isFirstLoad && !isShowItems}">
+    <mu-appbar title="泸州市交通事故数据分析系统" class="main-header no-print" :class="{'header-class-open': isFirstLoad && isShowItems, 'header-class-close': isFirstLoad && !isShowItems}">
         <mu-icon-button icon="view_list" slot="left" href="javascript: void(0);" @click="toggleFuc"></mu-icon-button>
         <mu-flat-button v-if="!isLogin" label="登录" slot="right" @click="login"></mu-flat-button>
         <mu-flat-button v-if="isLogin" label="个人信息" slot="right" @click="information"></mu-flat-button>
         <mu-flat-button v-if="isLogin" label="退出登录" slot="right" @click="logout"></mu-flat-button>
     </mu-appbar>
+    <div class="no-print" style="height: 64px"></div>
     <div class="main-body" :class="{'header-class-open': isFirstLoad && isShowItems, 'header-class-close': isFirstLoad && !isShowItems}">
         <div v-if="nowFuc == 'main-page'" v-cloak :style="bodyContent">
 
         </div>
         <div v-show="nowFuc == 'black-point'"  v-cloak :style="bodyContent">
-            <div class="body-left body-left-float" :class="{'left-float-open': isFirstLoad && isShowItems, 'left-float-close': isFirstLoad && !isShowItems}">
+            <div class="body-left body-left-float no-print" :class="{'left-float-open': isFirstLoad && isShowItems, 'left-float-close': isFirstLoad && !isShowItems}">
                 <mu-select-field v-model="selectData.analysisObj" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="选择交叉口或路段黑点诊断">
                     <mu-menu-item v-for="text,index in basicData.analysisObj" :key="index" :value="text" :title="text" ></mu-menu-item>
                 </mu-select-field>
@@ -79,7 +80,7 @@
             </div>
         </div>
         <div v-show="nowFuc == 'single-point'" v-cloak :style="bodyContent">
-            <div class="single-body-left single-body-left-float" :class="{'left-float-open': isFirstLoad && isShowItems, 'left-float-close': isFirstLoad && !isShowItems}">
+            <div class="single-body-left single-body-left-float no-print" :class="{'left-float-open': isFirstLoad && isShowItems, 'left-float-close': isFirstLoad && !isShowItems}">
                 <mu-icon-button v-if="!singleShowSelect" icon="navigate_next" tooltip-position="bottom-right" tooltip="筛选条件" class="single-open-btn" @click="openSingleShow"></mu-icon-button>
                 <div v-if="singleShowSelect" class="single-select-left">
                     <mu-icon-button icon="navigate_before" tooltip-position="bottom-right" tooltip="收起" class="single-close-btn" @click="closeSingleShow"></mu-icon-button>
@@ -101,7 +102,7 @@
                     <mu-icon-button tooltip="筛选结果" tooltip-position="bottom-right" icon="call_merge" class="right-btn" @click="singlePointGet"></mu-icon-button>
                 </div>
             </div>
-            <div class="single-tabs-fixed" :style="singleRightStyle">
+            <div class="single-tabs-fixed no-print" :style="singleRightStyle">
                 <div class="single-tabs-div">
                     <mu-tabs :value="singleTab" class="single-tabs" line-class="single-tabs-line" @change="singleTabChange">
                         <mu-tab value="gruppe" title="大队管辖区" :title-class="{'single-tab-title': singleTab != 'gruppe'}" :class="{'single-tab-active': singleTab == 'gruppe'}"></mu-tab>
@@ -111,13 +112,14 @@
                     </mu-tabs>
                 </div>
             </div>
-            <div class="body-right" :style="singleRightStyle" style="background-color: inherit;">
+            <div class="body-right print-scroll border-none" :style="singleRightStyle" style="background-color: inherit;">
+                <div class="no-print" style="height: 48px"></div>
                 <div class="single-content" :style="singleContent">
                     <%--事故数、事故严重程度--%>
                         <div class="chart-type-class" :style="chartStyle">
                             <div class="table-class">
                                 <div class="title-class">事故数、事故严重程度汇总表</div>
-                                <mu-divider></mu-divider>
+                                <hr/>
                                 <mu-table :fixed-header="true" :selectable="false" :show-checkbox="false">
                                     <mu-thead slot="header">
                                         <mu-tr>
@@ -138,7 +140,7 @@
                         <div class="chart-type-class" :style="chartStyle">
                             <div class="table-class">
                                 <div class="title-class">事故类型汇总表</div>
-                                <mu-divider></mu-divider>
+                                <hr/>
                                 <mu-table :fixed-header="true" :selectable="false" :show-checkbox="false">
                                     <mu-thead slot="header">
                                         <mu-tr>
@@ -159,7 +161,7 @@
                         <div class="chart-type-class" :style="chartStyle">
                             <div class="table-class">
                                 <div class="title-class">天气情况事故汇总表</div>
-                                <mu-divider></mu-divider>
+                                <hr/>
                                 <mu-table :fixed-header="true" :selectable="false" :show-checkbox="false">
                                     <mu-thead slot="header">
                                         <mu-tr>
@@ -180,7 +182,7 @@
                         <div class="chart-type-class" :style="chartStyle">
                             <div class="table-class">
                                 <div class="title-class">车辆事故汇总表</div>
-                                <mu-divider></mu-divider>
+                                <hr/>
                                 <mu-table :fixed-header="true" :selectable="false" :show-checkbox="false">
                                     <mu-thead slot="header">
                                         <mu-tr>
@@ -201,7 +203,7 @@
             </div>
         </div>
         <div v-show="nowFuc == 'space'" v-cloak :style="bodyContent">
-            <div class="body-left body-left-float" :class="{'left-float-open': isFirstLoad && isShowItems, 'left-float-close': isFirstLoad && !isShowItems}">
+            <div class="body-left body-left-float no-print" :class="{'left-float-open': isFirstLoad && isShowItems, 'left-float-close': isFirstLoad && !isShowItems}">
                 <mu-select-field v-model="selectData.analysisObj" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="选择交叉口或路段黑点诊断">
                     <mu-menu-item v-for="text,index in basicData.analysisObj" :key="index" :value="text" :title="text" ></mu-menu-item>
                 </mu-select-field>
@@ -258,7 +260,7 @@
             </div>
         </div>
         <div v-show="nowFuc == 'time'" v-cloak :style="bodyContent">
-            <div class="body-left body-left-float" :class="{'left-float-open': isFirstLoad && isShowItems, 'left-float-close': isFirstLoad && !isShowItems}">
+            <div class="body-left body-left-float no-print" :class="{'left-float-open': isFirstLoad && isShowItems, 'left-float-close': isFirstLoad && !isShowItems}">
                 <mu-select-field v-model="selectData.analysisObj" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="选择交叉口或路段黑点诊断">
                     <mu-menu-item v-for="text,index in basicData.analysisObj" :key="index" :value="text" :title="text" ></mu-menu-item>
                 </mu-select-field>
@@ -304,13 +306,13 @@
         </div>
     </div>
 
-    <mu-dialog :open="loginDialog" title="泸州市交通事故数据分析系统" dialog-class="dialog" title-class="dialog-title" body-class="dialog-body" >
+    <mu-dialog :open="loginDialog" title="泸州市交通事故数据分析系统" class="no-print" dialog-class="dialog" title-class="dialog-title" body-class="dialog-body" >
         <mu-text-field label="请输入您的用户名|警号" :full-width="true" label-float v-model="loginInfor.userName"></mu-text-field>
         <mu-text-field label="请输入您的密码" type="password" :full-width="true" label-float v-model="loginInfor.password"></mu-text-field>
         <mu-flat-button slot="actions" primary @click="loginConfirm" label="登录"></mu-flat-button>
     </mu-dialog>
 
-    <mu-dialog :open="detailDialog" title="交通事故细节筛选" dialog-class="dialog" title-class="dialog-title" body-class="dialog-body" @close="detailClose">
+    <mu-dialog :open="detailDialog" title="交通事故细节筛选" class="no-print" dialog-class="dialog" title-class="dialog-title" body-class="dialog-body" @close="detailClose">
         <mu-select-field v-model="selectData.roadGrade" :full-width="true" label="道路等级">
             <mu-menu-item v-for="text,index in basicData.roadGrade" :key="index" :value="text" :title="text" ></mu-menu-item>
         </mu-select-field>
@@ -339,7 +341,7 @@
         <mu-flat-button slot="actions" primary @click="detailConfirm" label="确认"></mu-flat-button>
     </mu-dialog>
 
-    <mu-popup position="top" v-cloak :overlay="false" :open="showMessageTop" popup-class="popup-top">
+    <mu-popup position="top" v-cloak :overlay="false" :open="showMessageTop" class="no-print" popup-class="popup-top">
         <span :class="{'succeed-text': textFlag, 'failure-text': !textFlag}">{{ messageTop }}</span>
     </mu-popup>
 </div>
