@@ -794,13 +794,13 @@ var app = new Vue({
                     xname[i] += "年";
                 }
             }
-            if( type == 2){
-                for(var i = 0 ;i < width ; i++){
-                    var dur = parseInt(sD[1])+i;
+            else if( type == 2){
+                for(var i = 0 ; i < width ; i++){
+                    var dur = parseInt(sD[1]) + i;
                     xname[i] = dur+"月";
                 }
             }
-            if (type == 3) {
+            else if (type == 3) {
                 for(var i = 0 ;i < width ; i++){
                     xname[i] = i;
                 }
@@ -834,16 +834,15 @@ var app = new Vue({
 
             var series =  [
                 {
-                    name: '数量',
+                    name: '事故总数',
                     data: data
                 }
             ];
 
             var json = {};
 
-
           //  var xAxis = ['总数', '仅损财', '轻伤', '重伤', '死亡', '未知'];
-            this.getLine('timeLine', '事故数、事故严重程度趋势图', xAxis, series);
+            this.getLine('timeLine', '各种情况下事故数趋势图', xAxis, series);
             //document.getElementById('#timeLine').highcharts(json);
 
             this.timeShowSelect = false;
@@ -1550,14 +1549,15 @@ var app = new Vue({
                 axios.post(url, json).then(function (response) {
                     var allData = response.data;
                     console.log(allData);
-                    if(allData.code == 200){
-                        console.log(allData.data);
-                    }
-                    else{
-                        this.messageTop = allData.message;
-                        this.textFlag = false;
-                        this.showMessageTop = true;
-                    }
+                    var blob = new Blob(['\uFEFF' + allData], {type: 'application/vnd.ms-excel;'});
+                    console.log(blob);
+                    var a = document.createElement('a');
+                    a.download = '文件' + '.xls';
+                    a.href = window.URL.createObjectURL(blob);
+                    a.addEventListener('click', function () {
+                    });
+                    document.body.appendChild(a);
+                    a.click();
                 }).catch(function (error) {
                     console.log(error);
                 });
@@ -1678,11 +1678,11 @@ var app = new Vue({
                         //获取时间跨度
                         var eDate = json.endTime.split("-");
                         var sDate = json.startTime.split("-");
-                        var xYears = eDate[0] - sDate[0]+1;
-                        var xMonths = (xYears-1)*12 + eDate[1]-sDate[1]+1;
+                        var xYears = eDate[0] - sDate[0] + 1;
+                        var xMonths = (xYears - 1) * 12 + eDate[1] - sDate[1] + 1;
                         var eD = new Date(eDate[1] + "-" + eDate[2] + "-" + eDate[0]);
                         var sD = new Date(sDate[1] + "-" + sDate[2] + "-" + sDate[0]);
-                        var xDays = parseInt(Math.abs(eD  -  sD)  /  1000  /  60  /  60  /24);
+                        var xDays = parseInt(Math.abs(eD - sD) / 1000 / 60 / 60 / 24);
                         // console.log(xYears)
                         // console.log(xMonths)
                         // console.log(xDays)
@@ -1690,7 +1690,6 @@ var app = new Vue({
 
                         /*展示方式
                         * */
-
                         var data = allData.data.arr;
                         if (json.timePrecision == 1) {
                             //按年展示
