@@ -68,7 +68,8 @@
                     <mu-menu-item v-for="text,index in basicData.area.administrative" :key="index" :value="text" :title="text" ></mu-menu-item>
                 </mu-select-field>
                 <div class="mu-text-field-label label-class" style="padding-top: 12px;">选择分析的时间段</div>
-                <mu-date-picker auto-ok hint-text="开始监测日期" v-model="selectData.dateTime.start" container="inline" mode="landscape" min-date="2016-09-01" :underline-class="{'underline-class': true}"></mu-date-picker>
+                <mu-date-picker auto-ok hint-text="开始监测日期" v-model="selectData.dateTime.start" container="inline" mode="landscape" min-date="2016-09-01" :underline-class="{'underline-class': true, 'end-time-line': true}" style="width: 205px;"></mu-date-picker>
+                <mu-icon-button tooltip="下载excel报告" tooltip-position="bottom-right" icon="file_download" class="right-btn" @click="blackPointDown"></mu-icon-button>
                 <mu-date-picker auto-ok hint-text="至截止监测日期" v-model="selectData.dateTime.end" container="inline" mode="landscape" :underline-class="{'underline-class': true, 'end-time-line': true}" style="width: 205px;"></mu-date-picker>
                 <mu-icon-button tooltip="筛选结果" tooltip-position="bottom-right" icon="call_merge" class="right-btn" @click="blackPointGet"></mu-icon-button>
                 <%--<mu-icon-button tooltip="筛选数据重置" tooltip-position="bottom-right" icon="grade" class="right-btn" @click="resetObj"></mu-icon-button>--%>
@@ -97,7 +98,8 @@
                         <mu-menu-item v-for="text,index in basicData.area.crossing" :key="index" :value="text" :title="text" ></mu-menu-item>
                     </mu-select-field>
                     <div class="mu-text-field-label label-class" style="padding-top: 12px;">选择分析的时间段</div>
-                    <mu-date-picker auto-ok hint-text="开始监测日期" v-model="selectData.dateTime.start" container="inline" mode="landscape" min-date="2016-09-01" :underline-class="{'underline-class': true}"></mu-date-picker>
+                    <mu-date-picker auto-ok hint-text="开始监测日期" v-model="selectData.dateTime.start" container="inline" mode="landscape" min-date="2016-09-01" :underline-class="{'underline-class': true, 'end-time-line': true}" style="width: 205px;"></mu-date-picker>
+                    <mu-icon-button tooltip="导出pdf报告" tooltip-position="bottom-right" icon="print" class="right-btn" @click="chartPrint"></mu-icon-button>
                     <mu-date-picker auto-ok hint-text="至截止监测日期" v-model="selectData.dateTime.end" container="inline" mode="landscape" :underline-class="{'underline-class': true, 'end-time-line': true}" style="width: 205px;"></mu-date-picker>
                     <mu-icon-button tooltip="筛选结果" tooltip-position="bottom-right" icon="call_merge" class="right-btn" @click="singlePointGet"></mu-icon-button>
                 </div>
@@ -112,9 +114,9 @@
                     </mu-tabs>
                 </div>
             </div>
+            <div class="no-print" style="height: 48px"></div>
             <div class="body-right print-scroll border-none" :style="singleRightStyle" style="background-color: inherit;">
-                <div class="no-print" style="height: 48px"></div>
-                <div class="single-content" :style="singleContent">
+                <div id="printId" class="single-content" :style="singleContent">
                     <%--事故数、事故严重程度--%>
                         <div class="chart-type-class" :style="chartStyle">
                             <div class="table-class">
@@ -229,6 +231,7 @@
                 <div v-if="selectData.yType == 'accidentCount'" style="height: 10px;"></div>
                 <mu-raised-button label="细节筛选" icon="widgets" label-position="before" primary class="detail-btn" @click="details"></mu-raised-button>
                 <mu-icon-button tooltip="筛选结果" tooltip-position="bottom-right" icon="call_merge" class="right-btn" @click="spaceGet"></mu-icon-button>
+                <mu-icon-button tooltip="下载excel报告" tooltip-position="bottom-right" icon="file_download" class="right-btn" @click="spaceDown" style="margin-right: 13px;"></mu-icon-button>
                 <%--<mu-icon-button tooltip="筛选数据重置" tooltip-position="bottom-right" icon="grade" class="right-btn" @click="spaceGet"></mu-icon-button>--%>
             </div>
             <div class="body-right" :style="rightStyle">
@@ -290,6 +293,7 @@
                 <div style="height: 10px;"></div>
                 <mu-raised-button label="细节筛选" icon="widgets" label-position="before" primary class="detail-btn" @click="details"></mu-raised-button>
                 <mu-icon-button tooltip="筛选结果" tooltip-position="bottom-right" icon="call_merge" class="right-btn" @click="timeGet"></mu-icon-button>
+                <mu-icon-button tooltip="下载excel报告" tooltip-position="bottom-right" icon="file_download" class="right-btn" @click="timeDown" style="margin-right: 13px;"></mu-icon-button>
                 <%--<mu-icon-button tooltip="筛选数据重置" tooltip-position="bottom-right" icon="grade" class="right-btn" @click="timeGet"></mu-icon-button>--%>
             </div>
             <div class="body-right" :style="rightStyle">

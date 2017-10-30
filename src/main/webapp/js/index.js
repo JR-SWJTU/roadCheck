@@ -107,13 +107,13 @@ var app = new Vue({
             password: ''
         },
 
-        isFirstLoad: false,
-        isShowItems: false,
+        isFirstLoad: true,
+        isShowItems: true,
 
         loginDialog: false,
         isLogin: true,
 
-        nowFuc: 'main-page',
+        nowFuc: 'black-point',
 
         textFlag: true,
         showMessageTop: false,
@@ -129,12 +129,6 @@ var app = new Vue({
                 this.isFirstLoad = true;
             }
             this.isShowItems = !this.isShowItems;
-            if(this.nowFuc == 'single-point' && this.isChartShow && this.preChartShowData != null){
-                var that = this;
-                setTimeout(function () {
-                    that.singleShow(that.preChartShowData);
-                }, 500)
-            }
         },
 
         getTeams: function () {
@@ -1434,6 +1428,19 @@ var app = new Vue({
                 setMarker(obj);
             });
         },
+        blackPointDown: function () {
+
+        },
+        chartPrint: function () {
+            localStorage.obj = document.getElementById('printId').innerHTML;
+            window.open("http://localhost:8080/roadCheck/print.jsp", "_blank");
+        },
+        spaceDown: function () {
+
+        },
+        timeDown: function () {
+
+        },
         blackPointGet: function () {
             var that = this;
             var url = webBase + '/accidentDatas/blackPointDiagnosis/results';
@@ -1452,11 +1459,7 @@ var app = new Vue({
                             return;
                         }
                         clearMarker(blackPointMap);
-                        var allnum = 0;
-                        allData.data.arr.forEach(function (t) {
-                            allnum += t.number;
-                        });
-                        that.getBlackMarkers(that.selectData.yType, that.selectData.analysisObj, allnum, allData.data.arr);
+                        that.getBlackMarkers(that.selectData.yType, that.selectData.analysisObj, allData.data.allnum, allData.data.arr);
                     }
                     else{
                         this.messageTop = allData.message;
