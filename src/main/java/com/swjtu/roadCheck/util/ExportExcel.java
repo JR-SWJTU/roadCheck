@@ -93,9 +93,9 @@ import java.util.Map;
         // 文本行
         createConditionContentRow(conditionMap, titleMap);
 
-       createTitleRow( "查询结果",3);
-       createHeadRow(resultMap,3);
-       createContentRow(dataList, resultMap,3);
+       createTitleRow( "查询结果",4);
+       createHeadRow(resultMap,4);
+       createContentRow(dataList, resultMap,4);
         // 写入处理结果
         try {
             String filedisplay = filename + ".xls";
