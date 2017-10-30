@@ -54,6 +54,22 @@ public class AccidentController {
     }
 
     /**
+     * 空间分析中的多条件查询结果导出excel
+     * @param condition
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/analyseData/areaAnalyseDataExport", method = RequestMethod.POST)
+    public JsonResult areaAnalyseDataExport(@RequestBody AccidentQueryCondition condition) throws Exception{
+        condition.setPropertyLoss(1);
+        condition.setSlightInjury(1);
+        condition.setSeverInjury(1);
+        condition.setDead(1);
+        accidentService.exportAreaAnalyse(condition);
+        return JsonResult.build(StatusCode.SUCCESS);
+    }
+
+    /**
      * 时间分析中的多条件查询特定地点的事故数或者各个不同严重程度下的事故数量或者事故数量统计，按年月日进行统计
      * @param condition
      * @return

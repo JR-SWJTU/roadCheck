@@ -1,25 +1,18 @@
 package com.swjtu.roadCheck;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.swjtu.roadCheck.dto.Accident;
-import com.swjtu.roadCheck.entity.*;
-import com.swjtu.roadCheck.entityCustom.AccidentQueryCondition;
+import com.swjtu.roadCheck.entity.Accidentdata;
+import com.swjtu.roadCheck.entity.Team;
+import com.swjtu.roadCheck.entity.TeamExample;
 import com.swjtu.roadCheck.entityCustom.BlackPointData;
-import com.swjtu.roadCheck.mapper.*;
+import com.swjtu.roadCheck.mapper.AccidentMapperCustom;
+import com.swjtu.roadCheck.mapper.Accidentdata2Mapper;
+import com.swjtu.roadCheck.mapper.TeamMapper;
 import com.swjtu.roadCheck.util.ExportExcel;
-import com.swjtu.roadCheck.util.JsonResult;
-import com.swjtu.roadCheck.util.enums.StatusCode;
-import com.swjtu.roadCheck.web.exception.base.CustomException;
-
-import org.apache.commons.collections.map.HashedMap;
-import org.apache.commons.lang3.StringUtils;
-import org.elasticsearch.search.aggregations.metrics.percentiles.hdr.InternalHDRPercentileRanks;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import javax.annotation.Resource;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -221,7 +214,7 @@ public class TestAPI {
         conditionMap.put("roadType","交叉口");
         conditionMap.put("troEscape","否");
         conditionMap.put("workPlaceRel","否");
-        conditionMap.put("yType",true);
+        conditionMap.put("yType",false);
         List<Accident> accidentList = accidentMapperCustom.multiConditionQueryAccidentForTime(conditionMap);
 //        List<Accident> accidentList = new ArrayList<Accident>();
 //        Accident accident = new Accident();
@@ -254,35 +247,35 @@ public class TestAPI {
 
     public Map<String,String> getTitleHashMap(Map<String,Object> map){
         Map<String,String> titleMap = new HashMap();
-        for(String key : map.keySet()){
-            if(key.equals("teamName")){
+        for(Map.Entry<String, Object> key : map.entrySet()){
+            if(key.getKey().equals("teamName") && key.getValue() != null){
                 titleMap.put("teamName","大队");
-            }else if(key.equals("areaName")){
+            }else if(key.getKey().equals("areaName") && key.getValue() != null){
                 titleMap.put("areaName","行政区");
-            }else if(key.equals("startTime")){
+            }else if(key.getKey().equals("startTime") && key.getValue() != null){
                 titleMap.put("startTime","开始日期");
-            }else if(key.equals("endTime")){
+            }else if(key.getKey().equals("endTime") && key.getValue() != null){
                 titleMap.put("endTime","结束日期");
-            }else if(key.equals("roadType")){
+            }else if(key.getKey().equals("roadType") && key.getValue() != null){
                 titleMap.put("roadType","道路类型");
-            }else if(key.equals("troEscape")){
+            }else if(key.getKey().equals("troEscape") && key.getValue() != null){
                 titleMap.put("troEscape","是否肇事逃逸");
-            }else if(key.equals("workPlaceRel")){
+            }else if(key.getKey().equals("workPlaceRel") && key.getValue() != null){
                 titleMap.put("workPlaceRel","是否与作业区相关");
-            }else if(key.equals("roadLevel")){
+            }else if(key.getKey().equals("roadLevel") && key.getValue() != null){
                 titleMap.put("roadLevel","道路等级");
-            }else if(key.equals("carCollisionType")){
+            }else if(key.getKey().equals("carCollisionType") && key.getValue() != null){
                 titleMap.put("carCollisionType","车辆碰撞类型");
-            }else if(key.equals("isWorkDay")){
+            }else if(key.getKey().equals("isWorkDay") && key.getValue() != null){
                 titleMap.put("isWorkDay","是否工作日");
-            }else if(key.equals("carType")){
+            }else if(key.getKey().equals("carType") && key.getValue() != null){
                 titleMap.put("carType","车辆类型");
-            }else if(key.equals("intersectionType")){
+            }else if(key.getKey().equals("intersectionType") && key.getValue() != null){
                 titleMap.put("intersectionType","交叉口类型");
-            }else if(key.equals("weather")){
+            }else if(key.getKey().equals("weather") && key.getValue() != null){
                 titleMap.put("weather","天气");
-            }else if(key.equals("yType")){
-               titleMap.put("yType","y轴数据类型");
+            }else if(key.getKey().equals("yType") && key.getValue() != null){
+                titleMap.put("yType","y轴数据类型");
             }
         }
         return titleMap;

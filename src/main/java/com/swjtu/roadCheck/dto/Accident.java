@@ -7,13 +7,13 @@ public class Accident {
 
     private int num;  //总的事故数量
 
-    private Integer propertyLoss;   //事故严重程度，仅财产损失，null为不选择该条件进行显示，1为选择该条件显示
+    private Integer propertyLoss;   //事故严重程度，仅财产损失事故数量
 
-    private Integer slightInjury;   //事故严重程度，轻伤，null为不选择该条件进行显示，1为选择该条件显示
+    private Integer slightInjury;   //事故严重程度，轻伤事故数量
 
-    private Integer severInjury;    //事故严重，重伤，null为不选择该条件进行显示，1为选择该条件显示
+    private Integer severInjury;    //事故严重，重伤事故数量
 
-    private Integer dead;   //事故严重程度，死亡，null为不选择该条件进行显示，1为选择该条件显示
+    private Integer dead;   //事故严重程度，死亡事故数量
 
     private String diMingBeiZhu;   //事故发生所在的地名
 

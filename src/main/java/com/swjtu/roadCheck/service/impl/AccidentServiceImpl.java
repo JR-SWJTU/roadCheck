@@ -154,25 +154,62 @@ public class AccidentServiceImpl implements IAccidentService {
      * @throws Exception
      */
     public void exportAreaAnalyse(AccidentQueryCondition condition) throws Exception{
-        List<Accident> accidentList = areaMultiConditionQuery(condition);
-        Map<String,String> titleMap = new LinkedHashMap<String,String>();
-        //导出各地点事故数量
-        if(condition.isyType()){
-            titleMap.put("diMingBeiZhu", "地名");
-            titleMap.put("num", "事故数量");
-            String sheetName = "信息导出";
-            try{
-                ExportExcel.excelExport(accidentList, titleMap, sheetName,"空间分析数据");
-            }catch (CustomException cex){
-                throw new CustomException("信息导出失败");
-            }
-        }
-        //导出各地点各严重程度下的事故数量
-        else{
-            titleMap.put("diMingBeiZhu", "地名");
-            titleMap.put("num", "事故数量");
+        Map<String,String> conditionTitleMap = new HashMap();
+        Map<String,String> resultTitleMap = new LinkedHashMap<String, String>();
+        Map<String, Object> conditionMap = ObjectUtil.objectToMap(condition);
+        conditionTitleMap = getTitleHashMap( conditionMap );
+        resultTitleMap.put("diMingBeiZhu","地名");
+        if((Boolean) conditionMap.get("yType")){
+            resultTitleMap.put("num","总的事故数量");
+        }else {
+            resultTitleMap.put("propertyLoss","仅财损");
+            resultTitleMap.put("slightInjury","轻伤");
+            resultTitleMap.put("severInjury","重伤");
+            resultTitleMap.put("dead","死亡");
         }
 
+        ExportExcel.excelExport2( areaMultiConditionQuery(condition),resultTitleMap,conditionMap,conditionTitleMap,"sheet1","空间分析数据");
+    }
+
+    /**
+     * 空间分析导出excel表时，确定筛选条件
+     * @param map
+     * @return
+     */
+    public Map<String,String> getTitleHashMap(Map<String,Object> map){
+        Map<String,String> titleMap = new HashMap();
+        for(Map.Entry<String, Object> key : map.entrySet()){
+            if(key.getKey().equals("teamName") && key.getValue() != null){
+                titleMap.put("teamName","大队");
+            }else if(key.getKey().equals("areaName") && key.getValue() != null){
+                titleMap.put("areaName","行政区");
+            }else if(key.getKey().equals("startTime") && key.getValue() != null){
+                titleMap.put("startTime","开始日期");
+            }else if(key.getKey().equals("endTime") && key.getValue() != null){
+                titleMap.put("endTime","结束日期");
+            }else if(key.getKey().equals("roadType") && key.getValue() != null){
+                titleMap.put("roadType","道路类型");
+            }else if(key.getKey().equals("troEscape") && key.getValue() != null){
+                titleMap.put("troEscape","是否肇事逃逸");
+            }else if(key.getKey().equals("workPlaceRel") && key.getValue() != null){
+                titleMap.put("workPlaceRel","是否与作业区相关");
+            }else if(key.getKey().equals("roadLevel") && key.getValue() != null){
+                titleMap.put("roadLevel","道路等级");
+            }else if(key.getKey().equals("carCollisionType") && key.getValue() != null){
+                titleMap.put("carCollisionType","车辆碰撞类型");
+            }else if(key.getKey().equals("isWorkDay") && key.getValue() != null){
+                titleMap.put("isWorkDay","是否工作日");
+            }else if(key.getKey().equals("carType") && key.getValue() != null){
+                titleMap.put("carType","车辆类型");
+            }else if(key.getKey().equals("intersectionType") && key.getValue() != null){
+                titleMap.put("intersectionType","交叉口类型");
+            }else if(key.getKey().equals("weather") && key.getValue() != null){
+                titleMap.put("weather","天气");
+            }else if(key.getKey().equals("yType") && key.getValue() != null){
+                titleMap.put("yType","y轴数据类型");
+            }
+        }
+        return titleMap;
     }
 
     /**

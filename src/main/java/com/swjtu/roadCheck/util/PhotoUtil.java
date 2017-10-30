@@ -63,7 +63,7 @@ public class PhotoUtil {
             //如果需要限制上传的文件类型，那么可以通过文件的扩展名来判断上传的文件类型是否合法
             System.out.println("上传的文件的扩展名是：" + fileExtName);
             //判断文件类型
-            if (!(fileExtName.length() != 0 && ("PNG".equals(fileExtName.toUpperCase()) || "JPG".equals(fileExtName.toUpperCase())))) {
+            if (!(fileExtName.length() != 0 && ("MP4".equals(fileExtName.toUpperCase()) || "JPG".equals(fileExtName.toUpperCase())))) {
                 message = "文件类型不符合";
                 return picUrl;
             }
