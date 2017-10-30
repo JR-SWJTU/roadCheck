@@ -1219,9 +1219,9 @@ var app = new Vue({
             this.$set(this.singleShowData.accTable, 'value', this.getAccObj(data));
             //事故数、事故严重程度柱状图
             var xAxis = ['总数', '仅损财', '轻伤', '重伤', '死亡', '未知'];
-            this.getHistogram('accHistogram', '事故数、事故严重程度柱状图', xAxis, [this.getAccHObj(data)]);
+            this.getHistogram('accHistogram', '各事故严重程度下事故数柱状图', xAxis, [this.getAccHObj(data)]);
             //事故数、事故严重程度扇形图
-            this.getPie('accPie', '事故数、事故严重程度扇形图', {
+            this.getPie('accPie', '各事故严重程度下事故数扇形图', {
                 title: '事故严重程度',
                 value: ['仅财损', '轻伤', '重伤', '死亡', '未知']
             }, {
@@ -1236,9 +1236,9 @@ var app = new Vue({
             this.$set(this.singleShowData.accTypeTable, 'value', this.getAccTObj(data));
             //事故类型柱状图
             xAxis = ['总数', '撞人、撞机动车或其他非固定物', '碰撞固定物', '非碰撞'];
-            this.getHistogram('accTypeHistogram', '事故类型柱状图', xAxis, [this.getAccTHObj(data)]);
+            this.getHistogram('accTypeHistogram', '各事故类型下事故数柱状图', xAxis, [this.getAccTHObj(data)]);
             //事故类型扇形图
-            this.getPie('accTypePie', '事故类型扇形图', {
+            this.getPie('accTypePie', '各事故类型下事故数扇形图', {
                 title: '事故类型',
                 value: ['撞人、撞机动车或其他非固定物', '碰撞固定物', '非碰撞']
             }, {
@@ -1253,13 +1253,13 @@ var app = new Vue({
             this.$set(this.singleShowData.weaTable, 'value', this.getWeaObj(data));
             //天气情况事故柱状图
             xAxis = ['总数', '晴天', '阴天', '雨', '雾', '雪', '冰雹', '台风'];
-            this.getHistogram('weaHistogram', '天气情况事故柱状图', xAxis, [this.getWeaHObj(data)]);
+            this.getHistogram('weaHistogram', '各天气情况下事故数柱状图', xAxis, [this.getWeaHObj(data)]);
             //天气情况事故扇形图
-            this.getPie('weaPie', '天气情况事故扇形图', {
+            this.getPie('weaPie', '各天气情况下事故数扇形图', {
                 title: '事故类型',
                 value: ['晴天', '阴天', '雨', '雾', '雪', '冰雹', '台风']
             }, {
-                title: '事故数'
+                title: '事故数（起）'
             }, [{
                 type: 'pie',
                 name: '所属天气事故数占比',
@@ -1299,6 +1299,12 @@ var app = new Vue({
                 xAxis: {
                     categories: xAxis
                 },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: '事故数 (起)'
+                    }
+                },
                 credites: {
                     enabled: true
                 },
@@ -1323,6 +1329,12 @@ var app = new Vue({
                 },
                 xAxis: {
                     categories: xAxis
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: '事故数 (起)'
+                    }
                 },
                 credites: {
                     enabled: true
@@ -1508,7 +1520,19 @@ var app = new Vue({
             });
         },
         blackPointDown: function () {
+            var that = this;
+            var url = webBase + '/accidentDatas/blackPointDiagnosis/exportaion';
+            var json = {};
+            var flag = this.checkInput(json);
+            if(flag){
+                axios.post(url, json).then(function (response) {
+                    console.log(response.data);
 
+
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            }
         },
         singleChartPrint: function () {
             var printDiv = document.getElementById('singlePrintId');
@@ -1517,7 +1541,27 @@ var app = new Vue({
             window.open("http://localhost:8080/roadCheck/print.jsp", "_blank");
         },
         spaceDown: function () {
-
+            var that = this;
+            var url = webBase + '/accidentDatas/analyseData/areaAnalyseDataExport';
+            var json = {};
+            var flag = this.checkInput(json);
+            console.log(json);
+            if(flag){
+                axios.post(url, json).then(function (response) {
+                    var allData = response.data;
+                    console.log(allData);
+                    if(allData.code == 200){
+                        console.log(allData.data);
+                    }
+                    else{
+                        this.messageTop = allData.message;
+                        this.textFlag = false;
+                        this.showMessageTop = true;
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            }
         },
         timeChartPrint: function () {
             var printDiv = document.getElementById('timePrintId');
