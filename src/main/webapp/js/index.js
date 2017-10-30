@@ -1470,7 +1470,9 @@ var app = new Vue({
 
         },
         timeChartPrint: function () {
-            localStorage.obj = document.getElementById('timePrintId').innerHTML;
+            var printDiv = document.getElementById('timePrintId');
+            localStorage.obj = printDiv.innerHTML;
+            localStorage.width = printDiv.offsetWidth;
             window.open("http://localhost:8080/roadCheck/print.jsp", "_blank");
         },
         blackPointGet: function () {
