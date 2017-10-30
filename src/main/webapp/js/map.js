@@ -81,18 +81,18 @@ var markerOptions = {
 
 var mapMarkers = [];
 
-// setMarker(markerOptions);
-function setMarker(options) {
-
+ //setMarker(markerOptions);
+function setMarker(options,yMin,yMax) {
+    //console.log(yMax+" ymax : ymin:"+yMin)
     if (mapMarkers == null || mapMarkers.length == 0) {
         mapMarkers = [];
     }
     //获取展示内容
     var content;
     if (options.type == 0) {
-        content = setIntersectionContent(options);
+        content = setIntersectionContent(options,yMin,yMax);
     }else {
-        content = setRoadContent(options);
+        content = setRoadContent(options,yMin,yMax);
     }
     var marker = new AMap.Marker({
         map: options.map,
@@ -158,35 +158,36 @@ function addMarker(amap,markerName,position,type,number){
 
 }
 
-function setIntersectionContent(options) {
+function setIntersectionContent(options,yMin,yMax) {
 
-    var content = "<div style=\"height: 150px;width: 150px\">\n" +
-        "<div  style=\"margin: auto;width: "+getHeight(options.accidentNumbers,options.accidentAllNumbers)/2+"px;height: "+
-        getHeight(options.accidentNumbers,options.accidentAllNumbers)/2+"px;background: red"+
-       ";border-radius:50%\"></div>" +
-        "    <p style=\"width:100%;margin: auto;text-align: center;color:white;\">事故数："+options.accidentNumbers+"</p>\n" +
-        "    <p style=\"width:100%;margin: auto;background-color:'rgba(255, 255, 255, 0)';text-align: center;color:white;\">"+options.name+"</p>\n" +
-        "</div>";
+    var content = "<div style='height: auto;width: 150px;'><div style=\"height: 50px;width: 50px;margin: auto\">\n" +
+        "<div  style=\"margin: auto;width: "+getHeight(options.accidentNumbers,yMin,yMax)/2+"%;height: "+
+        getHeight(options.accidentNumbers,yMin,yMax)/2+"%;background: red"+
+       ";border-radius:50%\"></div></div>" +
+        " <div class='showmap-number'>   <p style=\"width:100%;margin: auto;text-align: center;color:white;\">事故数："+
+             options.accidentNumbers+"</p></div>\n" +
+        " <div class='showmap-name'>      <p style=\"width:100%;margin: auto;background-color:'rgba(255, 255, 255, 0)';text-align: center;color:white;\">"+options.name+"</p>\n" +
+        "</div></div>";
 
     if (options.isChenDu) {
-        return getContent(options);
+        return getContent(options,yMin,yMax);
     }
     return content;
 }
 
-function setRoadContent (options) {
+function setRoadContent (options,yMin,yMax) {
     var content = "<div style=\"height: 200px;width: 150px\">\n" +
-        "    <div id=\"bar\" style=\"width: 20px;height: "+getHeight(options.accidentNumbers,options.accidentAllNumbers)+"px;background: red"+
+        "    <div id=\"bar\" style=\"width: 20px;height: "+getHeight(options.accidentNumbers,yMin,yMax)+"px;background: red"+
              "; margin: auto\"></div>\n" +
-        "    <p style=\"width:100%;margin: auto;text-align: center;color: "+"white"+"\">事故数："+options.accidentNumbers+"</p>\n" +
-        "    <p style=\"width:100%;margin: auto;background-color:'rgba(255, 255, 255, 0)';text-align: center;color:white;\">"+options.name+"</p>\n" +
-        "</div>";
+        " <div class='showmap-number'>      <p style=\"width:100%;margin: auto;text-align: center;color: "+"white"+"\">事故数："+options.accidentNumbers+"</p>\n" +
+        " </div><div class='showmap-name'>      <p style=\"width:100%;margin: auto;background-color:'rgba(255, 255, 255, 0)';text-align: center;color:white;\">"+options.name+"</p>\n" +
+        "</div></div>";
     if (options.isChenDu) {
-        return getContent(options);
+        return getContent(options,yMin,yMax);
     }
     return content;
 };
-function getContent(options) {
+function getContent(options,yMin,yMax) {
     var indexs = [0, 0, 0, 0];
     var marginLeft = [-1, 0, 0, 0];
     if (options.showType.indexOf("财损") >= 0) {
@@ -219,23 +220,23 @@ function getContent(options) {
         "         <div class=\"barcontain\">\n" +
         "            <div class=\"barchild\" style=\"left:" + marginLeft[0] * 20 + "px;display: " + dis[0] + ";\">\n" +
         "               <p style=\"margin:auto;text-align: center;color: white;\">" + options.wealthLoss + "</p>\n" +
-        "               <div style=\"margin:auto;width:20px;height:" + getHeight(options.wealthLoss, options.accidentNumbers) + "px;background: green;\"></div>\n" +
+        "               <div style=\"margin:auto;width:20px;height:" + getHeight2(options.wealthLoss,options.accidentNumbers) + "px;background: green;\"></div>\n" +
         "            </div>\n" +
         "            <div class=\"barchild\" style=\"left: " + marginLeft[1] * 20 + "px;display: " + dis[1] + ";\">\n" +
         "               <p style=\"margin:auto;text-align: center;color: white;\">" + options.slightInjury + "</p>\n" +
-        "               <div style=\"margin:auto;width:20px;height:" + getHeight(options.slightInjury, options.accidentNumbers) + "px;background: blue;\"></div>\n" +
+        "               <div style=\"margin:auto;width:20px;height:" + getHeight2(options.slightInjury,options.accidentNumbers) + "px;background: blue;\"></div>\n" +
         "            </div>\n" +
         "            <div class=\"barchild\" style=\"left: " + marginLeft[2] * 20 + "px;display: " + dis[2] + "\">\n" +
         "               <p style=\"margin:auto;text-align: center;color: white;\">" + options.seriousInjury + "</p>\n" +
-        "               <div style=\"margin:auto;width:20px;height:" + getHeight(options.seriousInjury, options.accidentNumbers) + "px;background: yellow;\"></div>\n" +
+        "               <div style=\"margin:auto;width:20px;height:" + getHeight2(options.seriousInjury,options.accidentNumbers) + "px;background: yellow;\"></div>\n" +
         "            </div>\n" +
         "            <div class=\"barchild\" style=\"left: " + marginLeft[3] * 20 + "px;display: " + dis[3] + "\">\n" +
         "               <p style=\"margin:auto;text-align: center;color: white;\">" + options.death + "</p>\n" +
-        "               <div style=\"margin:auto;width:20px;height:" + getHeight(options.death, options.accidentNumbers) + "px;background: olive;\"></div>\n" +
+        "               <div style=\"margin:auto;width:20px;height:" + getHeight2(options.death,options.accidentNumbers) + "px;background: olive;\"></div>\n" +
         "            </div>\n" +
         "         </div>\n" +
-        "         <p style=\"text-align: center;margin: auto;color: white;\">" + options.name + "</p>\n" +
-        "      </div>"
+        "    <div class='showmap-name'>        <p style=\"text-align: center;margin: auto;color: white;\">" + options.name + "</p>\n" +
+        "    </div>  </div>"
     return content2;
 }
 
@@ -255,12 +256,123 @@ function getColor(number,allNumbers) {
         return "green"
     }
 }
-function getHeight(number,allNumbers) {
+function getHeight(number,yMin,yMax) {
+    if (yMin = yMax) {
+        return 100;
+    }
+    console.log("number:"+number+"ymin:"+yMin+"yMax:"+yMax)
+   // console.log((number-yMin)/(yMax-yMin)*90 + 10)
+    var high = (number-yMin)/(yMax-yMin)*90 + 10;
+//    var lev = (number / allNumbers)*100;
+   // console.log(high)
+    return high;
+}
+function getHeight2(number,allNumbers) {
+
     var lev = (number / allNumbers)*100;
     return lev;
 }
 //清除marker
 //clearMarker(timeMap)
+
+spaceMap.on('zoom', function(e) {
+    //alert('您在[ '+e.lnglat.getLng()+','+e.lnglat.getLat()+' ]的位置点击了地图！');
+    //    console.log(e)
+    console.log(spaceMap.getZoom())
+    if (spaceMap.getZoom() >= 14) {
+        var divs = getClassNames('showmap-name', 'div');
+        if (null != divs)
+        {
+            //遍历对象,改其css样式
+            for ( var i = 0; i < divs.length; i++)
+            {
+                divs[i].style.display = "block";
+            }
+        }
+    }else {
+        var divs = getClassNames('showmap-name', 'div');
+        if (null != divs)
+        {
+            //遍历对象,改其css样式
+            for ( var i = 0; i < divs.length; i++)
+            {
+                divs[i].style.display = "none";
+            }
+        }
+    }
+    if (spaceMap.getZoom() < 13){
+        var divs = getClassNames('showmap-number', 'div');
+        if (null != divs)
+        {
+            //遍历对象,改其css样式
+            for ( var i = 0; i < divs.length; i++)
+            {
+                divs[i].style.display = "none";
+            }
+        }
+    }else {
+        var divs = getClassNames('showmap-number', 'div');
+        if (null != divs)
+        {
+            //遍历对象,改其css样式
+            for ( var i = 0; i < divs.length; i++)
+            {
+                divs[i].style.display = "block";
+            }
+        }
+    }
+});
+
+function alertObj(obj)
+{
+    var description = "";
+    for ( var i in obj)
+    {
+        var property = obj[i];
+        description += i + " = " + property + "\n";
+    }
+    alert(description);
+}
+
+/**
+ *通过class名和标签名获取css样式对象组
+ */
+function getClassNames(classStr, tagName)
+{
+    if (document.getElementsByClassName)
+    {
+        return document.getElementsByClassName(classStr)
+    } else
+    {
+        //为了兼容ie8及其以下版本的方法
+        var nodes = document.getElementsByTagName(tagName), ret = [];
+        for (i = 0; i < nodes.length; i++)
+        {
+            if (hasClass(nodes[i], classStr))
+            {
+                ret.push(nodes[i])
+            }
+        }
+        return ret;
+    }
+}
+
+/**
+ *判断节点class存在性
+ */
+function hasClass(tagStr, classStr)
+{
+    //这个正则表达式是因为class可以有多个,判断是否包含
+    var arr = tagStr.className.split(/\s+/);
+    for ( var i = 0; i < arr.length; i++)
+    {
+        if (arr[i] == classStr)
+        {
+            return true;
+        }
+    }
+    return false;
+}
 function clearMarker(amap) {
     console.log("mapmarker:"+mapMarkers.length);
     amap.remove(mapMarkers);
