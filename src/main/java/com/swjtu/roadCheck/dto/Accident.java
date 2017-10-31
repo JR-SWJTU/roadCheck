@@ -114,4 +114,21 @@ public class Accident {
     public void setDead(Integer dead) {
         this.dead = dead;
     }
+
+    @Override
+    public String toString() {
+        return "Accident{" +
+                "num=" + num +
+                ", propertyLoss=" + propertyLoss +
+                ", slightInjury=" + slightInjury +
+                ", severInjury=" + severInjury +
+                ", dead=" + dead +
+                ", diMingBeiZhu='" + diMingBeiZhu + '\'' +
+                ", yearRes='" + yearRes + '\'' +
+                ", monthRes='" + monthRes + '\'' +
+                ", dayRes='" + dayRes + '\'' +
+                ", lat=" + lat +
+                ", lng=" + lng +
+                '}';
+    }
 }

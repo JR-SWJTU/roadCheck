@@ -1,7 +1,5 @@
 package com.swjtu.roadCheck.web.controller;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.swjtu.roadCheck.dto.Accident;
 import com.swjtu.roadCheck.entity.Accidentdata;
 import com.swjtu.roadCheck.entityCustom.AccidentQueryCondition;
@@ -20,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -68,9 +67,12 @@ public class AccidentController {
         condition.setSeverInjury(1);
         condition.setDead(1);
         System.out.println("导出excel了");
-        accidentService.exportAreaAnalyse(condition, res);
 
-        return JsonResult.build(StatusCode.SUCCESS);
+        String fileName = accidentService.exportAreaAnalyse(condition, res);
+        String addr = InetAddress.getLocalHost().getHostAddress();
+        String fileUrl = "http://" + addr + ":8080//" + "excel/" + fileName;
+        System.out.println(fileUrl);
+        return JsonResult.build(StatusCode.SUCCESS,fileUrl);
     }
 
     /**
@@ -139,8 +141,11 @@ public class AccidentController {
     @RequestMapping(value = "/blackPointDiagnosis/exportaion", method = RequestMethod.POST)
     public JsonResult exportBlackPoint(@RequestBody Map map) throws Exception{
         List<BlackPointData> blackPointDatas = new ArrayList<BlackPointData>();
-        accidentService.exportAccidentData(map);
-        return JsonResult.build(StatusCode.SUCCESS);
+        String fileName = accidentService.exportAccidentData(map);
+        String addr = InetAddress.getLocalHost().getHostAddress();
+        String fileUrl = "http://" + addr + ":8080//" + "excel/" + fileName;
+        System.out.println(fileUrl);
+        return JsonResult.build(StatusCode.SUCCESS,fileUrl);
     }
 
     @RequestMapping(value = "/blackPointDiagnosis/crossings", method = RequestMethod.GET)

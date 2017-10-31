@@ -96,7 +96,7 @@ public class AccidentServiceImpl implements IAccidentService {
         return blackPointDataForWebs;
     }
 
-    public void exportAccidentData(Map<String, Object> map) {
+    public String exportAccidentData(Map<String, Object> map) {
         List<Map.Entry<String, Integer>> resultList = getAllAccidentdataByCondition(map);
         List<BlackPointData> blackPointDatas = new ArrayList<BlackPointData>();
         for(int i = 0;i < resultList.size();i++){
@@ -115,7 +115,7 @@ public class AccidentServiceImpl implements IAccidentService {
         titleMap.put("number", "当量");
         String sheetName = "信息导出";
         try{
-            ExportExcel.excelExport(blackPointDatas, titleMap, sheetName,"BPResult");
+            return ExportExcel.excelExport(blackPointDatas, titleMap, sheetName);
         }catch (CustomException cex){
            throw new CustomException("信息导出失败");
         }
@@ -132,7 +132,7 @@ public class AccidentServiceImpl implements IAccidentService {
         if(condition.getRoadType() == null ||
                 condition.getStartTime() == null || condition.getEndTime() == null ||
                 (condition.getAreaName() == null && condition.getTeamName() == null))
-            throw new ReqParmIncorException("缺少必须参数");
+            throw new CustomException("缺少必须参数");
 
         //查询路段时，需将交叉口类型设为非交叉口
         if(condition.getRoadType().equals("路段"))
@@ -140,7 +140,7 @@ public class AccidentServiceImpl implements IAccidentService {
 
         //大队和辖区的查询不能同时存在
         if(condition.getAreaName() != null && condition.getTeamName() != null)
-            throw new ReqParmIncorException("TeamName和AreaName的查询不能同时存在");
+            throw new CustomException("TeamName和AreaName的查询不能同时存在");
 
         if ( condition.isyType() )
             return accidentMapperCustom.multiConditionQueryAccidentForSGS(ObjectUtil.objectToMap(condition));
@@ -154,7 +154,7 @@ public class AccidentServiceImpl implements IAccidentService {
      * @param condition
      * @throws Exception
      */
-    public void exportAreaAnalyse(AccidentQueryCondition condition, HttpServletResponse res) throws Exception{
+    public String exportAreaAnalyse(AccidentQueryCondition condition, HttpServletResponse res) throws Exception{
         Map<String,String> conditionTitleMap = new HashMap();
         Map<String,String> resultTitleMap = new LinkedHashMap<String, String>();
         Map<String, Object> conditionMap = ObjectUtil.objectToMap(condition);
@@ -169,7 +169,7 @@ public class AccidentServiceImpl implements IAccidentService {
             resultTitleMap.put("dead","死亡");
         }
 
-        ExportExcel.excelExport2( areaMultiConditionQuery(condition),resultTitleMap,conditionMap,conditionTitleMap,"sheet1","空间分析数据", res);
+        return ExportExcel.excelExport2( areaMultiConditionQuery(condition),resultTitleMap,conditionMap,conditionTitleMap,"sheet1", res);
     }
 
     /**
@@ -270,7 +270,7 @@ public class AccidentServiceImpl implements IAccidentService {
         //大队、辖区、地点的查询不能同时存在
         if(condition.getAreaName() != null && condition.getTeamName() != null && condition.getRoadType() != null ||
                 condition.getStartTime() == null || condition.getEndTime() == null )
-            throw new ReqParmIncorException("TeamName和AreaName的查询不能同时存在");
+            throw new CustomException("TeamName和AreaName的查询不能同时存在");
 
         List<ResMap> resMap = accidentMapperCustom.queryAreaTotalAccidentNumsForYZCD(ObjectUtil.objectToMap(condition));
 
@@ -290,7 +290,7 @@ public class AccidentServiceImpl implements IAccidentService {
     public List<ResMap> queryAreaTotalAccidentNumsForSGType(AccidentQueryCondition condition)  throws Exception{
         if(condition.getAreaName() != null && condition.getTeamName() != null && condition.getRoadType() != null ||
                 condition.getStartTime() == null || condition.getEndTime() == null )
-            throw new ReqParmIncorException("TeamName和AreaName的查询不能同时存在");
+            throw new CustomException("TeamName和AreaName的查询不能同时存在");
 
         List<ResMap> resMap =  accidentMapperCustom.queryAreaTotalAccidentNumsForSGType(ObjectUtil.objectToMap(condition));
         String sgType[] = {"非碰撞","撞人、撞机动车或其他非固定物","碰撞固定物"};
@@ -327,7 +327,7 @@ public class AccidentServiceImpl implements IAccidentService {
     public List<ResMap> queryAreaTotalAccidentNumsSGCarType(AccidentQueryCondition condition) throws Exception{
         if(condition.getAreaName() != null && condition.getTeamName() != null && condition.getRoadType() != null ||
                 condition.getStartTime() == null || condition.getEndTime() == null )
-            throw new ReqParmIncorException("TeamName和AreaName的查询不能同时存在");
+            throw new CustomException("TeamName和AreaName的查询不能同时存在");
         List<ResMap> resMap =  accidentMapperCustom.queryAreaTotalAccidentNumsSGCarType(ObjectUtil.objectToMap(condition));
         String carType[] = {"小客车","中客车","大客车","公交","校车","小货车","中货车","大货车","拖挂车","特种车辆","摩托车","非机动车","畜力车"};
         if(resMap.size() < carType.length){

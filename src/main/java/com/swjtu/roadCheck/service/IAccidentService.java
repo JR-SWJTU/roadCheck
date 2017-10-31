@@ -34,7 +34,7 @@ public interface IAccidentService {
      * @param map
      * @return
      */
-    void exportAccidentData(Map<String,Object> map);
+    String exportAccidentData(Map<String,Object> map);
 
     /**
      * 空间分析，多条件符合查询
@@ -48,7 +48,7 @@ public interface IAccidentService {
      * @param condition
      * @throws Exception
      */
-    void exportAreaAnalyse(AccidentQueryCondition condition, HttpServletResponse res) throws Exception;
+    String exportAreaAnalyse(AccidentQueryCondition condition, HttpServletResponse res) throws Exception;
 
     /**
      * 时间分析，多条件符合查询

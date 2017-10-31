@@ -274,7 +274,7 @@
             ) carResult ON res1.carnumber = carResult.carnumber
         </if>
         GROUP BY diMingBeiZhu,yanZhongCd
-        )res
+        )res GROUP BY diMingBeiZhu
         )lastRes
     </select>
 
@@ -470,7 +470,7 @@
         </if>
 
         <if test="yType==false">
-        )res
+        )res  GROUP BY diMingBeiZhu
         )lastRes
         </if>
     </select>

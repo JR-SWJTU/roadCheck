@@ -6,19 +6,21 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
-import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by windows on 2017/10/21.
  */
  public final class ExportExcel {
+
+    private static  final String rootPath = "E:\\roadCheck\\";
+
     /***
      * 构造方法
      */
@@ -60,7 +62,7 @@ import java.util.Map;
      * @param sheetName
      *        sheet名称和表头值
      */
-    public static void excelExport(List<?> dataList, Map<String, String> titleMap, String sheetName,String filename) throws CustomException {
+    public static String excelExport(List<?> dataList, Map<String, String> titleMap, String sheetName) throws CustomException {
         // 初始化workbook
         initHSSFWorkbook(sheetName);
 //        // 标题行
@@ -75,18 +77,21 @@ import java.util.Map;
         //autoSizeColumn(titleMap.size());
         // 写入处理结果
         try {
-            String filedisplay = filename + ".xls";
+            String fileName = UUID.randomUUID().toString()  + ".xls";
+            String filedisplay = rootPath + fileName;
             //如果web项目，1、设置下载框的弹出（设置response相关参数)；2、通过httpservletresponse.getOutputStream()获取
             OutputStream out = new FileOutputStream(filedisplay);
             workbook.write(out);
             out.close();
+
+            return fileName;
         }
         catch (Exception e) {
             throw new CustomException("导出失败");
         }
     }
 
-    public static void excelExport2(List<?> dataList, Map<String, String> resultMap, Map<String, Object> conditionMap, Map<String, String> titleMap, String sheetName, String filename, HttpServletResponse res) throws CustomException {
+    public static String excelExport2(List<?> dataList, Map<String, String> resultMap, Map<String, Object> conditionMap, Map<String, String> titleMap, String sheetName, HttpServletResponse res) throws CustomException {
         // 初始化workbook
         initHSSFWorkbook(sheetName);
         // 标题行
@@ -101,11 +106,13 @@ import java.util.Map;
        createContentRow(dataList, resultMap,4);
         // 写入处理结果
         try {
-            String filedisplay = filename + ".xls";
+            String fileName = UUID.randomUUID().toString()  + ".xls";
+            String filedisplay = rootPath + fileName;
             //如果web项目，1、设置下载框的弹出（设置response相关参数)；2、通过httpservletresponse.getOutputStream()获取
-//            OutputStream out = new FileOutputStream(filedisplay);
-//            workbook.write(out);
-//            out.close();
+            OutputStream out = new FileOutputStream(filedisplay);
+            workbook.write(out);
+            out.close();
+            return fileName;
 
 //            ByteArrayOutputStream os = new ByteArrayOutputStream();
 //            workbook.write(os);
@@ -134,17 +141,17 @@ import java.util.Map;
 //                if (bos != null) bos.close();
 //            }
 
-            res.reset();
-            res.setContentType("application/vnd.ms-excel;charset=utf-8");
-            res.setHeader("Content-Disposition", "attachment;filename=" +
-                    URLEncoder.encode(filedisplay, "UTF-8"));
-            res.addHeader("Pargam", "no-cache");
-            res.addHeader("Cache-Control", "no-cache");
-
-            ServletOutputStream output = res.getOutputStream();
-            workbook.write(output);
-            output.flush();
-            output.close();
+//            res.reset();
+//            res.setContentType("application/vnd.ms-excel;charset=utf-8");
+//            res.setHeader("Content-Disposition", "attachment;filename=" +
+//                    URLEncoder.encode(filedisplay, "UTF-8"));
+//            res.addHeader("Pargam", "no-cache");
+//            res.addHeader("Cache-Control", "no-cache");
+//
+//            OutputStream  output = res.getOutputStream();
+//            workbook.write(output);
+//            output.flush();
+//            output.close();
         }
         catch (Exception e) {
             throw new CustomException("导出失败");
