@@ -1530,8 +1530,23 @@ var app = new Vue({
             console.log(json);
             if(flag){
                 axios.post(url, json).then(function (response) {
-                    console.log(response.data);
-
+                    var allData = response.data;
+                    if(allData.code == 200){
+                        var a = document.createElement('a');
+                        a.download = 'excel' + '.xls';
+                        a.href = allData.data;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        this.messageTop = "下载请求成功！";
+                        this.textFlag = true;
+                        this.showMessageTop = true;
+                    }
+                    else{
+                        this.messageTop = allData.message;
+                        this.textFlag = false;
+                        this.showMessageTop = true;
+                    }
                 }).catch(function (error) {
                     console.log(error);
                 });
@@ -1551,11 +1566,23 @@ var app = new Vue({
             console.log(json);
             if(flag){
                 axios.post(url, json).then(function (response) {
-
-                    console.log(response);
-                    window.open('http://localhost:8080/roadCheck/accidentDatas/analyseData/areaAnalyseDataExport');
-
-
+                    var allData = response.data;
+                    if(allData.code == 200){
+                        var a = document.createElement('a');
+                        a.download = 'excel' + '.xls';
+                        a.href = allData.data;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        this.messageTop = "下载请求成功！";
+                        this.textFlag = true;
+                        this.showMessageTop = true;
+                    }
+                    else{
+                        this.messageTop = allData.message;
+                        this.textFlag = false;
+                        this.showMessageTop = true;
+                    }
                     // console.log(response);
                     // console.log(response.data);
                     // var allData = response.data;
