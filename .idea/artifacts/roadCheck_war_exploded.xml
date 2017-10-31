@@ -100,6 +100,8 @@
           <element id="library" level="project" name="Maven: net.sf.ezmorph:ezmorph:1.0.6" />
           <element id="library" level="project" name="Maven: com.aliyun.oss:aliyun-sdk-oss:2.7.0" />
           <element id="library" level="project" name="Maven: org.jdom:jdom:1.1" />
+          <element id="library" level="project" name="Maven: org.apache.shiro:shiro-web:1.2.4" />
+          <element id="library" level="project" name="Maven: org.apache.shiro:shiro-core:1.2.4" />
         </element>
       </element>
       <element id="directory" name="META-INF">

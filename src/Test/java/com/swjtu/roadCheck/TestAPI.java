@@ -185,7 +185,7 @@ public class TestAPI {
 
         System.out.println("start导出");
         long start = System.currentTimeMillis();
-        ExportExcel.excelExport(blackPointDatas, titleMap, sheetName,"BPResult");
+       // ExportExcel.excelExport(blackPointDatas, titleMap, sheetName,"/src/main/webapp/","BPResult");
         long end = System.currentTimeMillis();
         System.out.println("end导出");
         System.out.println("耗时："+(end-start)+"ms");

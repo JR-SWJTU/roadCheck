@@ -6,6 +6,7 @@ import com.swjtu.roadCheck.dto.Accident;
 import com.swjtu.roadCheck.entity.Accidentdata;
 import com.swjtu.roadCheck.entityCustom.AccidentQueryCondition;
 import com.swjtu.roadCheck.entityCustom.BlackPointData;
+import com.swjtu.roadCheck.entityCustom.BlackPointDataForWeb;
 import com.swjtu.roadCheck.mapper.AccidentdataMapper;
 import com.swjtu.roadCheck.service.IAccidentService;
 import com.swjtu.roadCheck.util.JsonResult;
@@ -122,13 +123,14 @@ public class AccidentController {
 
     @RequestMapping(value = "/blackPointDiagnosis/results", method = RequestMethod.POST)
     public JsonResult analyseBlackPoint(@RequestBody Map map) throws Exception{
-        List<BlackPointData> blackPointDatas = new ArrayList<BlackPointData>();
-        blackPointDatas = accidentService.getTopTen(map);
+        List<BlackPointDataForWeb> blackPointDataForWebs = new ArrayList<BlackPointDataForWeb>();
+        blackPointDataForWebs = accidentService.getTopTen(map);
+
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("arr",blackPointDatas);
+        jsonObject.put("arr",blackPointDataForWebs);
         int number = 0;
-        for(BlackPointData blackPointData:blackPointDatas){
-            number+=blackPointData.getNumber();
+        for(BlackPointDataForWeb blackPointDataForWeb:blackPointDataForWebs){
+            number+=blackPointDataForWeb.getNumber().intValue();
         }
         jsonObject.put("allnum",number);
         return JsonResult.build(StatusCode.SUCCESS,jsonObject);
