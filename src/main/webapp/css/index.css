@@ -78,19 +78,60 @@
 .barcontain{
     position: relative;
     height: 200px;
+    width:100px;
+    margin: auto;
 }
-.barchild{
+ .mapbarchild{
     width: 40px;
     position: absolute;
     bottom: 0;
+}
+
+.mapbar{
+    width: 150px;
+    height: 80px;
+}
+.barparent{
+    position: relative;
+    height: 70%;
+    width:100%;
+    margin: auto;
+ //background: bisque;
+}
+.barchild{
+    width: auto;
+    height: 50px;
+    margin: auto;
+//	background: gold;
+}
+.barchild3{
+    width: 20px;
+    height: 50px;
+    float: left;
+    position: relative;
+}
+.barchild4{
+    width: 20px;
+    height: auto;
+    position: absolute;
+    bottom: 0;
+	//background: blue;
+}
+.show-name{
+    margin: auto;
+    width: 100%;
+    text-align: center;
+    color: white;
+    display: block;
 }
 .showmap-number{
     display: block;
 }
 
-.showmap-name{
+
+/*.showmap-name{
     display: block;
-}
+}*/
 @-webkit-keyframes items-open {
     0% { left: -256px; }
     25% { left: -192px; }

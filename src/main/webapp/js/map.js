@@ -211,37 +211,81 @@ function getContent(options,yMin,yMax) {
         marginLeft[i] += marginLeft[i - 1] + indexs[i];
     }
     var dis = [];
+    var width  = 0;
     for (var i = 0; i < 4; i++) {
         if (indexs[i] == 0) {
             dis[i] = "none";
         } else {
             dis[i] = "block";
+            width += 20;
         }
     }
+    console.log(width)
     // console.log("marginLeft:" + marginLeft);
     // console.log(indexs);
     var content2 = "<div style=\"height: 200px;width: 150px;\">\n" +
         "         <div class=\"barcontain\">\n" +
-        "            <div class=\"barchild\" style=\"left:" + marginLeft[0] * 20 + "px;display: " + dis[0] + ";\">\n" +
-        "               <p style=\"margin:auto;text-align: center;color: white;\">" + options.wealthLoss + "</p>\n" +
-        "               <div style=\"margin:auto;width:20px;height:" + getHeight2(options.wealthLoss,options.accidentNumbers) + "px;background: green;\"></div>\n" +
+        "            <div class=\"barchild\" style=\"left:" + marginLeft[0] * 20 + "%;display: " + dis[0] + ";\">\n" +
+        "   <div  class='showmap-number'>             <p style=\"margin:auto;text-align: center;color: white;\">" + options.wealthLoss + "</p>\n" +
+        "  </div><div style=\"margin:auto;width:20px;height:" + getHeight2(options.wealthLoss,options.accidentNumbers) + "px;background: green;\"></div>\n" +
         "            </div>\n" +
-        "            <div class=\"barchild\" style=\"left: " + marginLeft[1] * 20 + "px;display: " + dis[1] + ";\">\n" +
-        "               <p style=\"margin:auto;text-align: center;color: white;\">" + options.slightInjury + "</p>\n" +
-        "               <div style=\"margin:auto;width:20px;height:" + getHeight2(options.slightInjury,options.accidentNumbers) + "px;background: blue;\"></div>\n" +
+        "            <div class=\"barchild\" style=\"left: " + marginLeft[1] * 20 + "%;display: " + dis[1] + ";\">\n" +
+        "    <div  class='showmap-number'>            <p style=\"margin:auto;text-align: center;color: white;\">" + options.slightInjury + "</p>\n" +
+        "           </div>    <div style=\"margin:auto;width:20px;height:" + getHeight2(options.slightInjury,options.accidentNumbers) + "px;background: blue;\"></div>\n" +
         "            </div>\n" +
-        "            <div class=\"barchild\" style=\"left: " + marginLeft[2] * 20 + "px;display: " + dis[2] + "\">\n" +
-        "               <p style=\"margin:auto;text-align: center;color: white;\">" + options.seriousInjury + "</p>\n" +
-        "               <div style=\"margin:auto;width:20px;height:" + getHeight2(options.seriousInjury,options.accidentNumbers) + "px;background: yellow;\"></div>\n" +
+        "            <div class=\"barchild\" style=\"left: " + marginLeft[2] * 20 + "%;display: " + dis[2] + "\">\n" +
+        "    <div  class='showmap-number'> <p style=\"margin:auto;text-align: center;color: white;\">" + options.seriousInjury + "</p>\n" +
+        "      </div>         <div style=\"margin:auto;width:20px;height:" + getHeight2(options.seriousInjury,options.accidentNumbers) + "px;background: yellow;\"></div>\n" +
         "            </div>\n" +
-        "            <div class=\"barchild\" style=\"left: " + marginLeft[3] * 20 + "px;display: " + dis[3] + "\">\n" +
-        "               <p style=\"margin:auto;text-align: center;color: white;\">" + options.death + "</p>\n" +
-        "               <div style=\"margin:auto;width:20px;height:" + getHeight2(options.death,options.accidentNumbers) + "px;background: olive;\"></div>\n" +
+        "            <div class=\"barchild\" style=\"left: " + marginLeft[3] * 20 + "%;display: " + dis[3] + "\">\n" +
+        "      <div  class='showmap-number'> <p style=\"margin:auto;text-align: center;color: white;\">" + options.death + "</p>\n" +
+        "         </div>              <div style=\"margin:auto;width:20px;height:" + getHeight2(options.death,options.accidentNumbers) + "px;background: olive;\"></div>\n" +
         "            </div>\n" +
         "         </div>\n" +
         "    <div class='showmap-name'>        <p style=\"text-align: center;margin: auto;color: white;\">" + options.name + "</p>\n" +
         "    </div>  </div>"
-    return content2;
+ //   width + 2;
+    var conten3 = "<div class=\"mapbar\">\n" +
+        "            <div class=\"barparent\">\n" +
+        "                <div class=\"barchild\" style='width: "+width+"px'>\n" +
+        "                    <div class=\"barchild3\" style='display: "+dis[0]+"'>\n" +
+        "                        <div class=\"barchild4\" style=\"display: "+ dis[0] +";\">\n" +
+        "                            <div  class='showmap-number'>\n" +
+        "                                <p style=\"margin: auto;text-align: center;color: white;\">"+ options.wealthLoss +"</p>\n" +
+        "                            </div>\n" +
+        "                            <div style=\"width: 100%;height: "+getHeight2(options.wealthLoss,options.accidentNumbers)+"px;background: green;\"></div>\n" +
+        "                        </div>\n" +
+        "                    </div>\n" +
+        "                    <div class=\"barchild3\"  style=\"display: "+ dis[1] +";\">                        \n" +
+        "                        <div class=\"barchild4\" \">\n" +
+        "                            <div  class='showmap-number'>\n" +
+        "                                <p style=\"margin: auto;text-align: center;color: white;\">"+ options.slightInjury +"</p>\n" +
+        "                            </div>\n" +
+        "                            <div style=\"width: 100%;height: "+getHeight2(options.slightInjury,options.accidentNumbers)+"px;background: blue;\"></div>\n" +
+        "                        </div>\n" +
+        "                    </div>\n" +
+        "                    <div class=\"barchild3\" style='display: "+ dis[2] +";'>                        \n" +
+        "                        <div class=\"barchild4\">\n" +
+        "                            <div  class='showmap-number'>\n" +
+        "                                <p style=\"margin: auto;text-align: center;color: white;\">"+ options.seriousInjury +"</p>\n" +
+        "                            </div>\n" +
+        "                            <div style=\"width: 100%;height: "+getHeight2(options.seriousInjury,options.accidentNumbers)+"px;background: yellow;\"></div>\n" +
+        "                        </div>\n" +
+        "                    </div>\n" +
+        "                    <div class=\"barchild3\"  style='display: "+ dis[3] +"'>                        \n" +
+        "                        <div class=\"barchild4\">\n" +
+        "                            <div  class='showmap-number'>\n" +
+        "                                <p style=\"margin: auto;text-align: center;color: white;\">"+ options.death +"</p>\n" +
+        "                            </div>\n" +
+        "                            <div style=\"width: 100%;height: "+getHeight2(options.death,options.accidentNumbers)+"px;background: olive;\"></div>\n" +
+        "                        </div>\n" +
+        "                    </div>\n" +
+        "                </div>\n" +
+        "            </div>\n" +
+        "            <div class=\"showmap-name\"><p style=\"text-align: center;margin: auto;color: white;\">" + options.name + "</p>\n" +
+        "</div>\n" +
+        "        </div>";
+    return conten3;
 }
 
 /*
@@ -279,7 +323,7 @@ function getHeight2(number,allNumbers) {
 spaceMap.on('zoom', function(e) {
     //alert('您在[ '+e.lnglat.getLng()+','+e.lnglat.getLat()+' ]的位置点击了地图！');
     //    console.log(e)
-    console.log(spaceMap.getZoom())
+   // console.log(spaceMap.getZoom())
     if (spaceMap.getZoom() >= 15) {
         var divs = getClassNames('showmap-name', 'div');
         if (null != divs)
