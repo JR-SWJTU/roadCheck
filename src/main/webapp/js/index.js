@@ -52,8 +52,9 @@ var app = new Vue({
         selectData: {
             analysisObj: '交叉口', //'交叉口',
             area: {
-                type: 'gruppe', //'gruppe',
-                value: ''
+                type: 'administrative', //'gruppe',
+                gruppeVal: [],
+                adminiVal: ''
             },
             accidentalSev: [], //'仅财损',
             workDay: false,
@@ -343,7 +344,12 @@ var app = new Vue({
             this.selectData.workDay = val;
         },
         areaRadioChange: function (val) {
-            this.selectData.area.value = '';
+            if(this.selectData.area.type == 'gruppe'){
+                this.selectData.area.gruppeVal = [];
+            }
+            else{
+                this.selectData.area.adminiVal = '';
+            }
         },
         accidentLChange: function () {
             this.selectData.accidentalSev = [];
@@ -359,44 +365,44 @@ var app = new Vue({
         resetObj: function () {
             this.selectData = {
                 analysisObj: '交叉口', //'交叉口',
-                    area: {
-                    type: 'gruppe', //'gruppe',
-                        value: ''
+                area: {
+                    type: 'administrative', //'gruppe',
+                    gruppeVal: [],
+                    adminiVal: ''
                 },
                 accidentalSev: [], //'仅财损',
-                    workDay: false,
+                workDay: false,
                     dateTime: {
                     start: '',
                         end: ''
                 },
                 yType: 'accidentCount',
-                    timePrecision: 1,
+                timePrecision: 1,
 
-                    roadGrade: 'null', //'主干道',
-                    accident: {
+                roadGrade: 'null', //'主干道',
+                accident: {
                     type: '',
-                        value: ''
+                    value: ''
                 },
                 carCollisionType: 'null', //'追尾碰撞',
-                    weather: 'null', //'晴天',
-                    workZone: {
+                weather: 'null', //'晴天',
+                workZone: {
                     flag: '否',
-                        controlMode: '',
-                        worker: '',
-                        lawEnfor: ''
+                    controlMode: '',
+                    worker: '',
+                    lawEnfor: ''
                 },
                 intersectionType: 'null', //'非交叉口',
-                    vehicleType: 'null', //'小客车',
-                    hitAndRun: '否', //'是'
+                vehicleType: 'null', //'小客车',
+                hitAndRun: '否' //'是'
             };
         },
         checkInput: function (json) {
             if(this.nowFuc == 'black-point' || this.nowFuc == 'space' || this.nowFuc == 'time'){
                 json.roadType = this.selectData.analysisObj;
                 if(this.selectData.area.type == 'gruppe'){
-                    if(this.selectData.area.value != ''){
-                        json.teamName = [];
-                        json.teamName.push(this.selectData.area.value);
+                    if(this.selectData.area.gruppeVal != []){
+                        json.teamName = this.selectData.area.gruppeVal;
                     }
                     else{
                         this.messageTop = "大队尚未选取！";
@@ -406,8 +412,8 @@ var app = new Vue({
                     }
                 }
                 else if(this.selectData.area.type == 'administrative'){
-                    if(this.selectData.area.value != ''){
-                        json.areaName = this.selectData.area.value;
+                    if(this.selectData.area.adminiVal != ''){
+                        json.areaName = this.selectData.area.adminiVal;
                     }
                     else{
                         this.messageTop = "行政区尚未选取！";
@@ -419,47 +425,45 @@ var app = new Vue({
             }
 
             if(this.nowFuc == 'single-point'){
-                if(this.selectData.area.value == ''){
-                    switch(this.singleTab){
-                        case 'gruppe': {
-                            this.messageTop = "大队管辖区尚未选取！";
-                            break;
-                        }
-                        case 'administrative': {
-                            this.messageTop = "行政区尚未选取！";
-                            break;
-                        }
-                        case 'intersection': {
-                            this.messageTop = "交叉口尚未选取！";
-                            break;
-                        }
-                        case 'crossing': {
-                            this.messageTop = "路段尚未选取！";
-                            break;
-                        }
-                        default:
-                            break;
-                    }
-                    this.textFlag = false;
-                    this.showMessageTop = true;
-                    return false;
-                }
                 switch(this.singleTab){
                     case 'gruppe': {
-                        json.teamName = [];
-                        json.teamName.push(this.selectData.area.value);
+                        if(this.selectData.area.adminiVal == ''){
+                            this.messageTop = "大队管辖区尚未选取！";
+                            this.textFlag = false;
+                            this.showMessageTop = true;
+                            return false;
+                        }
+                        json.teamName = [this.selectData.area.adminiVal];
                         break;
                     }
                     case 'administrative': {
-                        json.areaName = this.selectData.area.value;
+                        if(this.selectData.area.adminiVal == '') {
+                            this.messageTop = "行政区尚未选取！";
+                            this.textFlag = false;
+                            this.showMessageTop = true;
+                            return false;
+                        }
+                        json.areaName = this.selectData.area.adminiVal;
                         break;
                     }
                     case 'intersection': {
-                        json.roadType = this.selectData.area.value;
+                        if(this.selectData.area.adminiVal == '') {
+                            this.messageTop = "交叉口尚未选取！";
+                            this.textFlag = false;
+                            this.showMessageTop = true;
+                            return false;
+                        }
+                        json.roadType = this.selectData.area.adminiVal;
                         break;
                     }
                     case 'crossing': {
-                        json.roadType = this.selectData.area.value;
+                        if(this.selectData.area.adminiVal == '') {
+                            this.messageTop = "路段尚未选取！";
+                            this.textFlag = false;
+                            this.showMessageTop = true;
+                            return false;
+                        }
+                        json.roadType = this.selectData.area.adminiVal;
                         break;
                     }
                     default:
@@ -1523,10 +1527,10 @@ var app = new Vue({
             var url = webBase + '/accidentDatas/blackPointDiagnosis/exportaion';
             var json = {};
             var flag = this.checkInput(json);
+            console.log(json);
             if(flag){
                 axios.post(url, json).then(function (response) {
                     console.log(response.data);
-
 
                 }).catch(function (error) {
                     console.log(error);
@@ -1611,6 +1615,7 @@ var app = new Vue({
             var url = webBase + '/accidentDatas/analyseData/singlePointAnalyseDataQuery';
             var json = {};
             var flag = this.checkInput(json);
+            console.log(json);
             if(flag){
                 axios.post(url, json).then(function (response) {
                     var allData = response.data;
@@ -1808,11 +1813,11 @@ var app = new Vue({
         }
     },
     mounted: function () {
-        this.initPage();
-        this.checkLogin();
         this.getTeams();
         this.getRegions();
         this.getIntersections();
+        this.initPage();
+        this.checkLogin();
         this.getCorssings();
         var that = this;
         addEventListener('resize', function () {
