@@ -1514,11 +1514,7 @@ var app = new Vue({
                     });
 
                 }
-                // console.log(yMax+"ym:"+yMin)
-                // console.log(""+obj.accidentNumbers+"  "+yMin+"  "+yMax);
-                // console.log(getHeight(obj.accidentNumbers,yMin,yMax));
-                // var high = (obj.accidentNumbers-yMin)/(yMax-yMin)*90 + 10;
-                // console.log(high)
+                console.log(yMax+"ym:"+yMin)
                 setMarker(obj,yMin,yMax);
             });
         },
@@ -1551,17 +1547,24 @@ var app = new Vue({
             console.log(json);
             if(flag){
                 axios.post(url, json).then(function (response) {
-                    var allData = response.data;
-                    var blob = new self.Blob(["\ufeff" + allData], {type: 'application/vnd.ms-excel;charset=utf-8'});
-                    console.log(blob);
-                    var a = document.createElement('a');
-                    a.download = '文件' + '.xls';
-                    a.href = window.URL.createObjectURL(blob);
-                    a.addEventListener('click', function () {
-                    });
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
+
+                    console.log(response);
+                    window.open('http://localhost:8080/roadCheck/accidentDatas/analyseData/areaAnalyseDataExport');
+
+
+                    // console.log(response);
+                    // console.log(response.data);
+                    // var allData = response.data;
+                    // var blob = new self.Blob([allData], {type: 'application/vnd.ms-excel;charset=utf-8'});
+                    // console.log(blob);
+                    // var a = document.createElement('a');
+                    // a.download = '文件' + '.xls';
+                    // a.href = window.URL.createObjectURL(blob);
+                    // a.addEventListener('click', function () {
+                    // });
+                    // document.body.appendChild(a);
+                    // a.click();
+                    // document.body.removeChild(a);
                 }).catch(function (error) {
                     console.log(error);
                 });
