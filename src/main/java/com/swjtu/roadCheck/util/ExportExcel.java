@@ -8,8 +8,10 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Method;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
@@ -105,33 +107,44 @@ import java.util.Map;
 //            workbook.write(out);
 //            out.close();
 
-            ByteArrayOutputStream os = new ByteArrayOutputStream();
-            workbook.write(os);
-            byte[] content = os.toByteArray();
-            InputStream is = new ByteArrayInputStream(content);
-            // 设置response参数，可以打开下载页面
+//            ByteArrayOutputStream os = new ByteArrayOutputStream();
+//            workbook.write(os);
+//            byte[] content = os.toByteArray();
+//            InputStream is = new ByteArrayInputStream(content);
+//            // 设置response参数，可以打开下载页面
+//            res.reset();
+//            res.setContentType("application/vnd.ms-excel;charset=utf-8");
+//            res.setHeader("Content-Disposition", "attachment;filename=空间数据导出.xls" );
+//            ServletOutputStream out = res.getOutputStream();
+//            BufferedInputStream bis = null;
+//            BufferedOutputStream bos = null;
+//            try {
+//                bis = new BufferedInputStream(is);
+//                bos = new BufferedOutputStream(out);
+//                byte[] buff = new byte[2048];
+//                int bytesRead;
+//                // Simple read/write loop.
+//                while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
+//                    bos.write(buff, 0, bytesRead);
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            } finally {
+//                if (bis != null) bis.close();
+//                if (bos != null) bos.close();
+//            }
+
             res.reset();
             res.setContentType("application/vnd.ms-excel;charset=utf-8");
-            res.setHeader("Content-Disposition", "attachment;filename=" + new String((filedisplay ).getBytes(), "utf-8"));
-            ServletOutputStream out = res.getOutputStream();
-            BufferedInputStream bis = null;
-            BufferedOutputStream bos = null;
-            try {
-                bis = new BufferedInputStream(is);
-                bos = new BufferedOutputStream(out);
-                byte[] buff = new byte[2048];
-                int bytesRead;
-                // Simple read/write loop.
-                while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
-                    bos.write(buff, 0, bytesRead);
-                }
-            } catch (Exception e) {
-                // TODO: handle exception
-                e.printStackTrace();
-            } finally {
-                if (bis != null) bis.close();
-                if (bos != null) bos.close();
-            }
+            res.setHeader("Content-Disposition", "attachment;filename=" +
+                    URLEncoder.encode(filedisplay, "UTF-8"));
+            res.addHeader("Pargam", "no-cache");
+            res.addHeader("Cache-Control", "no-cache");
+
+            ServletOutputStream output = res.getOutputStream();
+            workbook.write(output);
+            output.flush();
+            output.close();
         }
         catch (Exception e) {
             throw new CustomException("导出失败");

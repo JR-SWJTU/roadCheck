@@ -66,7 +66,9 @@ public class AccidentController {
         condition.setSlightInjury(1);
         condition.setSeverInjury(1);
         condition.setDead(1);
+        System.out.println("导出excel了");
         accidentService.exportAreaAnalyse(condition, res);
+
         return JsonResult.build(StatusCode.SUCCESS);
     }
 
