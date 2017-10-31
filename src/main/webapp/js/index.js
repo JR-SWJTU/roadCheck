@@ -1514,7 +1514,11 @@ var app = new Vue({
                     });
 
                 }
-                console.log(yMax+"ym:"+yMin)
+                // console.log(yMax+"ym:"+yMin)
+                // console.log(""+obj.accidentNumbers+"  "+yMin+"  "+yMax);
+                // console.log(getHeight(obj.accidentNumbers,yMin,yMax));
+                // var high = (obj.accidentNumbers-yMin)/(yMax-yMin)*90 + 10;
+                // console.log(high)
                 setMarker(obj,yMin,yMax);
             });
         },

@@ -89,6 +89,8 @@ function setMarker(options,yMin,yMax) {
     }
     //获取展示内容
     var content;
+    console.log("helllllll-------");
+    console.log(getHeight(options.accidentNumbers,yMin,yMax));
     if (options.type == 0) {
         content = setIntersectionContent(options,yMin,yMax);
     }else {
@@ -160,15 +162,16 @@ function addMarker(amap,markerName,position,type,number){
 
 function setIntersectionContent(options,yMin,yMax) {
 
-    var content = "<div style='height: auto;width: 150px;'><div style=\"height: 50px;width: 50px;margin: auto\">\n" +
-        "<div  style=\"margin: auto;width: "+getHeight(options.accidentNumbers,yMin,yMax)/2+"%;height: "+
-        getHeight(options.accidentNumbers,yMin,yMax)/2+"%;background: red"+
-       ";border-radius:50%\"></div></div>" +
+    var content = "<div style='height: auto;width: 150px;'>\n" +
+        "<div  style=\"margin: auto;width: "+getHeight(options.accidentNumbers,yMin,yMax)+"px;height: "+
+        getHeight(options.accidentNumbers,yMin,yMax)+"px;background: red"+
+       ";border-radius:50%\"></div>" +
         " <div class='showmap-number'>   <p style=\"width:100%;margin: auto;text-align: center;color:white;\">事故数："+
              options.accidentNumbers+"</p></div>\n" +
         " <div class='showmap-name'>      <p style=\"width:100%;margin: auto;background-color:'rgba(255, 255, 255, 0)';text-align: center;color:white;\">"+options.name+"</p>\n" +
         "</div></div>";
-
+    console.log("helllllll-------");
+    console.log(getHeight(options.accidentNumbers,yMin,yMax));
     if (options.isChenDu) {
         return getContent(options,yMin,yMax);
     }
@@ -182,6 +185,7 @@ function setRoadContent (options,yMin,yMax) {
         " <div class='showmap-number'>      <p style=\"width:100%;margin: auto;text-align: center;color: "+"white"+"\">事故数："+options.accidentNumbers+"</p>\n" +
         " </div><div class='showmap-name'>      <p style=\"width:100%;margin: auto;background-color:'rgba(255, 255, 255, 0)';text-align: center;color:white;\">"+options.name+"</p>\n" +
         "</div></div>";
+
     if (options.isChenDu) {
         return getContent(options,yMin,yMax);
     }
@@ -257,19 +261,16 @@ function getColor(number,allNumbers) {
     }
 }
 function getHeight(number,yMin,yMax) {
-    if (yMin = yMax) {
-        return 100;
+
+    if (yMin == yMax) {
+        return 50;
     }
-    console.log("number:"+number+"ymin:"+yMin+"yMax:"+yMax)
-   // console.log((number-yMin)/(yMax-yMin)*90 + 10)
-    var high = (number-yMin)/(yMax-yMin)*90 + 10;
-//    var lev = (number / allNumbers)*100;
-   // console.log(high)
+    var high = (number-yMin)/(yMax-yMin)*30 + 10;
     return high;
 }
 function getHeight2(number,allNumbers) {
 
-    var lev = (number / allNumbers)*100;
+    var lev = (number / allNumbers)*50;
     return lev;
 }
 //清除marker
@@ -279,7 +280,7 @@ spaceMap.on('zoom', function(e) {
     //alert('您在[ '+e.lnglat.getLng()+','+e.lnglat.getLat()+' ]的位置点击了地图！');
     //    console.log(e)
     console.log(spaceMap.getZoom())
-    if (spaceMap.getZoom() >= 14) {
+    if (spaceMap.getZoom() >= 15) {
         var divs = getClassNames('showmap-name', 'div');
         if (null != divs)
         {
@@ -300,7 +301,7 @@ spaceMap.on('zoom', function(e) {
             }
         }
     }
-    if (spaceMap.getZoom() < 13){
+    if (spaceMap.getZoom() < 14){
         var divs = getClassNames('showmap-number', 'div');
         if (null != divs)
         {
