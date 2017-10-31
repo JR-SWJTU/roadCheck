@@ -76,6 +76,10 @@
         <url-pattern>*.js</url-pattern>
     </servlet-mapping>
 
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.xls</url-pattern>
+    </servlet-mapping>
 
     <!--配置：把POST请求转为DELETE、PUT请求-->
     <filter>

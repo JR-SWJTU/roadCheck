@@ -1548,8 +1548,7 @@ var app = new Vue({
             if(flag){
                 axios.post(url, json).then(function (response) {
                     var allData = response.data;
-                    console.log(allData);
-                    var blob = new Blob(['\uFEFF' + allData], {type: 'application/vnd.ms-excel;'});
+                    var blob = new self.Blob(["\ufeff" + allData], {type: 'application/vnd.ms-excel;charset=utf-8'});
                     console.log(blob);
                     var a = document.createElement('a');
                     a.download = '文件' + '.xls';
@@ -1558,6 +1557,7 @@ var app = new Vue({
                     });
                     document.body.appendChild(a);
                     a.click();
+                    document.body.removeChild(a);
                 }).catch(function (error) {
                     console.log(error);
                 });
