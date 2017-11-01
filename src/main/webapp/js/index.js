@@ -780,86 +780,109 @@ var app = new Vue({
             });
             return obj;
         },
-        showLine: function(data, roadType, type, sDate, eDate, width){ //展示折线图
-
-            /*
-            * 设置x轴名称
-            * */
-            var xname = new Array(width);
-            var sD = sDate.split("-");
-            if (type == 1) {
-
-                for(var i = 0 ;i < width ; i++){
-                    xname[i] = parseInt(sD[0])+i;
-                    xname[i] += "年";
-                }
-            }
-            else if( type == 2){
-                var j = 0;
-                var sm = parseInt(sD[1]);
-                console.log(width+"w=----------------")
-                for(var i = 0 ; i < width ; i++){
-                    var year = "";
-                    var dur = sm + i -j * 12;
-                    if ( sm + i > j * 12 + 12) {
-                        dur -= 12;
-                        j ++;
-                        var y = parseInt(sD[0]) + j;
-                        year = y+"年"
-                    }
-                    xname[i] = year + dur+"月";
-                    console.log(xname[i])
-                }
-            }
-            else if (type == 3) {
-                console.log(sDate)
-                var sDD = new Date(sD[1] + "-" + sD[2] + "-" + sD[0]);
-                //console.log(sDD)
-                var sD = new Date(sDate[1] + "-" + sDate[2] + "-" + sDate[0]);
-               // var sdd2 = new Date(sDD + 24 * 60 * 60 * 1000)
-                // // console.log(sdd2.getYear())
-                // // console.log(sdd2.getMonth())
-                // sdd2.setDate(sDD.getDate()+1)
-                // console.log(sdd2.getUTCFullYear())
-                // console.log(sdd2.getUTCDay())
-                // console.log(sdd2.getUTCMonth())
-                // console.log(sdd2.getDate())
-                // console.log(sdd2.getUTCDate())
-                // console.log(sdd2.getUTCDate()%31+1)
-
-               // console.log(sdd2.get())
-               // console.log(sdd2)
-                var lastMonth = sDD.getUTCMonth();
-                var lastYear = sDD.getFullYear();
-                for(var i = 0 ;i < width ; i++){
-                    xname[i] = "";
-                    var d = new Date(sDD);
-                    d.setDate(sDD.getDate()+i);
-                    if (lastYear != d.getFullYear()) {
-                        lastYear = d.getFullYear();
-                        xname[i] += parseInt(d.getFullYear())+"年";
-                    }
-                    if (lastMonth != d.getUTCMonth()) {
-                        lastMonth = d.getUTCMonth();
-                        //xname[i] += parseInt(d.getUTCMonth()+1)+"月";
-                    }
-                    if (d.getDate()==1) {
-                        xname[i] += parseInt(d.getUTCMonth()+2)+"月";
-                    }else {
-                        xname[i] += parseInt(d.getUTCMonth()+1)+"月";
-                    }
-
-                    xname[i] += d.getDate()+"日";
-                }
-            }
-            var xAxis = xname;
-            var series =  [
-                {
+        showLine: function(data, type, yStr, sDate, eDate){ //展示折线图
+            var xAxis = [];
+            var series = [];
+            var obj = {
+                static:{
                     name: '事故总数',
-                    data: data
+                    data: []
                 }
-            ];
-            this.getLine('timeLine', '各种情况下事故总数趋势图', xAxis, series);
+            };
+            yStr.forEach(function (item, index, arr) {
+                var o = {
+                    name: '',
+                    data: []
+                };
+                switch (item){
+                    case 'propertyLoss':{
+                        o.name = '仅财伤';
+                        break;
+                    }
+                    case 'slightInjury':{
+                        o.name = '轻伤';
+                        break;
+                    }
+                    case 'severInjury':{
+                        o.name = '重伤';
+                        break;
+                    }
+                    case 'dead':{
+                        o.name = '死亡';
+                        break;
+                    }
+                    default :
+                        break;
+                }
+                obj[item] = o;
+            });
+            var unit;
+            type = parseInt(type);
+            switch (type){
+                case 1: {
+                    unit = '(年)';
+                    data.forEach(function (item, index, arr) {
+                        xAxis.push(item.year + '年');
+                        obj.static.data.push(item.value);
+                        yStr.forEach(function (value, key) {
+                            obj[value].data.push(item[value]);
+                        });
+                    });
+                    break;
+                }
+                case 2: {
+                    unit = '(月)';
+                    data.forEach(function (item, index, arr) {
+                        if(index == 0){
+                            xAxis.push(item.year + ' | ' + item.month + '月');
+                        }
+                        else{
+                            if(item.month == 1){
+                                xAxis.push(item.year + ' | ' + item.month + '月');
+                            }
+                            else {
+                                xAxis.push(item.month + '月');
+                            }
+                        }
+                        obj.static.data.push(item.value);
+                        yStr.forEach(function (value, key) {
+                            obj[value].data.push(item[value]);
+                        });
+                    });
+                    break;
+                }
+                case 3: {
+                    unit = '(日)';
+                    data.forEach(function (item, index, arr) {
+                        if(index == 0){
+                            xAxis.push(item.year + '-' + item.month + ' | ' + item.day + '日');
+                        }
+                        else{
+                            if(item.day == 1){
+                                xAxis.push(item.year + '-' + item.month + ' | ' + item.day + '日');
+                            }
+                            else{
+                                xAxis.push(item.day + '日');
+                            }
+                        }
+                        obj.static.data.push(item.value);
+                        yStr.forEach(function (value, key) {
+                            obj[value].data.push(item[value]);
+                        });
+                    });
+                    break;
+                }
+                default:
+                    break;
+            }
+
+            series.push(obj.static);
+            yStr.forEach(function (value, key, arr) {
+                series.push(obj[value]);
+            });
+
+            //  var xAxis = ['总数', '仅损财', '轻伤', '重伤', '死亡', '未知'];
+            this.getLine('timeLine', '各种情况下事故数趋势图', xAxis, series);
 
             this.timeShowSelect = false;
             this.timeDownShow = true;
@@ -1320,14 +1343,16 @@ var app = new Vue({
                         text: '事故数 (起)'
                     }
                 },
-                credites: {
-                    enabled: true
+                tooltip: {
+                    crosshairs: true,
+                    shared: true
                 },
-                plotOptions:{
-                    column:{
-                        dataLabel:{
-                            enabled: true,
-                            inside: true
+                plotOptions: {
+                    spline: {
+                        marker: {
+                            radius: 4,
+                            lineColor: '#666666',
+                            lineWidth: 1
                         }
                     }
                 },
@@ -1437,10 +1462,8 @@ var app = new Vue({
                 if (item.number > yMax) {
                     yMax = item.number;
                 }
-                console.log("item.number"+item.number)
             });
-         //   console.log("item.number"+item.number)
-            console.log(yMin+" ymax:"+yMax)
+            //console.log(yMin+" ymax:"+yMax)
             data.forEach(function (item, index, arr) {
                 var obj = {
                     map: blackPointMap,
@@ -1730,55 +1753,150 @@ var app = new Vue({
                         var eDate = json.endTime.split("-");
                         var sDate = json.startTime.split("-");
                         var xYears = eDate[0] - sDate[0] + 1;
-                        var xMonths = parseInt((xYears - 1) * 12 )+ parseInt(eDate[1] - sDate[1]) + 1;
-                        // console.log("------------------")
-                        // console.log("years:"+xYears)
-                        // console.log("xMonths:"+xMonths);
-                        // console.log("(xYears - 1) * 12:"+(xYears - 1) * 12);
-                        // console.log("eDate[1] - sDate[1]:"+ (eDate[1] - sDate[1]));
+                        var xMonths = (xYears - 1) * 12 + (eDate[1] - sDate[1]) + 1;
                         var eD = new Date(eDate[1] + "-" + eDate[2] + "-" + eDate[0]);
                         var sD = new Date(sDate[1] + "-" + sDate[2] + "-" + sDate[0]);
-                        var xDays = parseInt(Math.abs(eD - sD) / 1000 / 60 / 60 / 24);
+                        var xDays = parseInt(Math.abs(eD - sD) / 1000 / 60 / 60 / 24) + 1;
+
+                        var yStr = [];
+                        if(!json.yType){
+                            if(json.propertyLoss){
+                                yStr.push('propertyLoss');
+                            }
+                            if(json.slightInjury){
+                                yStr.push('slightInjury');
+                            }
+                            if(json.severInjury){
+                                yStr.push('severInjury');
+                            }
+                            if(json.dead){
+                                yStr.push('dead');
+                            }
+                        }
+
                         /*展示方式
                         * */
                         var data = allData.data.arr;
+                        var basicDay, basicMonth, basicYear;
                         if (json.timePrecision == 1) {
                             //按年展示
                             var yearNumbers = new Array(xYears);
+                            basicYear = sDate[0] - 1;
                             for (var i = 0 ; i < xYears;i++) {
-                                yearNumbers[i] = 0;
+                                basicYear++;
+                                yearNumbers[i] = {};
+                                yearNumbers[i].year = basicYear;
+                                yearNumbers[i].value = 0;
+                                yStr.forEach(function (value, key, arr) {
+                                    yearNumbers[i][value] = 0;
+                                });
                             }
-                            for(x in data){
-                                yearNumbers[data[x].yearRes - sDate[0]]++;
+                            data.forEach(function (item, index, arr) {
+                                var yN = item.yearRes - sDate[0];
+                                yearNumbers[yN].value += item.num;
 
-                            }
-                            that.showLine(yearNumbers, json.roadType, json.timePrecision, json.startTime, json.endTime, xYears)
+                                yStr.forEach(function (value, key) {
+                                    yearNumbers[yN][value] += item[value];
+                                });
+                            })
+
+                            console.log(yearNumbers);
+                            that.showLine(yearNumbers, json.timePrecision, yStr, json.startTime, json.endTime);
                         }
                         if (json.timePrecision == 2) {
                             //按月展示
                             var monthNumbers = new Array(xMonths);
-                            for (var i = 0 ; i < xMonths;i++) {
-                                monthNumbers[i] = 0;
+                            basicMonth = sDate[1] - 1;
+                            basicYear = sDate[0];
+                            for (var i = 0, m = basicMonth; i < xMonths; i++) {
+                                m++;
+                                if(m == 13){
+                                    basicYear++;
+                                    m = 1;
+                                }
+                                monthNumbers[i] = {};
+                                monthNumbers[i].year = basicYear;
+                                monthNumbers[i].month = m;
+                                monthNumbers[i].value = 0;
+
+                                yStr.forEach(function (value, key, arr) {
+                                    monthNumbers[i][value] = 0;
+                                });
                             }
-                            for(x in data){
-                                m = (data[x].yearRes-sDate[0])*12 + parseInt(data[x].monthRes-sDate[1]);
-                                monthNumbers[m]++;
-                            }
-                            that.showLine(monthNumbers, json.roadType, json.timePrecision, json.startTime, json.endTime, xMonths)
+                            data.forEach(function (item, index, arr) {
+                                var mN = (item.yearRes - sDate[0]) * 12 + (item.monthRes - sDate[1]);
+                                monthNumbers[mN].value += item.num;
+
+                                yStr.forEach(function (value, key) {
+                                    monthNumbers[mN][value] += item[value];
+                                });
+                            });
+
+                            console.log(monthNumbers);
+                            //data,roadType,type,sDate,eDate,width
+                            that.showLine(monthNumbers, json.timePrecision, yStr, json.startTime, json.endTime);
                         }
                         if (json.timePrecision == 3) {
                             //按日展示
                             var dayNumbers = new Array(xDays);
+                            basicDay = sDate[2] - 1;
+                            basicMonth = sDate[1];
+                            basicYear = sDate[0];
                             for (var i = 0 ; i < xDays;i++) {
-                                dayNumbers[i] = 0;
+                                basicDay++;
+                                if(basicMonth == 1 || basicMonth == 3 || basicMonth == 5 || basicMonth == 7 || basicMonth == 8 || basicMonth == 10 || basicMonth == 12){
+                                    if(basicDay == 32){
+                                        basicDay = 1;
+                                        basicMonth++;
+                                        if(basicMonth == 13){
+                                            basicMonth = 1;
+                                            basicYear++;
+                                        }
+                                    }
+                                }
+                                else if(basicMonth == 2){
+                                    if(basicYear % 400 == 0 || (basicYear % 100 != 0 && basicYear % 4 == 0)){
+                                        if(basicDay == 30){
+                                            basicDay = 1;
+                                            basicMonth++;
+                                        }
+                                    }
+                                    else {
+                                        if(basicDay == 29){
+                                            basicDay = 1;
+                                            basicMonth++;
+                                        }
+                                    }
+                                }
+                                else{
+                                    if(basicDay == 31){
+                                        basicDay = 1;
+                                        basicMonth++;
+                                    }
+                                }
+                                dayNumbers[i] = {};
+                                dayNumbers[i].year = basicYear;
+                                dayNumbers[i].month = basicMonth;
+                                dayNumbers[i].day = basicDay;
+                                dayNumbers[i].value = 0;
+
+                                yStr.forEach(function (value, key, arr) {
+                                    dayNumbers[i][value] = 0;
+                                });
                             }
-                            for(x in data){
-                                var eD = new Date(data[x].monthRes + "-" + data[x].dayRes + "-" + data[x].yearRes);
-                                var sD = new Date(sDate[1] + "-" + sDate[2] + "-" + sDate[0]);
-                                var m = parseInt(Math.abs(eD  -  sD)  /  1000  /  60  /  60  /24);
-                                dayNumbers[m]++;
-                            }
-                            that.showLine(dayNumbers, json.roadType, json.timePrecision, json.startTime, json.endTime, xDays)
+                            data.forEach(function (item, index, arr) {
+                                var nowD = new Date(item.monthRes + "-" + item.dayRes + "-" + item.yearRes);
+                                sD = new Date(sDate[1] + "-" + sDate[2] + "-" + sDate[0]);
+                                var dN = parseInt(Math.abs(nowD - sD) / 1000 / 60 / 60 / 24);
+                                dayNumbers[dN].value += item.num;
+
+                                yStr.forEach(function (value, key) {
+                                    dayNumbers[dN][value] += item[value];
+                                });
+                            });
+
+                            console.log(dayNumbers);
+                            that.showLine(dayNumbers, json.timePrecision, yStr, json.startTime, json.endTime);
                         }
                     }
                     else{
