@@ -305,11 +305,11 @@
                 </div>
             </div>
 
-            <div class="body-right" :style="rightStyle">
+            <div class="body-right time-body-right" :style="rightStyle">
                <!-- <div id="timeMap" class="map">
                 </div>-->
-                <div id="timePrintId">
-                    <div id="timeLine" class="map">
+                <div id="timePrintId" :style="chartStyle">
+                    <div id="timeLine" class="time-chart-class" :style="singleContent">
                     </div>
                 </div>
             </div>

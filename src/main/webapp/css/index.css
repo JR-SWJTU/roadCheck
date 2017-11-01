@@ -38,6 +38,12 @@
     font-size: 18px;
 }
 
+.map{
+    width: 100%;
+    height: 100%;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
 .popup-top
 {
     min-width: 30%;
@@ -498,6 +504,7 @@
     width: 100%;
     padding: 3px;
     border: 1px solid lightblue;
+    background-color: ghostwhite;
     margin: 0 auto;
 }
 .chart-class{

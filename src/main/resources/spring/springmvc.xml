@@ -68,7 +68,7 @@
 
 
     <!--*******************************分割线分割线***************************************************************************************-->
-    <!--*******************************定时任务执行配置，每天凌晨1点执行，给参与活动的用户发送参加提醒******************************************-->
+    <!--*******************************定时任务执行配置，每月15号凌晨1点执行，给参与活动的用户发送参加提醒******************************************-->
     <!--要调度的对象-->
     <bean id="jobBean" class="com.swjtu.roadCheck.timedTask.ExcelDelete"/>
     <!--jobDetail声明Job实例所包含的属性-->
@@ -82,7 +82,7 @@
     <bean id="trigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
         <property name="jobDetail" ref="jobDetail"/>
         <!--表达式，每天凌晨 执行一次-->
-        <property name="cronExpression" value="0 0 1 * * ? "/>
+        <property name="cronExpression" value="0 0 1 15 * ?"/>
     </bean>
 
     <!--  总管理类如果将lazy-init='false'那么容器启动就会执行调度程序   -->

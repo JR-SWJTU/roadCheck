@@ -2,8 +2,6 @@ package com.swjtu.roadCheck.entityCustom;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import java.util.Date;
-
 /**
  * Created by Administrator on 2017/10/21.
  */
@@ -17,10 +15,10 @@ public class AccidentQueryCondition {
 
 //    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date startTime;
+    private String startTime;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date endTime;
+    private String endTime;
 
     private boolean yType;   //true为以事故数为纵轴，false为以事故严重程度为纵轴
 
@@ -75,19 +73,19 @@ public class AccidentQueryCondition {
         this.roadType = roadType;
     }
 
-    public Date getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
-    public Date getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 

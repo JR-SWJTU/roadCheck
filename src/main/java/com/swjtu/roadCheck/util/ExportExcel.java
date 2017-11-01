@@ -11,9 +11,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * Created by windows on 2017/10/21.
@@ -85,7 +86,9 @@ import java.util.UUID;
                 //创建目录
                 temp.mkdirs();
             }
-            String fileName = UUID.randomUUID().toString()  + ".xls";
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日HH时mm分ss秒");
+            Date date = new Date( System.currentTimeMillis());
+            String fileName = sdf.format(date).toString()+ "黑点分析数据.xls";
             String filedisplay = rootPath + fileName;
             //如果web项目，1、设置下载框的弹出（设置response相关参数)；2、通过httpservletresponse.getOutputStream()获取
             OutputStream out = new FileOutputStream(filedisplay);
@@ -121,7 +124,10 @@ import java.util.UUID;
                 //创建目录
                 temp.mkdirs();
             }
-            String fileName = UUID.randomUUID().toString()  + ".xls";
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日HH时mm分ss秒");
+            Date date = new Date( System.currentTimeMillis());
+            String fileName = sdf.format(date).toString()+ "空间分析数据.xls";
             String filedisplay = rootPath + fileName;
             //如果web项目，1、设置下载框的弹出（设置response相关参数)；2、通过httpservletresponse.getOutputStream()获取
             OutputStream out = new FileOutputStream(filedisplay);
@@ -169,6 +175,7 @@ import java.util.UUID;
 //            output.close();
         }
         catch (Exception e) {
+            e.printStackTrace();
             throw new CustomException("导出失败");
         }
     }
