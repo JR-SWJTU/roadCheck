@@ -38,6 +38,13 @@
     font-size: 18px;
 }
 
+.map{
+    width: 100%;
+    height: 100%;
+    padding: 2px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
 .popup-top
 {
     min-width: 30%;
