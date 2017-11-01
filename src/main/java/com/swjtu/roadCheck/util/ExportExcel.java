@@ -7,6 +7,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
@@ -77,6 +78,13 @@ import java.util.UUID;
         //autoSizeColumn(titleMap.size());
         // 写入处理结果
         try {
+            //File既可以代表文件也可以代表目录
+            File temp = new File(rootPath);
+            //如果目录不存在
+            if (!temp.exists()) {
+                //创建目录
+                temp.mkdirs();
+            }
             String fileName = UUID.randomUUID().toString()  + ".xls";
             String filedisplay = rootPath + fileName;
             //如果web项目，1、设置下载框的弹出（设置response相关参数)；2、通过httpservletresponse.getOutputStream()获取
@@ -106,6 +114,13 @@ import java.util.UUID;
        createContentRow(dataList, resultMap,4);
         // 写入处理结果
         try {
+            //File既可以代表文件也可以代表目录
+            File temp = new File(rootPath);
+            //如果目录不存在
+            if (!temp.exists()) {
+                //创建目录
+                temp.mkdirs();
+            }
             String fileName = UUID.randomUUID().toString()  + ".xls";
             String filedisplay = rootPath + fileName;
             //如果web项目，1、设置下载框的弹出（设置response相关参数)；2、通过httpservletresponse.getOutputStream()获取
