@@ -1,10 +1,10 @@
 package com.swjtu.roadCheck.web.controller;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+import com.swjtu.roadCheck.dto.Accident;
 import com.swjtu.roadCheck.entity.Accidentdata;
 import com.swjtu.roadCheck.entityCustom.AccidentQueryCondition;
 import com.swjtu.roadCheck.entityCustom.BlackPointData;
+import com.swjtu.roadCheck.entityCustom.BlackPointDataForWeb;
 import com.swjtu.roadCheck.mapper.AccidentdataMapper;
 import com.swjtu.roadCheck.service.IAccidentService;
 import com.swjtu.roadCheck.util.JsonResult;
@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +43,36 @@ public class AccidentController {
      */
     @RequestMapping(value = "/analyseData/areaMultiConditionQuery", method = RequestMethod.POST)
     public JsonResult areaMultiConditionQuery(@RequestBody AccidentQueryCondition condition) throws Exception{
-        return JsonResult.build(StatusCode.SUCCESS, accidentService.areaMultiConditionQuery(condition));
+        JSONObject jsonObject = new JSONObject();
+        List<Accident> list =  accidentService.areaMultiConditionQuery(condition);
+        int allnum = 0;
+        for(int i = 0 ; i < list.size(); i++){
+            allnum += list.get(i).getNum();
+        }
+        jsonObject.put("arr", list);
+        jsonObject.put("allnum",allnum);
+        return JsonResult.build(StatusCode.SUCCESS, jsonObject);
+    }
+
+    /**
+     * 空间分析中的多条件查询结果导出excel
+     * @param condition
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/analyseData/areaAnalyseDataExport", method = RequestMethod.POST)
+    public JsonResult areaAnalyseDataExport(@RequestBody AccidentQueryCondition condition, HttpServletResponse res) throws Exception{
+        condition.setPropertyLoss(1);
+        condition.setSlightInjury(1);
+        condition.setSeverInjury(1);
+        condition.setDead(1);
+        System.out.println("导出excel了");
+
+        String fileName = accidentService.exportAreaAnalyse(condition, res);
+        String addr = InetAddress.getLocalHost().getHostAddress();
+        String fileUrl = "http://" + addr + ":8080//" + "excel/" + fileName;
+        System.out.println(fileUrl);
+        return JsonResult.build(StatusCode.SUCCESS,fileUrl);
     }
 
     /**
@@ -52,8 +83,15 @@ public class AccidentController {
      */
     @RequestMapping(value = "/analyseData/timeMultiConditionQuery", method = RequestMethod.POST)
     public JsonResult timeMultiConditionQuery(@RequestBody AccidentQueryCondition condition) throws Exception{
-        System.out.println(new Gson().toJson(condition));
-        return JsonResult.build(StatusCode.SUCCESS, accidentService.timeMultiConditionQuery(condition));
+        JSONObject jsonObject = new JSONObject();
+        List<Accident> list =  accidentService.timeMultiConditionQuery(condition);
+        int allnum = 0;
+        for(int i = 0 ; i < list.size(); i++){
+            allnum += list.get(i).getNum();
+        }
+        jsonObject.put("arr", list);
+        jsonObject.put("allnum",allnum);
+        return JsonResult.build(StatusCode.SUCCESS, jsonObject);
     }
 
     /**
@@ -87,16 +125,27 @@ public class AccidentController {
 
     @RequestMapping(value = "/blackPointDiagnosis/results", method = RequestMethod.POST)
     public JsonResult analyseBlackPoint(@RequestBody Map map) throws Exception{
-        List<BlackPointData> blackPointDatas = new ArrayList<BlackPointData>();
-        blackPointDatas = accidentService.getTopTen(map);
-        return JsonResult.build(StatusCode.SUCCESS,blackPointDatas);
+        List<BlackPointDataForWeb> blackPointDataForWebs = new ArrayList<BlackPointDataForWeb>();
+        blackPointDataForWebs = accidentService.getTopTen(map);
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("arr",blackPointDataForWebs);
+        int number = 0;
+        for(BlackPointDataForWeb blackPointDataForWeb:blackPointDataForWebs){
+            number+=blackPointDataForWeb.getNumber().intValue();
+        }
+        jsonObject.put("allnum",number);
+        return JsonResult.build(StatusCode.SUCCESS,jsonObject);
     }
 
     @RequestMapping(value = "/blackPointDiagnosis/exportaion", method = RequestMethod.POST)
     public JsonResult exportBlackPoint(@RequestBody Map map) throws Exception{
         List<BlackPointData> blackPointDatas = new ArrayList<BlackPointData>();
-        accidentService.exportAccidentData(map);
-        return JsonResult.build(StatusCode.SUCCESS);
+        String fileName = accidentService.exportAccidentData(map);
+        String addr = InetAddress.getLocalHost().getHostAddress();
+        String fileUrl = "http://" + addr + ":8080//" + "excel/" + fileName;
+        System.out.println(fileUrl);
+        return JsonResult.build(StatusCode.SUCCESS,fileUrl);
     }
 
     @RequestMapping(value = "/blackPointDiagnosis/crossings", method = RequestMethod.GET)

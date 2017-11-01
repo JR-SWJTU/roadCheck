@@ -132,9 +132,21 @@
     <!--事故分析中的空间分析，多重搜索条件下某路段发生的不同事故严重程度的事故的统计-->
     <select id="multiConditionQueryAccidentForYZCD" parameterType="Map"
             resultType="com.swjtu.roadCheck.dto.Accident">
+        SELECT
+        diMingBeiZhu,propertyLoss ,slightInjury, severInjury,dead,lat,lng,
+        propertyLoss + slightInjury+severInjury+dead as num from
+        (
+        SELECT
+        diMingBeiZhu,
+        MAX(CASE yanZhongCd WHEN '仅财损' THEN num ELSE 0 END) AS propertyLoss,
+        MAX(CASE yanZhongCd WHEN '轻伤' THEN num ELSE 0 END) AS slightInjury,
+        MAX(CASE yanZhongCd WHEN '重伤' THEN num ELSE 0 END) AS severInjury,
+        MAX(CASE yanZhongCd WHEN '死亡' THEN num ELSE 0 END) AS dead,
+        lat,lng
+        from(
 
         SELECT
-        count(*) as num,diMingBeiZhu,yanZhongCd as keyRes,lat,lng
+        count(*) as num,diMingBeiZhu,yanZhongCd,lat,lng
         FROM
 
         (
@@ -262,17 +274,51 @@
             ) carResult ON res1.carnumber = carResult.carnumber
         </if>
         GROUP BY diMingBeiZhu,yanZhongCd
+        )res GROUP BY diMingBeiZhu
+        )lastRes
     </select>
 
 
     <!--事故分析中的时间分析，多重搜索条件下某路段发生的不同事故严重程度的事故的统计或者事故数量统计，按照年月日进行统计-->
     <select id="multiConditionQueryAccidentForTime" parameterType="Map"
             resultType="com.swjtu.roadCheck.dto.Accident">
-
+        <if test="yType==false">
+            SELECT
+            diMingBeiZhu,propertyLoss ,slightInjury, severInjury,dead,lat,lng,
+            propertyLoss + slightInjury+severInjury+dead as num
+            <if test="timePrecision==0 || timePrecision>0">
+                ,yearRes
+            </if>
+            <if test="timePrecision>1">
+                , monthRes
+            </if>
+            <if test="timePrecision>2">
+                , dayRes
+            </if>
+            from
+            (
+            SELECT
+            diMingBeiZhu,
+            MAX(CASE yanZhongCd WHEN '仅财损' THEN num ELSE 0 END) AS propertyLoss,
+            MAX(CASE yanZhongCd WHEN '轻伤' THEN num ELSE 0 END) AS slightInjury,
+            MAX(CASE yanZhongCd WHEN '重伤' THEN num ELSE 0 END) AS severInjury,
+            MAX(CASE yanZhongCd WHEN '死亡' THEN num ELSE 0 END) AS dead,
+            num,lat,lng
+            <if test="timePrecision==0 || timePrecision>0">
+                ,yearRes
+            </if>
+            <if test="timePrecision>1">
+                , monthRes
+            </if>
+            <if test="timePrecision>2">
+                , dayRes
+            </if>
+            from(
+        </if>
         SELECT
         count(*) as num,diMingBeiZhu,lat,lng
         <if test="yType==false">
-            ,yanZhongCd as keyRes
+            ,yanZhongCd
         </if>
         <if test="timePrecision==0 || timePrecision>0">
             ,YEAR (riqi) AS yearRes
@@ -390,8 +436,8 @@
             <if test="roadLevel==null and weather==null and workPlaceRel == null and intersectionType == null">
                 ON acd.shigunumber = aResult.accidencnumber
             </if>
-            <if test="roadLevel!=null || weather!=null || workPlaceRel != null || intersectionType != null">
-            ON acdResult.shigunumber = aResult.accidencnumber
+            <if test="roadLevel!=null || weather!=null || workPlaceRel != null || intersectionType != null">ON
+                acdResult.shigunumber = aResult.accidencnumber
             </if>
         </if>
         ) res1
@@ -411,8 +457,7 @@
         </if>
 
         GROUP BY diMingBeiZhu
-        <if test="yType==false">
-        ,yanZhongCd
+        <if test="yType==false">,yanZhongCd
         </if>
         <if test="timePrecision==0 || timePrecision>=1">
             ,YEAR (riqi)
@@ -424,6 +469,10 @@
             ,DAY(riqi)
         </if>
 
+        <if test="yType==false">
+        )res  GROUP BY diMingBeiZhu
+        )lastRes
+        </if>
     </select>
 
 

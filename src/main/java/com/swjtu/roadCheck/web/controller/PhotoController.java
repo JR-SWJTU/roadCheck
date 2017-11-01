@@ -31,7 +31,7 @@ public class PhotoController {
     @RequestMapping(value = "",method = RequestMethod.POST)
     public JsonResult activityPhotoUpload(HttpServletRequest request, HttpServletResponse response, HttpSession session){
 
-        System.out.println("图片上传开始");
+        System.out.println("文件上传开始");
         String picUrl = "";
         response.setContentType("text/html;charset=UTF-8");
         if(request instanceof MultipartHttpServletRequest) {

@@ -3,6 +3,7 @@ package com.swjtu.roadCheck.web.exception;
 import com.swjtu.roadCheck.util.JsonResult;
 import com.swjtu.roadCheck.util.enums.StatusCode;
 import com.swjtu.roadCheck.web.exception.base.*;
+import com.swjtu.roadCheck.web.exception.base.CustomException;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -92,7 +93,15 @@ public class GlobalExceptionHandler {
         LOGGER.error(e.getMessage(), e);
         return JsonResult.customBuild("数据库异常");
     }
-    
+
+    @ExceptionHandler(value = CustomException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public JsonResult handCustomException(Exception e) {
+        LOGGER.error(e.getMessage(), e);
+        return JsonResult.customBuild(e.getMessage());
+    }
+
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)

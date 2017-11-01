@@ -1,7 +1,11 @@
+import com.google.gson.Gson;
 import com.swjtu.roadCheck.mapper.AccidentMapperCustom;
-import net.sf.json.JSONObject;
 import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2017/10/22.
@@ -36,10 +40,31 @@ public class TestAccident {
 //        System.out.println(new Gson().toJson(condition));
 //        System.out.println(new Gson().toJson(accidentMapperCustom.multiConditionQueryAccidentForSGS(condition)));
 
-        String name[] = {"一大队","二大队","二大队"};
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("teamName",name);
-        System.out.println(jsonObject.toString());
+//        String name[] = {"一大队","二大队","二大队"};
+//        JSONObject jsonObject = new JSONObject();
+//        jsonObject.put("teamName",name);
+//        System.out.println(jsonObject.toString());
 
+        Map<String, Integer> map = new HashMap<String, Integer>();
+        map.put("轻伤",5);
+        System.out.println( new Gson().toJson(map));
+
+        deleteDir(new File("E:\\roadCheck\\")) ;
+
+    }
+
+    private  boolean deleteDir(File dir) {
+        if (dir.isDirectory()) {
+            String[] children = dir.list();
+            //递归删除目录中的子目录下
+            for (int i=0; i<children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+        }
+        // 目录此时为空，可以删除
+        return dir.delete();
     }
 }
