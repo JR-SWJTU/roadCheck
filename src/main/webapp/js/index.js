@@ -11,7 +11,7 @@ var app = new Vue({
 
         singleTab: 'gruppe',
         singleShowSelect: false,
-        timeShowSelect: false,
+        timeShowSelect: true,
 
         basicData: {
             analysisObj: ['交叉口', '路段'],
@@ -1593,7 +1593,7 @@ var app = new Vue({
             var printDiv = document.getElementById('singlePrintId');
             localStorage.obj = printDiv.innerHTML;
             localStorage.width = printDiv.offsetWidth;
-            window.open("http://localhost:8080/roadCheck/print.jsp", "_blank");
+            window.open('http://' + location.host + "/roadCheck/print.jsp", "_blank");
         },
         spaceDown: function () {
             var that = this;
@@ -1642,7 +1642,7 @@ var app = new Vue({
             var printDiv = document.getElementById('timePrintId');
             localStorage.obj = printDiv.innerHTML;
             localStorage.width = printDiv.offsetWidth;
-            window.open("http://localhost:8080/roadCheck/print.jsp", "_blank");
+            window.open('http://' + location.host + "/roadCheck/print.jsp", "_blank");
         },
         blackPointGet: function () {
             var that = this;
