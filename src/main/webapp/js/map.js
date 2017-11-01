@@ -368,6 +368,53 @@ spaceMap.on('zoom', function(e) {
     }
 });
 
+blackPointMap.on('zoom', function(e) {
+    //alert('您在[ '+e.lnglat.getLng()+','+e.lnglat.getLat()+' ]的位置点击了地图！');
+    //    console.log(e)
+    // console.log(spaceMap.getZoom())
+    if (blackPointMap.getZoom() >= 15) {
+        var divs = getClassNames('showmap-name', 'div');
+        if (null != divs)
+        {
+            //遍历对象,改其css样式
+            for ( var i = 0; i < divs.length; i++)
+            {
+                divs[i].style.display = "block";
+            }
+        }
+    }else {
+        var divs = getClassNames('showmap-name', 'div');
+        if (null != divs)
+        {
+            //遍历对象,改其css样式
+            for ( var i = 0; i < divs.length; i++)
+            {
+                divs[i].style.display = "none";
+            }
+        }
+    }
+    if (blackPointMap.getZoom() < 14){
+        var divs = getClassNames('showmap-number', 'div');
+        if (null != divs)
+        {
+            //遍历对象,改其css样式
+            for ( var i = 0; i < divs.length; i++)
+            {
+                divs[i].style.display = "none";
+            }
+        }
+    }else {
+        var divs = getClassNames('showmap-number', 'div');
+        if (null != divs)
+        {
+            //遍历对象,改其css样式
+            for ( var i = 0; i < divs.length; i++)
+            {
+                divs[i].style.display = "block";
+            }
+        }
+    }
+});
 function alertObj(obj)
 {
     var description = "";

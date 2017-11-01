@@ -1425,8 +1425,10 @@ var app = new Vue({
                 if (item.number > yMax) {
                     yMax = item.number;
                 }
+                console.log("item.number"+item.number)
             });
-            //console.log(yMin+" ymax:"+yMax)
+         //   console.log("item.number"+item.number)
+            console.log(yMin+" ymax:"+yMax)
             data.forEach(function (item, index, arr) {
                 var obj = {
                     map: blackPointMap,
