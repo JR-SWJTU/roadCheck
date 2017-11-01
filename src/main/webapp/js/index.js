@@ -781,73 +781,85 @@ var app = new Vue({
             return obj;
         },
         showLine: function(data, roadType, type, sDate, eDate, width){ //展示折线图
-            var title = {
-                text: '月平均气温'
-            };
-            var subtitle = {
-                text: 'Source: runoob.com'
-            };
-            var xname = new Array(width);
+
             /*
             * 设置x轴名称
             * */
+            var xname = new Array(width);
             var sD = sDate.split("-");
             if (type == 1) {
+
                 for(var i = 0 ;i < width ; i++){
-                    xname[i] = parseInt(sD[2])+i;
+                    xname[i] = parseInt(sD[0])+i;
                     xname[i] += "年";
                 }
             }
             else if( type == 2){
+                var j = 0;
+                var sm = parseInt(sD[1]);
+                console.log(width+"w=----------------")
                 for(var i = 0 ; i < width ; i++){
-                    var dur = parseInt(sD[1]) + i;
-                    xname[i] = dur+"月";
+                    var year = "";
+                    var dur = sm + i -j * 12;
+                    if ( sm + i > j * 12 + 12) {
+                        dur -= 12;
+                        j ++;
+                        var y = parseInt(sD[0]) + j;
+                        year = y+"年"
+                    }
+                    xname[i] = year + dur+"月";
+                    console.log(xname[i])
                 }
             }
             else if (type == 3) {
+                console.log(sDate)
+                var sDD = new Date(sD[1] + "-" + sD[2] + "-" + sD[0]);
+                //console.log(sDD)
+                var sD = new Date(sDate[1] + "-" + sDate[2] + "-" + sDate[0]);
+               // var sdd2 = new Date(sDD + 24 * 60 * 60 * 1000)
+                // // console.log(sdd2.getYear())
+                // // console.log(sdd2.getMonth())
+                // sdd2.setDate(sDD.getDate()+1)
+                // console.log(sdd2.getUTCFullYear())
+                // console.log(sdd2.getUTCDay())
+                // console.log(sdd2.getUTCMonth())
+                // console.log(sdd2.getDate())
+                // console.log(sdd2.getUTCDate())
+                // console.log(sdd2.getUTCDate()%31+1)
+
+               // console.log(sdd2.get())
+               // console.log(sdd2)
+                var lastMonth = sDD.getUTCMonth();
+                var lastYear = sDD.getFullYear();
                 for(var i = 0 ;i < width ; i++){
-                    xname[i] = i;
+                    xname[i] = "";
+                    var d = new Date(sDD);
+                    d.setDate(sDD.getDate()+i);
+                    if (lastYear != d.getFullYear()) {
+                        lastYear = d.getFullYear();
+                        xname[i] += parseInt(d.getFullYear())+"年";
+                    }
+                    if (lastMonth != d.getUTCMonth()) {
+                        lastMonth = d.getUTCMonth();
+                        //xname[i] += parseInt(d.getUTCMonth()+1)+"月";
+                    }
+                    if (d.getDate()==1) {
+                        xname[i] += parseInt(d.getUTCMonth()+2)+"月";
+                    }else {
+                        xname[i] += parseInt(d.getUTCMonth()+1)+"月";
+                    }
+
+                    xname[i] += d.getDate()+"日";
                 }
             }
-
-            // var xAxis = {
-            //     categories: xname
-            // };
             var xAxis = xname;
-            var yAxis = {
-                title: {
-                    text: 'Temperature (\xB0C)'
-                },
-                plotLines: [{
-                    value: 0,
-                    width: 1,
-                    color: '#808080'
-                }]
-            };
-
-            var tooltip = {
-                valueSuffix: '\xB0C'
-            }
-
-            var legend = {
-                layout: 'vertical',
-                align: 'right',
-                verticalAlign: 'middle',
-                borderWidth: 0
-            };
-
             var series =  [
                 {
                     name: '事故总数',
                     data: data
                 }
             ];
-
-            var json = {};
-
-          //  var xAxis = ['总数', '仅损财', '轻伤', '重伤', '死亡', '未知'];
-            this.getLine('timeLine', '各种情况下事故数趋势图', xAxis, series);
-            //document.getElementById('#timeLine').highcharts(json);
+            this.getLine('timeLine', '各种情况下事故总数趋势图', xAxis, series);
 
             this.timeShowSelect = false;
             this.timeDownShow = true;
@@ -1714,21 +1726,19 @@ var app = new Vue({
                         * 统计年、月、日中人数
                         *
                         * */
-                        // console.log(json.endTime);
-                        // console.log(json.startTime);
                         //获取时间跨度
                         var eDate = json.endTime.split("-");
                         var sDate = json.startTime.split("-");
                         var xYears = eDate[0] - sDate[0] + 1;
-                        var xMonths = (xYears - 1) * 12 + eDate[1] - sDate[1] + 1;
+                        var xMonths = parseInt((xYears - 1) * 12 )+ parseInt(eDate[1] - sDate[1]) + 1;
+                        // console.log("------------------")
+                        // console.log("years:"+xYears)
+                        // console.log("xMonths:"+xMonths);
+                        // console.log("(xYears - 1) * 12:"+(xYears - 1) * 12);
+                        // console.log("eDate[1] - sDate[1]:"+ (eDate[1] - sDate[1]));
                         var eD = new Date(eDate[1] + "-" + eDate[2] + "-" + eDate[0]);
                         var sD = new Date(sDate[1] + "-" + sDate[2] + "-" + sDate[0]);
                         var xDays = parseInt(Math.abs(eD - sD) / 1000 / 60 / 60 / 24);
-                        // console.log(xYears)
-                        // console.log(xMonths)
-                        // console.log(xDays)
-                        console.log(json.timePrecision);
-
                         /*展示方式
                         * */
                         var data = allData.data.arr;
@@ -1740,8 +1750,7 @@ var app = new Vue({
                             }
                             for(x in data){
                                 yearNumbers[data[x].yearRes - sDate[0]]++;
-                                console.log(data[x].yearRes - sDate[0])
-                                console.log(yearNumbers[data[x].yearRes - sDate[0]]);
+
                             }
                             that.showLine(yearNumbers, json.roadType, json.timePrecision, json.startTime, json.endTime, xYears)
                         }
@@ -1751,14 +1760,10 @@ var app = new Vue({
                             for (var i = 0 ; i < xMonths;i++) {
                                 monthNumbers[i] = 0;
                             }
-
                             for(x in data){
-                                m = (data[x].yearRes-sDate[0])*12 + data[x].monthRes-sDate[1]+1;
+                                m = (data[x].yearRes-sDate[0])*12 + parseInt(data[x].monthRes-sDate[1]);
                                 monthNumbers[m]++;
-                                console.log(m)
-                                console.log(monthNumbers[m]);
                             }
-                            //data,roadType,type,sDate,eDate,width
                             that.showLine(monthNumbers, json.roadType, json.timePrecision, json.startTime, json.endTime, xMonths)
                         }
                         if (json.timePrecision == 3) {
@@ -1771,10 +1776,7 @@ var app = new Vue({
                                 var eD = new Date(data[x].monthRes + "-" + data[x].dayRes + "-" + data[x].yearRes);
                                 var sD = new Date(sDate[1] + "-" + sDate[2] + "-" + sDate[0]);
                                 var m = parseInt(Math.abs(eD  -  sD)  /  1000  /  60  /  60  /24);
-                               // m = (data[x].yearRes-sDate[0])*12 + data[x].monthRes-sDate[1]+1;
                                 dayNumbers[m]++;
-                                console.log(m)
-                                console.log(dayNumbers[m]);
                             }
                             that.showLine(dayNumbers, json.roadType, json.timePrecision, json.startTime, json.endTime, xDays)
                         }
