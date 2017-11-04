@@ -246,11 +246,11 @@
                         <p style="margin:auto;text-align: center;color: white">总数</p>
                     </div>
                     <div class="mapbarchild" style="left: 50px;">
-                        <div style="margin:auto;width:30px;height:20px;background: green;"></div>
+                        <div style="margin:auto;width:30px;height:20px;background: lightgreen;"></div>
                         <p style="margin:auto;text-align: center;color: white;">财损</p>
                     </div>
                     <div class="mapbarchild" style="left: 90px;">
-                        <div style="margin:auto;width:30px;height:20px;background: blue;"></div>
+                        <div style="margin:auto;width:30px;height:20px;background: rgb(255,0,255);"></div>
                         <p style="margin:auto;text-align: center;color: white;">轻伤</p>
                     </div>
                     <div class="mapbarchild" style="left: 130px;">
@@ -258,7 +258,7 @@
                         <p style="margin:auto;text-align: center;color: white;">重伤</p>
                     </div>
                     <div class="mapbarchild" style="left: 170px;">
-                        <div style="margin:auto;width:30px;height:20px;background: olive;"></div>
+                        <div style="margin:auto;width:30px;height:20px;background: lightcoral;"></div>
                         <p style="margin:auto;text-align: center;color: white;">死亡</p>
                     </div>
                 </div>
