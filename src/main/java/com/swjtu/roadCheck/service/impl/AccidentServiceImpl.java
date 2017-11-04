@@ -142,6 +142,9 @@ public class AccidentServiceImpl implements IAccidentService {
         if(condition.getAreaName() != null && condition.getTeamName() != null)
             throw new CustomException("TeamName和AreaName的查询不能同时存在");
 
+        if(condition.getAreaName() != null && condition.getAreaName().equals("全市"))
+            condition.setAreaName(null);
+
         if ( condition.isyType() )
             return accidentMapperCustom.multiConditionQueryAccidentForSGS(ObjectUtil.objectToMap(condition));
         else
@@ -239,6 +242,9 @@ public class AccidentServiceImpl implements IAccidentService {
         if(condition.isyType() == true &&
                 (condition.getPropertyLoss() != null || condition.getSlightInjury() != null || condition.getSeverInjury() != null || condition.getDead() != null))
             throw  new CustomException("以事故数为纵轴时，不能设置查询的严重程度");
+
+        if(condition.getAreaName() != null && condition.getAreaName().equals("全市"))
+            condition.setAreaName(null);
 
         return accidentMapperCustom.multiConditionQueryAccidentForTime(ObjectUtil.objectToMap(condition));
     }
