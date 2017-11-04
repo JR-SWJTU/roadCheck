@@ -486,7 +486,7 @@
     background-color: white;
     text-align: center;
     line-height: 50px;
-    font-size: 22px;
+    font-size: 26px;
     font-weight: 400;
 }
 .table-class{
@@ -515,28 +515,28 @@
     margin: 0 auto;
 }
 
-/*char*/
-.highcharts-title tspan{
-    font-size: 20px;
-}
-.highcharts-axis tspan{
-    font-size: 18px;
-    font-weight: 400;
-}
-.highcharts-label tspan{
-    font-size: 16px;
-}
-.highcharts-grid-line{
-    /*stroke: rgb(200, 200, 200);*/
-}
-.highcharts-axis-labels text{
-    font-size: 18px !important;
-    color: black !important;
-    font-weight: 400 !important;
-}
-.highcharts-legend rect{
-    display: none;
-}
-.highcharts-legend tspan{
-    font-size: 16px;
-}
+/*!*char*!*/
+/*.highcharts-title tspan{*/
+    /*font-size: 20px;*/
+/*}*/
+/*.highcharts-axis tspan{*/
+    /*font-size: 18px;*/
+    /*font-weight: 400;*/
+/*}*/
+/*.highcharts-label tspan{*/
+    /*font-size: 16px;*/
+/*}*/
+/*.highcharts-grid-line{*/
+    /*!*stroke: rgb(200, 200, 200);*!*/
+/*}*/
+/*.highcharts-axis-labels text{*/
+    /*font-size: 18px !important;*/
+    /*color: black !important;*/
+    /*font-weight: 400 !important;*/
+/*}*/
+/*.highcharts-legend rect{*/
+    /*display: none;*/
+/*}*/
+/*.highcharts-legend tspan{*/
+    /*font-size: 16px;*/
+/*}*/

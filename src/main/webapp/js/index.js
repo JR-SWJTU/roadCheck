@@ -10,7 +10,9 @@ var app = new Vue({
         wrapHeight: 0,
 
         singleTab: 'gruppe',
+        blackShowSelect: true,
         singleShowSelect: false,
+        spaceShowSelect: true,
         timeShowSelect: true,
 
         basicData: {
@@ -310,14 +312,26 @@ var app = new Vue({
                     break;
             }
         },
+        closeBlackShow: function () {
+            this.blackShowSelect = false;
+        },
         closeSingleShow: function () {
             this.singleShowSelect = false;
+        },
+        closeSpaceShow: function () {
+            this.spaceShowSelect = false;
         },
         closeTimeShow: function () {
             this.timeShowSelect = false;
         },
+        openBlackShow: function () {
+            this.blackShowSelect = true;
+        },
         openSingleShow: function () {
             this.singleShowSelect = true;
+        },
+        openSpaceShow: function () {
+            this.spaceShowSelect = true;
         },
         openTimeShow: function () {
             this.timeShowSelect = true;
@@ -781,114 +795,6 @@ var app = new Vue({
             });
             return obj;
         },
-        showLine: function(data, type, yStr, sDate, eDate){ //展示折线图
-            var xAxis = [];
-            var series = [];
-            var obj = {
-                static:{
-                    name: '事故总数',
-                    data: []
-                }
-            };
-            yStr.forEach(function (item, index, arr) {
-                var o = {
-                    name: '',
-                    data: []
-                };
-                switch (item){
-                    case 'propertyLoss':{
-                        o.name = '仅财损';
-                        break;
-                    }
-                    case 'slightInjury':{
-                        o.name = '轻伤';
-                        break;
-                    }
-                    case 'severInjury':{
-                        o.name = '重伤';
-                        break;
-                    }
-                    case 'dead':{
-                        o.name = '死亡';
-                        break;
-                    }
-                    default :
-                        break;
-                }
-                obj[item] = o;
-            });
-            var unit;
-            type = parseInt(type);
-            switch (type){
-                case 1: {
-                    unit = '(年)';
-                    data.forEach(function (item, index, arr) {
-                        xAxis.push(item.year + '年');
-                        obj.static.data.push(item.value);
-                        yStr.forEach(function (value, key) {
-                            obj[value].data.push(item[value]);
-                        });
-                    });
-                    break;
-                }
-                case 2: {
-                    unit = '(月)';
-                    data.forEach(function (item, index, arr) {
-                        if(index == 0){
-                            xAxis.push(item.year + ' | ' + item.month + '月');
-                        }
-                        else{
-                            if(item.month == 1){
-                                xAxis.push(item.year + ' | ' + item.month + '月');
-                            }
-                            else {
-                                xAxis.push(item.month + '月');
-                            }
-                        }
-                        obj.static.data.push(item.value);
-                        yStr.forEach(function (value, key) {
-                            obj[value].data.push(item[value]);
-                        });
-                    });
-                    break;
-                }
-                case 3: {
-                    unit = '(日)';
-                    data.forEach(function (item, index, arr) {
-                        if(index == 0){
-                            xAxis.push(item.year + '-' + item.month + ' | ' + item.day + '日');
-                        }
-                        else{
-                            if(item.day == 1){
-                                xAxis.push(item.year + '-' + item.month + ' | ' + item.day + '日');
-                            }
-                            else{
-                                xAxis.push(item.day + '日');
-                            }
-                        }
-                        obj.static.data.push(item.value);
-                        yStr.forEach(function (value, key) {
-                            obj[value].data.push(item[value]);
-                        });
-                    });
-                    break;
-                }
-                default:
-                    break;
-            }
-
-            series.push(obj.static);
-            yStr.forEach(function (value, key, arr) {
-                series.push(obj[value]);
-            });
-
-            //  var xAxis = ['总数', '仅财损', '轻伤', '重伤', '死亡', '未知'];
-            this.getLine('timeLine', '各条件下事故数趋势图', xAxis, series);
-
-            this.timeShowSelect = false;
-            this.timeDownShow = true;
-            this.deleteChartLogo();
-        },
         getWeaObj: function (data) {
             var obj = ['数量（起）'];
             //'晴天', '阴天', '雨', '雾', '雪', '冰雹', '台风'
@@ -1258,7 +1164,7 @@ var app = new Vue({
             this.$set(this.singleShowData.accTable, 'value', this.getAccObj(data));
             //事故数、事故严重程度柱状图
             var xAxis = ['总数', '仅财损', '轻伤', '重伤', '死亡', '未知'];
-            this.getHistogram('accHistogram', '各严重程度类型事故柱状图', xAxis, [this.getAccHObj(data)]);
+            this.getHistogram('accHistogram', '各严重程度类型事故柱状图', '严重程度类型', xAxis, [this.getAccHObj(data)]);
             //事故数、事故严重程度扇形图
             this.getPie('accPie', '各严重程度类型事故扇形图', {
                 title: '事故严重程度',
@@ -1275,7 +1181,7 @@ var app = new Vue({
             this.$set(this.singleShowData.accTypeTable, 'value', this.getAccTObj(data));
             //事故类型柱状图
             xAxis = ['总数', '碰撞非固定物', '碰撞固定物', '非碰撞'];
-            this.getHistogram('accTypeHistogram', '各事故类型事故柱状图', xAxis, [this.getAccTHObj(data)]);
+            this.getHistogram('accTypeHistogram', '各事故类型事故柱状图', '事故类型', xAxis, [this.getAccTHObj(data)]);
             //事故类型扇形图
             this.getPie('accTypePie', '各事故类型事故扇形图', {
                 title: '事故类型',
@@ -1292,7 +1198,7 @@ var app = new Vue({
             this.$set(this.singleShowData.weaTable, 'value', this.getWeaObj(data));
             //天气情况事故柱状图
             xAxis = ['总数', '晴天', '阴天', '雨', '雾', '雪', '冰雹', '台风'];
-            this.getHistogram('weaHistogram', '各天气类型事故柱状图', xAxis, [this.getWeaHObj(data)]);
+            this.getHistogram('weaHistogram', '各天气类型事故柱状图', '天气类型', xAxis, [this.getWeaHObj(data)]);
             //天气情况事故扇形图
             this.getPie('weaPie', '各天气类型事故扇形图', {
                 title: '事故类型',
@@ -1309,7 +1215,7 @@ var app = new Vue({
             this.$set(this.singleShowData.carTable, 'value', this.getCarObj(data));
             //车辆事故柱状图
             xAxis = ['总数', '小客车', '中客车', '大客车', '公交', '校车', '小货车', '中货车', '大货车', '拖挂车', '特种车', '摩托车', '非机动车', '畜力车'];
-            this.getHistogram('carHistogram', '各车辆类型事故柱状图', xAxis, [this.getCarHObj(data)]);
+            this.getHistogram('carHistogram', '各车辆类型事故柱状图','车辆类型', xAxis, [this.getCarHObj(data)]);
             //车辆事故扇形图
             this.getPie('carPie', '各车辆类型事故扇形图', {
                 title: '事故类型',
@@ -1327,53 +1233,63 @@ var app = new Vue({
             this.chartPrintShow = true;
             this.deleteChartLogo();
         },
-        getLine:function (id, title, xAxis, series) {
-            return new Highcharts.Chart(id, {
-                chart: {
-                    type: 'line'
-                },
-                title: {
-                    text: title
-                },
-                xAxis: {
-                    categories: xAxis
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: '事故数 (起)'
-                    }
-                },
-                tooltip: {
-                    crosshairs: true,
-                    shared: true
-                },
-                plotOptions: {
-                    spline: {
-                        marker: {
-                            radius: 4,
-                            lineColor: '#666666',
-                            lineWidth: 1
-                        }
-                    }
-                },
-                series: series
-            });
-        },
-        getHistogram: function (id, title, xAxis, series) {
+        getHistogram: function (id, title, xText, xAxis, series) {
             return new Highcharts.Chart(id, {
                 chart: {
                     type: 'column'
                 },
                 title: {
+                    style: {
+                        fontSize: '24px'
+                    },
                     text: title
                 },
+                legend: {
+                    enabled: false
+                },
+                tooltip: {
+                    useHTML: true,
+                    headerFormat: '<div style="font-size: 14px; font-weight: 600;">{point.key}</div>',
+                    pointFormat: '事故数: ' + '<b>{point.y} 起</b>'
+                },
                 xAxis: {
+                    lineColor: 'gray',
+                    lineWidth: 2,
+                    tickLength: 10,
+                    tickColor: 'gray',
+                    labels: {
+                        style: {
+                            color: 'black',
+                            fontSize: '16px',
+                        }
+                    },
+                    title: {
+                        style: {
+                            color: 'black',
+                            fontSize: '18px',
+                            fontWeight: 600
+                        },
+                        text: xText
+                    },
                     categories: xAxis
                 },
                 yAxis: {
+                    lineColor: 'gray',
+                    lineWidth: 2,
+                    labels: {
+                        style: {
+                            color: 'black',
+                            fontSize: '16px',
+                            fontFamily: "Times New Roman"
+                        }
+                    },
                     min: 0,
                     title: {
+                        style: {
+                            color: 'black',
+                            fontSize: '18px',
+                            fontWeight: 600
+                        },
                         text: '事故数 (起)'
                     }
                 },
@@ -1382,9 +1298,14 @@ var app = new Vue({
                 },
                 plotOptions:{
                     column:{
-                        dataLabel:{
+                        dataLabels:{
                             enabled: true,
-                            inside: true
+                            inside: false,
+                            style: {
+                                fontSize: '16px',
+                                fontFamily: "Times New Roman",
+                                fontWeight: 600
+                            }
                         }
                     }
                 },
@@ -1399,11 +1320,15 @@ var app = new Vue({
                     plotShadow: false
                 },
                 title: {
+                    style: {
+                        fontSize: '24px'
+                    },
                     text: title
                 },
                 tooltip: {
-                    headerFormat: '{series.name}<br>',
-                    pointFormat: '{point.name}: 事故数占<b>{point.percentage:.1f}%</b>'
+                    useHTML: true,
+                    headerFormat: '<div style="font-size: 14px; font-weight: 400;">{series.name}</div>',
+                    pointFormat: '<b>{point.name}</b>: 事故数占<b style="font-size: 14px;">{point.percentage:.1f}%</b>'
                 },
                 plotOptions: {
                     pie: {
@@ -1413,7 +1338,8 @@ var app = new Vue({
                             enabled: true,
                             format: '<b>{point.name}</b>: {point.percentage:.1f} %',
                             style: {
-                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
+                                fontSize: '16px'
                             }
                         },
                         states: {
@@ -1446,6 +1372,178 @@ var app = new Vue({
                 yAxis: {
                     title: {
                         text: yAxis.title
+                    }
+                },
+                series: series
+            });
+        },
+        showLine: function(data, type, yStr, sDate, eDate){ //展示折线图
+            var xAxis = [];
+            var series = [];
+            var obj = {
+                static:{
+                    name: '事故总数',
+                    data: []
+                }
+            };
+            yStr.forEach(function (item, index, arr) {
+                var o = {
+                    name: '',
+                    data: []
+                };
+                switch (item){
+                    case 'propertyLoss':{
+                        o.name = '仅财损';
+                        break;
+                    }
+                    case 'slightInjury':{
+                        o.name = '轻伤';
+                        break;
+                    }
+                    case 'severInjury':{
+                        o.name = '重伤';
+                        break;
+                    }
+                    case 'dead':{
+                        o.name = '死亡';
+                        break;
+                    }
+                    default :
+                        break;
+                }
+                obj[item] = o;
+            });
+            var unit;
+            type = parseInt(type);
+            switch (type){
+                case 1: {
+                    unit = '(年)';
+                    data.forEach(function (item, index, arr) {
+                        xAxis.push(item.year + '年');
+                        obj.static.data.push(item.value);
+                        yStr.forEach(function (value, key) {
+                            obj[value].data.push(item[value]);
+                        });
+                    });
+                    break;
+                }
+                case 2: {
+                    unit = '(月)';
+                    data.forEach(function (item, index, arr) {
+                        if(index == 0){
+                            xAxis.push(item.year + ' | ' + item.month + '月');
+                        }
+                        else{
+                            if(item.month == 1){
+                                xAxis.push(item.year + ' | ' + item.month + '月');
+                            }
+                            else {
+                                xAxis.push(item.month + '月');
+                            }
+                        }
+                        obj.static.data.push(item.value);
+                        yStr.forEach(function (value, key) {
+                            obj[value].data.push(item[value]);
+                        });
+                    });
+                    break;
+                }
+                case 3: {
+                    unit = '(日)';
+                    data.forEach(function (item, index, arr) {
+                        if(index == 0){
+                            xAxis.push(item.year + '-' + item.month + ' | ' + item.day + '日');
+                        }
+                        else{
+                            if(item.day == 1){
+                                xAxis.push(item.year + '-' + item.month + ' | ' + item.day + '日');
+                            }
+                            else{
+                                xAxis.push(item.day + '日');
+                            }
+                        }
+                        obj.static.data.push(item.value);
+                        yStr.forEach(function (value, key) {
+                            obj[value].data.push(item[value]);
+                        });
+                    });
+                    break;
+                }
+                default:
+                    break;
+            }
+
+            series.push(obj.static);
+            yStr.forEach(function (value, key, arr) {
+                series.push(obj[value]);
+            });
+
+            //  var xAxis = ['总数', '仅财损', '轻伤', '重伤', '死亡', '未知'];
+            this.getLine('timeLine', '各条件下事故数趋势图', xAxis, series);
+
+            this.timeShowSelect = false;
+            this.timeDownShow = true;
+            this.deleteChartLogo();
+        },
+        getLine: function (id, title, xAxis, series) {
+            return new Highcharts.Chart(id, {
+                chart: {
+                    type: 'line'
+                },
+                title: {
+                    style: {
+                        fontSize: '24px'
+                    },
+                    text: title
+                },
+                legend: {
+                    itemStyle: {
+                        fontSize: '18px'
+                    }
+                },
+                xAxis: {
+                    lineColor: 'gray',
+                    lineWidth: 2,
+                    tickLength: 10,
+                    tickColor: 'gray',
+                    labels: {
+                        style: {
+                            color: 'black',
+                            fontSize: '16px'
+                        }
+                    },
+                    categories: xAxis
+                },
+                yAxis: {
+                    lineColor: 'gray',
+                    lineWidth: 2,
+                    labels: {
+                        style: {
+                            color: 'black',
+                            fontSize: '16px',
+                            fontFamily: "Times New Roman"
+                        }
+                    },
+                    min: 0,
+                    title: {
+                        style: {
+                            color: 'black',
+                            fontSize: '18px',
+                            fontWeight: 600
+                        },
+                        text: '事故数 (起)'
+                    }
+                },
+                tooltip: {
+                    crosshairs: true,
+                    shared: true,
+                    useHTML: true,
+                    headerFormat: '<div style="font-size: 14px; font-weight: 600;">{point.key}</div><table>',
+                    pointFormat: '<tr></t><td><span style="color:{point.color}">\u25CF</span>{series.name}:</td><td><b>{point.y}起</b></td></tr>',
+                    footerFormat: '</table>'
+                },
+                plotOptions: {
+                    line: {
                     }
                 },
                 series: series
@@ -1576,14 +1674,15 @@ var app = new Vue({
                         document.body.appendChild(a);
                         a.click();
                         document.body.removeChild(a);
-                        this.messageTop = "下载请求成功！";
-                        this.textFlag = true;
-                        this.showMessageTop = true;
+                        that.messageTop = "下载请求成功！";
+                        that.textFlag = true;
+                        that.showMessageTop = true;
+                        // that.blackShowSelect = false;
                     }
                     else{
-                        this.messageTop = allData.message;
-                        this.textFlag = false;
-                        this.showMessageTop = true;
+                        that.messageTop = allData.message;
+                        that.textFlag = false;
+                        that.showMessageTop = true;
                     }
                 }).catch(function (error) {
                     console.log(error);
@@ -1613,14 +1712,15 @@ var app = new Vue({
                         document.body.appendChild(a);
                         a.click();
                         document.body.removeChild(a);
-                        this.messageTop = "下载请求成功！";
-                        this.textFlag = true;
-                        this.showMessageTop = true;
+                        that.messageTop = "下载请求成功！";
+                        that.textFlag = true;
+                        that.showMessageTop = true;
+                        // that.spaceShowSelect = false;
                     }
                     else{
-                        this.messageTop = allData.message;
-                        this.textFlag = false;
-                        this.showMessageTop = true;
+                        that.messageTop = allData.message;
+                        that.textFlag = false;
+                        that.showMessageTop = true;
                     }
                     // console.log(response);
                     // console.log(response.data);
@@ -1666,6 +1766,7 @@ var app = new Vue({
                         }
                         clearMarker(blackPointMap);
                         that.getBlackMarkers(that.selectData.yType, that.selectData.analysisObj, allData.data.allnum, allData.data.arr);
+                        that.blackShowSelect = false;
                     }
                     else{
                         this.messageTop = allData.message;
@@ -1719,6 +1820,7 @@ var app = new Vue({
                         }
                         clearMarker(spaceMap);
                         that.getSpaceMarkers(that.selectData.yType, that.selectData.analysisObj, allData.data.allnum, allData.data.arr);
+                        that.spaceShowSelect = false;
                     }
                     else{
                         this.messageTop = allData.message;
