@@ -22,13 +22,14 @@ document.ready = function (callback) {
 document.ready(function () {
     console.log(localStorage.obj);
     if(localStorage.obj){
+        document.title = localStorage.title;
         document.getElementById('printDiv').innerHTML = localStorage.obj;
         var xDPI = new Array;
         if (window.screen.deviceXDPI) {
             xDPI = window.screen.deviceXDPI;
         }
         else {
-            var tmpNode = document.createElement("DIV");
+            var tmpNode = document.createElement("div");
             tmpNode.style.cssText = "width:1in;height:1in;position:absolute;left:0px;top:0px;z-index:99;visibility:hidden";
             document.body.appendChild(tmpNode);
             xDPI = parseInt(tmpNode.offsetWidth);

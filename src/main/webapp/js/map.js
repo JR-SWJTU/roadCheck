@@ -221,29 +221,7 @@ function getContent(options,yMin,yMax) {
         }
     }
     console.log(width)
-    // console.log("marginLeft:" + marginLeft);
-    // console.log(indexs);
-    var content2 = "<div style=\"height: 200px;width: 150px;\">\n" +
-        "         <div class=\"barcontain\">\n" +
-        "            <div class=\"barchild\" style=\"left:" + marginLeft[0] * 20 + "%;display: " + dis[0] + ";\">\n" +
-        "   <div  class='showmap-number'>             <p style=\"margin:auto;text-align: center;color: white;\">" + options.wealthLoss + "</p>\n" +
-        "  </div><div style=\"margin:auto;width:20px;height:" + getHeight2(options.wealthLoss,options.accidentNumbers) + "px;background: green;min-height: 2px;\"></div>\n" +
-        "            </div>\n" +
-        "            <div class=\"barchild\" style=\"left: " + marginLeft[1] * 20 + "%;display: " + dis[1] + ";\">\n" +
-        "    <div  class='showmap-number'>            <p style=\"margin:auto;text-align: center;color: white;\">" + options.slightInjury + "</p>\n" +
-        "           </div>    <div style=\"margin:auto;width:20px;height:" + getHeight2(options.slightInjury,options.accidentNumbers) + "px;background: blue;min-height: 2px;\"></div>\n" +
-        "            </div>\n" +
-        "            <div class=\"barchild\" style=\"left: " + marginLeft[2] * 20 + "%;display: " + dis[2] + "\">\n" +
-        "    <div  class='showmap-number'> <p style=\"margin:auto;text-align: center;color: white;\">" + options.seriousInjury + "</p>\n" +
-        "      </div>         <div style=\"margin:auto;width:20px;height:" + getHeight2(options.seriousInjury,options.accidentNumbers) + "px;background: yellow;min-height: 2px;\"></div>\n" +
-        "            </div>\n" +
-        "            <div class=\"barchild\" style=\"left: " + marginLeft[3] * 20 + "%;display: " + dis[3] + "\">\n" +
-        "      <div  class='showmap-number'> <p style=\"margin:auto;text-align: center;color: white;\">" + options.death + "</p>\n" +
-        "         </div>              <div style=\"margin:auto;width:20px;height:" + getHeight2(options.death,options.accidentNumbers) + "px;background: olive;min-height: 2px;\"></div>\n" +
-        "            </div>\n" +
-        "         </div>\n" +
-        "    <div class='showmap-name'>        <p style=\"text-align: center;margin: auto;color: white;\">" + options.name + "</p>\n" +
-        "    </div>  </div>"
+
  //   width + 2;
     var conten3 = "<div class=\"mapbar\">\n" +
         "            <div class=\"barparent\">\n" +
@@ -253,7 +231,7 @@ function getContent(options,yMin,yMax) {
         "                            <div  class='showmap-number'>\n" +
         "                                <p style=\"margin: auto;text-align: center;color: white;\">"+ options.wealthLoss +"</p>\n" +
         "                            </div>\n" +
-        "                            <div style=\"width: 100%;height: "+getHeight2(options.wealthLoss,options.accidentNumbers)+"px;background: green;min-height: 2px;\"></div>\n" +
+        "                            <div style=\"width: 100%;height: "+getHeight2(options.wealthLoss,options.accidentNumbers)+"px;background: lightgreen;min-height: 2px;\"></div>\n" +
         "                        </div>\n" +
         "                    </div>\n" +
         "                    <div class=\"barchild3\"  style=\"display: "+ dis[1] +";\">                        \n" +
@@ -261,7 +239,7 @@ function getContent(options,yMin,yMax) {
         "                            <div  class='showmap-number'>\n" +
         "                                <p style=\"margin: auto;text-align: center;color: white;\">"+ options.slightInjury +"</p>\n" +
         "                            </div>\n" +
-        "                            <div style=\"width: 100%;height: "+getHeight2(options.slightInjury,options.accidentNumbers)+"px;background: blue;min-height: 2px;\"></div>\n" +
+        "                            <div style=\"width: 100%;height: "+getHeight2(options.slightInjury,options.accidentNumbers)+"px;background: rgb(255,0,255);min-height: 2px;\"></div>\n" +
         "                        </div>\n" +
         "                    </div>\n" +
         "                    <div class=\"barchild3\" style='display: "+ dis[2] +";'>                        \n" +
@@ -277,7 +255,7 @@ function getContent(options,yMin,yMax) {
         "                            <div  class='showmap-number'>\n" +
         "                                <p style=\"margin: auto;text-align: center;color: white;\">"+ options.death +"</p>\n" +
         "                            </div>\n" +
-        "                            <div style=\"width: 100%;height: "+getHeight2(options.death,options.accidentNumbers)+"px;background: olive;min-height: 2px;\"></div>\n" +
+        "                            <div style=\"width: 100%;height: "+getHeight2(options.death,options.accidentNumbers)+"px;background: lightcoral;min-height: 2px;\"></div>\n" +
         "                        </div>\n" +
         "                    </div>\n" +
         "                </div>\n" +
@@ -314,7 +292,10 @@ function getHeight(number,yMin,yMax) {
 }
 function getHeight2(number,allNumbers) {
 
-    var lev = (number / allNumbers)*50;
+    var lev = (number / allNumbers)*30;
+    if (number == 0) {
+        lev = 2;
+    }
     return lev;
 }
 //清除marker

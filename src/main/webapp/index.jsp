@@ -55,7 +55,7 @@
         </div>
         <div v-show="nowFuc == 'black-point'"  v-cloak :style="bodyContent">
             <div class="body-left body-left-float no-print" :class="{'left-float-open': isFirstLoad && isShowItems, 'left-float-close': isFirstLoad && !isShowItems}">
-                <mu-select-field v-model="selectData.analysisObj" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="选择交叉口或路段黑点诊断">
+                <mu-select-field v-model="selectData.analysisObj" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="选择交叉口或路段">
                     <mu-menu-item v-for="text,index in basicData.analysisObj" :key="index" :value="text" :title="text" ></mu-menu-item>
                 </mu-select-field>
                 <div class="mu-text-field-label label-class">选择分析的区域</div>
@@ -92,7 +92,7 @@
                         <mu-menu-item v-for="text,index in basicData.area.gruppe" :key="index" :value="text" :title="text" ></mu-menu-item>
                     </mu-select-field>
                     <mu-select-field v-if="singleTab == 'administrative'" max-height="300" scroller hint-text="null" v-model="selectData.area.adminiVal" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="行政区">
-                        <mu-menu-item v-for="text,index in basicData.area.administrative" :key="index" :value="text" :title="text" ></mu-menu-item>
+                        <mu-menu-item v-if="index != 0" v-for="text,index in basicData.area.administrative" :key="index" :value="text" :title="text" ></mu-menu-item>
                     </mu-select-field>
                     <mu-select-field v-if="singleTab == 'intersection'" max-height="300" scroller hint-text="null" v-model="selectData.area.adminiVal" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="交叉口">
                         <mu-menu-item v-for="text,index in basicData.area.intersection" :key="index" :value="text" :title="text" ></mu-menu-item>
@@ -122,7 +122,7 @@
                     <%--事故数、事故严重程度--%>
                         <div class="chart-type-class" :style="chartStyle">
                             <div class="table-class">
-                                <div class="title-class">各事故严重程度下事故数汇总</div>
+                                <div class="title-class">各严重程度类型事故汇总</div>
                                 <hr/>
                                 <mu-table :fixed-header="true" :selectable="false" :show-checkbox="false">
                                     <mu-thead slot="header">
@@ -143,7 +143,7 @@
                     <%--事故类型--%>
                         <div class="chart-type-class page-next" :style="chartStyle">
                             <div class="table-class">
-                                <div class="title-class">各事故类型下事故数汇总</div>
+                                <div class="title-class">各事故类型事故汇总</div>
                                 <hr/>
                                 <mu-table :fixed-header="true" :selectable="false" :show-checkbox="false">
                                     <mu-thead slot="header">
@@ -164,7 +164,7 @@
                     <%--天气--%>
                         <div class="chart-type-class page-next" :style="chartStyle">
                             <div class="table-class">
-                                <div class="title-class">各天气情况下事故数汇总</div>
+                                <div class="title-class">各天气类型事故汇总</div>
                                 <hr/>
                                 <mu-table :fixed-header="true" :selectable="false" :show-checkbox="false">
                                     <mu-thead slot="header">
@@ -185,7 +185,7 @@
                     <%--车辆类型--%>
                         <div class="chart-type-class page-next" :style="chartStyle">
                             <div class="table-class">
-                                <div class="title-class">各车辆类型事故数汇总</div>
+                                <div class="title-class">各车辆类型事故汇总</div>
                                 <hr/>
                                 <mu-table :fixed-header="true" :selectable="false" :show-checkbox="false">
                                     <mu-thead slot="header">
@@ -208,7 +208,7 @@
         </div>
         <div v-show="nowFuc == 'space'" v-cloak :style="bodyContent">
             <div class="body-left body-left-float no-print" :class="{'left-float-open': isFirstLoad && isShowItems, 'left-float-close': isFirstLoad && !isShowItems}">
-                <mu-select-field v-model="selectData.analysisObj" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="选择交叉口或路段黑点诊断">
+                <mu-select-field v-model="selectData.analysisObj" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="选择交叉口或路段">
                     <mu-menu-item v-for="text,index in basicData.analysisObj" :key="index" :value="text" :title="text" ></mu-menu-item>
                 </mu-select-field>
                 <div class="mu-text-field-label label-class">选择分析的区域</div>
@@ -246,11 +246,11 @@
                         <p style="margin:auto;text-align: center;color: white">总数</p>
                     </div>
                     <div class="mapbarchild" style="left: 50px;">
-                        <div style="margin:auto;width:30px;height:20px;background: green;"></div>
+                        <div style="margin:auto;width:30px;height:20px;background: lightgreen;"></div>
                         <p style="margin:auto;text-align: center;color: white;">财损</p>
                     </div>
                     <div class="mapbarchild" style="left: 90px;">
-                        <div style="margin:auto;width:30px;height:20px;background: blue;"></div>
+                        <div style="margin:auto;width:30px;height:20px;background: rgb(255,0,255);"></div>
                         <p style="margin:auto;text-align: center;color: white;">轻伤</p>
                     </div>
                     <div class="mapbarchild" style="left: 130px;">
@@ -258,7 +258,7 @@
                         <p style="margin:auto;text-align: center;color: white;">重伤</p>
                     </div>
                     <div class="mapbarchild" style="left: 170px;">
-                        <div style="margin:auto;width:30px;height:20px;background: olive;"></div>
+                        <div style="margin:auto;width:30px;height:20px;background: lightcoral;"></div>
                         <p style="margin:auto;text-align: center;color: white;">死亡</p>
                     </div>
                 </div>
@@ -272,7 +272,7 @@
                 </div>
                 <div v-if="timeShowSelect" class="single-select-left">
                     <mu-icon-button icon="navigate_before" tooltip-position="bottom-right" tooltip="收起" class="single-close-btn" @click="closeTimeShow"></mu-icon-button>
-                    <mu-select-field v-model="selectData.analysisObj" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="选择交叉口或路段黑点诊断">
+                    <mu-select-field v-model="selectData.analysisObj" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="选择交叉口或路段">
                         <mu-menu-item v-for="text,index in basicData.analysisObj" :key="index" :value="text" :title="text" ></mu-menu-item>
                     </mu-select-field>
                     <div class="mu-text-field-label label-class">选择分析的区域</div>

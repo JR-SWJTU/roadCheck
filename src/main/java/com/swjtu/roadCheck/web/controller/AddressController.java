@@ -49,6 +49,8 @@ public class AddressController {
         String[] carShiguType = {"追尾碰撞","正面碰撞","侧面碰撞","直角碰撞","刮擦","其它"};
         String[] severity = {"仅财损","轻伤","重伤","死亡","未知"};
         String[] intersection = {"非交叉口","十字","T形","Y形","环岛","多路交叉口","立交","其它"};
+        String[] weather = {"晴天","阴天","雨","雾","雪","冰雹","台风","其它"};
+        String[] carType = {"小客车","中客车","大客车","公交","校车","小货车","中货车","大货车","拖挂车","特种车辆","摩托车","非机动车","畜力车"};
         double lngIncreament = 0.005f;
         double latIncreament = 0.01f;
         AddressExample addressExample = new AddressExample();
@@ -89,7 +91,7 @@ public class AddressController {
         int index = 1;
         for (int i = 0 ; i < 10 ;i++) {
             int mm = 1;
-            for (int j = 0;j<100;j++) {//每个地点100条数据
+            for (int j = 0;j<300;j++) {//每个地点100条数据
                 index++;
                 Address address = new Address();
                 address = addressList.get(i);//获取一个位置
@@ -137,8 +139,8 @@ public class AddressController {
                 //设置经纬度
                 accidentdata.setRiqi(date);
                 accidentdata.setAccidencnumber(sgId);
-                accidentdata.setLat(address.getLat()+mm*latIncreament);
-                accidentdata.setLng(address.getLng()+mm*lngIncreament);
+                accidentdata.setLat(address.getLat()+(j%10 - 4)*latIncreament);
+                accidentdata.setLng(address.getLng()+(j%10 - 4)*lngIncreament);
                 //设置行政区
                 placeName = address.getName()+name[j%10]+"交叉口";//详细名称
                 String[] administrativeDivision = placeName.split(",");//获取行政区
@@ -170,8 +172,10 @@ public class AddressController {
                 *
                 * */
                 emdata.setId(index);
+                emdata.setTianqicondition(weather[(int)(Math.random()*(intersection.length))]);
                 emdata.setEmnumber(sgId);
-                int ii = (int)(Math.random()*(intersection.length-1)+1);
+
+                int ii = (int)(Math.random()*(intersection.length));
                 emdata.setJcktype(intersection[ii]);
                 emdataMapper.insert(emdata);
 
@@ -181,6 +185,7 @@ public class AddressController {
 
                 cardata.setId(index);
                 cardata.setCarnumber(sgId);
+                cardata.setCartype(carType[(int)(Math.random()*(carType.length))]);
                 cardataMapper.insert(cardata);
 
                 /*
@@ -205,117 +210,117 @@ public class AddressController {
         *
         * */
 
-        for (int i = 0 ; i < 10 ;i++) {
-            int mm = -1;
-            for (int j = 0;j<100;j++) {
-                index++;
-                Address address = new Address();
-                address = addressList.get(i);//获取一个位置
-                //address.setName(address.getName()+name[j%10]);//设置新名称
-                String placeName = address.getName()+name[j%10];//详细名称
-                int teamId = (int)(Math.random()*5+1);//大队编号
-                Team team = new Team();
-                team = teamMapper.selectByPrimaryKey(teamId);
-
-                int time  = (int)(Math.random()*12);//随机生成时间变化 12个月的
-                /*
-                * 生成新事故Id
-                * */
-                String sgId = "";
-                Date date = new Date(System.currentTimeMillis());
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddhhmmss");
-
-
-                /*
-                * 生成新事故数据
-                * */
-                System.out.println("time-----------------:"+time);
-                Accidencecollectiondata accidencecollectiondata = new Accidencecollectiondata();
-                date.setTime(date.getTime()-(((teamId*address.getId())%20)*24*60*60*1000));//新时间
-                date.setMonth(time);
-                sgId = "SG"+simpleDateFormat.format(date)+(int)(Math.random()*10)+(int)(Math.random()*10);
-                String name1 = placeName;
-                // String name1 = ;
-                accidencecollectiondata.setPlace(name1.replace(",","")+"交叉口");
-                accidencecollectiondata.setRiqi(date);//设置日期12个月的数据
-                accidencecollectiondata.setAccidencenumber(sgId);
-                accidencecollectiondata.setShigunumber(sgId);
-                accidencecollectiondata.setEnvironmentnumber(sgId);
-                accidencecollectiondata.setCarnumber(sgId);
-                accidencecollectiondata.setPeopelnumber(sgId);
-                accidencecollectiondata.setAdminId((int)(Math.random()*3+1));
-                accidencecollectiondata.setTeamName(team.getTeamName());
-                accidencecollectiondataMapper.insert(accidencecollectiondata);
-
-                /*
-                * 事故信息
-                *
-                * */
-                mm = mm==1?-1:1;//控制变化方向
-                //设置经纬度
-                accidentdata.setRiqi(date);
-                accidentdata.setAccidencnumber(sgId);
-                accidentdata.setLat(address.getLat()+mm*latIncreament);
-                accidentdata.setLng(address.getLng()+mm*lngIncreament);
-                //设置行政区
-                placeName = address.getName()+name[j%10]+"交叉口";//详细名称
-                String[] administrativeDivision = placeName.split(",");//获取行政区
-                accidentdata.setCity(administrativeDivision[0]);//城市
-                accidentdata.setXianqu(administrativeDivision[1]);//县区
-                accidentdata.setDimingbeizhu(administrativeDivision[2]);//详细地名
-                //设置事故类型
-                int shiguTypeId = (int)(Math.random()*3);
-                String[] shigu = shiguType[shiguTypeId].split(",");
-                accidentdata.setShigu(shigu[0]);//一级事故
-                String type2 = shigu[(int)(Math.random()*(shigu.length-1)+1)];
-                accidentdata.setShigutype(type2);//二级事故
-                if(type2.equals("机动车")){
-                    accidentdata.setCarcollisiontype(carShiguType[(int)(Math.random()*(carShiguType.length-2))]);
-                }else {
-                    accidentdata.setCarcollisiontype("其它");
-                }
-                //设置严重程度
-                accidentdata.setYanzhongcd(severity[(int)(Math.random()*severity.length)]);
-                accidentdata.setDienums(""+(int)(Math.random()*1.25));//死亡人数
-                accidentdata.setDrivernums((int)(Math.random()*2+1)+"");
-                accidentdata.setCarnum((int)(Math.random()*3+1)+"");
-                accidentdata.setSsnums(""+(int)(Math.random()*1.5));
-                accidentdata.setId(index);
-                accidentdataMapper.insert(accidentdata);
-
-                /*
-                * 环境信息
-                *
-                * */
-                emdata.setId(index);
-                emdata.setEmnumber(sgId);
-                emdata.setJcktype("交叉口");
-                emdataMapper.insert(emdata);
-
-                /*
-                * 车辆信息
-                * */
-
-                cardata.setId(index);
-                cardata.setCarnumber(sgId);
-                cardataMapper.insert(cardata);
-
-                /*
-                * 人员信息
-                * */
-                driverPeoPelData.setId(index);
-                driverPeoPelData.setShigunumber(sgId);
-                driverPeoPelDataMapper.insert(driverPeoPelData);
-
-                chenzuoPeopelData.setId(index);
-                chenzuoPeopelData.setShigunumber(sgId);
-                chenzuoPeopelDataMapper.insert(chenzuoPeopelData);
-
-                qitaPeopelData.setId(index);
-                qitaPeopelData.setShigunumber(sgId);
-                qitaPeopelDataMapper.insert(qitaPeopelData);
-            }
-        }
+//        for (int i = 0 ; i < 10 ;i++) {
+//            int mm = -1;
+//            for (int j = 0;j<100;j++) {
+//                index++;
+//                Address address = new Address();
+//                address = addressList.get(i);//获取一个位置
+//                //address.setName(address.getName()+name[j%10]);//设置新名称
+//                String placeName = address.getName()+name[j%10];//详细名称
+//                int teamId = (int)(Math.random()*5+1);//大队编号
+//                Team team = new Team();
+//                team = teamMapper.selectByPrimaryKey(teamId);
+//
+//                int time  = (int)(Math.random()*12);//随机生成时间变化 12个月的
+//                /*
+//                * 生成新事故Id
+//                * */
+//                String sgId = "";
+//                Date date = new Date(System.currentTimeMillis());
+//                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddhhmmss");
+//
+//
+//                /*
+//                * 生成新事故数据
+//                * */
+//                System.out.println("time-----------------:"+time);
+//                Accidencecollectiondata accidencecollectiondata = new Accidencecollectiondata();
+//                date.setTime(date.getTime()-(((teamId*address.getId())%20)*24*60*60*1000));//新时间
+//                date.setMonth(time);
+//                sgId = "SG"+simpleDateFormat.format(date)+(int)(Math.random()*10)+(int)(Math.random()*10);
+//                String name1 = placeName;
+//                // String name1 = ;
+//                accidencecollectiondata.setPlace(name1.replace(",","")+"交叉口");
+//                accidencecollectiondata.setRiqi(date);//设置日期12个月的数据
+//                accidencecollectiondata.setAccidencenumber(sgId);
+//                accidencecollectiondata.setShigunumber(sgId);
+//                accidencecollectiondata.setEnvironmentnumber(sgId);
+//                accidencecollectiondata.setCarnumber(sgId);
+//                accidencecollectiondata.setPeopelnumber(sgId);
+//                accidencecollectiondata.setAdminId((int)(Math.random()*3+1));
+//                accidencecollectiondata.setTeamName(team.getTeamName());
+//                accidencecollectiondataMapper.insert(accidencecollectiondata);
+//
+//                /*
+//                * 事故信息
+//                *
+//                * */
+//                mm = mm==1?-1:1;//控制变化方向
+//                //设置经纬度
+//                accidentdata.setRiqi(date);
+//                accidentdata.setAccidencnumber(sgId);
+//                accidentdata.setLat(address.getLat()+mm*latIncreament);
+//                accidentdata.setLng(address.getLng()+mm*lngIncreament);
+//                //设置行政区
+//                placeName = address.getName()+name[j%10]+"交叉口";//详细名称
+//                String[] administrativeDivision = placeName.split(",");//获取行政区
+//                accidentdata.setCity(administrativeDivision[0]);//城市
+//                accidentdata.setXianqu(administrativeDivision[1]);//县区
+//                accidentdata.setDimingbeizhu(administrativeDivision[2]);//详细地名
+//                //设置事故类型
+//                int shiguTypeId = (int)(Math.random()*3);
+//                String[] shigu = shiguType[shiguTypeId].split(",");
+//                accidentdata.setShigu(shigu[0]);//一级事故
+//                String type2 = shigu[(int)(Math.random()*(shigu.length-1)+1)];
+//                accidentdata.setShigutype(type2);//二级事故
+//                if(type2.equals("机动车")){
+//                    accidentdata.setCarcollisiontype(carShiguType[(int)(Math.random()*(carShiguType.length-2))]);
+//                }else {
+//                    accidentdata.setCarcollisiontype("其它");
+//                }
+//                //设置严重程度
+//                accidentdata.setYanzhongcd(severity[(int)(Math.random()*severity.length)]);
+//                accidentdata.setDienums(""+(int)(Math.random()*1.25));//死亡人数
+//                accidentdata.setDrivernums((int)(Math.random()*2+1)+"");
+//                accidentdata.setCarnum((int)(Math.random()*3+1)+"");
+//                accidentdata.setSsnums(""+(int)(Math.random()*1.5));
+//                accidentdata.setId(index);
+//                accidentdataMapper.insert(accidentdata);
+//
+//                /*
+//                * 环境信息
+//                *
+//                * */
+//                emdata.setId(index);
+//                emdata.setEmnumber(sgId);
+//                emdata.setJcktype("交叉口");
+//                emdataMapper.insert(emdata);
+//
+//                /*
+//                * 车辆信息
+//                * */
+//
+//                cardata.setId(index);
+//                cardata.setCarnumber(sgId);
+//                cardataMapper.insert(cardata);
+//
+//                /*
+//                * 人员信息
+//                * */
+//                driverPeoPelData.setId(index);
+//                driverPeoPelData.setShigunumber(sgId);
+//                driverPeoPelDataMapper.insert(driverPeoPelData);
+//
+//                chenzuoPeopelData.setId(index);
+//                chenzuoPeopelData.setShigunumber(sgId);
+//                chenzuoPeopelDataMapper.insert(chenzuoPeopelData);
+//
+//                qitaPeopelData.setId(index);
+//                qitaPeopelData.setShigunumber(sgId);
+//                qitaPeopelDataMapper.insert(qitaPeopelData);
+//            }
+//        }
 
         // System.out.println("addresslist size"+addressList.size());
         return JsonResult.build(StatusCode.SUCCESS);
