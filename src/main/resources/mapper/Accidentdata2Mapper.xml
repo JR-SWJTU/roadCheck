@@ -12,8 +12,15 @@
     <!--路段-->
     <select id="queryAccidentdataByCondition1" parameterType="Map" resultType="com.swjtu.roadCheck.entity.Accidentdata">
         <choose>
-            <when test="areaName!=null">
+            <when test="areaName!='全市'">
                 SELECT * FROM accidentdata WHERE  xianQu = #{areaName}  AND accidencnumber  IN
+                (SELECT shigunumber FROM accidencecollectiondata
+                where  environmentnumber IN
+                (SELECT emnumber FROM emdata WHERE Jcktype  = '非交叉口'))
+                and (DATE(riQI) BETWEEN  #{startTime} and #{endTime})
+            </when>
+            <when test="areaName=='全市'">
+                SELECT * FROM accidentdata WHERE  accidencnumber  IN
                 (SELECT shigunumber FROM accidencecollectiondata
                 where  environmentnumber IN
                 (SELECT emnumber FROM emdata WHERE Jcktype  = '非交叉口'))
@@ -35,8 +42,15 @@
     <!--交叉口-->
     <select id="queryAccidentdataByCondition2" parameterType="Map" resultType="com.swjtu.roadCheck.entity.Accidentdata">
         <choose>
-            <when test="areaName!=null">
+            <when test="areaName!='全市'">
                 SELECT * FROM accidentdata WHERE  xianQu = #{areaName}  AND accidencnumber  IN
+                (SELECT shigunumber FROM accidencecollectiondata
+                where  environmentnumber IN
+                (SELECT emnumber FROM emdata WHERE Jcktype  != '非交叉口'))
+                and (DATE(riQI) BETWEEN  #{startTime} and #{endTime})
+            </when>
+            <when test="areaName=='全市'">
+                SELECT * FROM accidentdata WHERE  accidencnumber  IN
                 (SELECT shigunumber FROM accidencecollectiondata
                 where  environmentnumber IN
                 (SELECT emnumber FROM emdata WHERE Jcktype  != '非交叉口'))
