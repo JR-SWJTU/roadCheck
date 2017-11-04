@@ -32,7 +32,7 @@ var app = new Vue({
                     solidCollision: ['防撞墩/桶', '护栏', '桥梁栏杆', '路缘石', '隔离墩', '信号灯杆', '路灯杆', '标志牌柱', '树木', '其它固定物']
                 }
             },
-            carCollisionType: ['null', '追尾碰撞', '正面碰撞	', '侧面碰撞', '直角碰撞', '刮擦', '其它'],
+            carCollisionType: ['null', '追尾碰撞', '正面碰撞', '侧面碰撞', '直角碰撞', '刮擦', '其它'],
             weather: ['null', '晴天', '阴天', '雨', '雾', '雪', '冰雹', '台风'],
             workZone: {
                 flag: ['是', '否'],
@@ -91,19 +91,19 @@ var app = new Vue({
         singleShowData: {
             accTable: {
                 key: ['', '仅财损', '轻伤', '重伤', '死亡', '未知', '总数'],
-                value: ['数量', 0, 0, 0, 0, 0, 0]
+                value: ['数量（起）', 0, 0, 0, 0, 0, 0]
             },
             accTypeTable: {
-                key: ['', '撞人、撞机动车或其他非固定物', '碰撞固定物', '非碰撞', '总数'],
-                value: ['数量', 0, 0, 0, 0]
+                key: ['', '碰撞非固定物', '碰撞固定物', '非碰撞', '总数'],
+                value: ['数量（起）', 0, 0, 0, 0]
             },
             weaTable: {
                 key: ['', '晴天', '阴天', '雨', '雾', '雪', '冰雹', '台风', '总数'],
-                value: ['数量', 0, 0, 0, 0, 0, 0, 0, 0]
+                value: ['数量（起）', 0, 0, 0, 0, 0, 0, 0, 0]
             },
             carTable: {
-                key: ['', '小客车', '中客车', '大客车', '公交', '校车', '小货车', '中货车', '大货车', '拖挂车', '特种车辆', '摩托车', '非机动车', '畜力车', '总数'],
-                value: ['数量', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                key: ['', '小客车', '中客车', '大客车', '公交', '校车', '小货车', '中货车', '大货车', '拖挂车', '特种车', '摩托车', '非机动车', '畜力车', '总数'],
+                value: ['数量（起）', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             }
         },
 
@@ -164,6 +164,7 @@ var app = new Vue({
             }).then(function (response) {
                 var allData = response.data;
                 if(allData.code == 200){
+                    allData.data.unshift('全市');
                     that.$set(that.basicData.area, 'administrative', allData.data);
                     // that.basicData.area.administrative = allData.data;
                 }
@@ -576,25 +577,25 @@ var app = new Vue({
             this.singleShowData = {
                 accTable: {
                     key: ['', '仅财损', '轻伤', '重伤', '死亡', '未知', '总数'],
-                        value: ['数量', 0, 0, 0, 0, 0, 0]
+                    value: ['数量（起）', 0, 0, 0, 0, 0, 0]
                 },
                 accTypeTable: {
-                    key: ['', '撞人、撞机动车或其他非固定物', '碰撞固定物', '非碰撞', '总数'],
-                        value: ['数量', 0, 0, 0, 0]
+                    key: ['', '碰撞非固定物', '碰撞固定物', '非碰撞', '总数'],
+                    value: ['数量（起）', 0, 0, 0, 0]
                 },
                 weaTable: {
                     key: ['', '晴天', '阴天', '雨', '雾', '雪', '冰雹', '台风', '总数'],
-                        value: ['数量', 0, 0, 0, 0, 0, 0, 0, 0]
+                    value: ['数量（起）', 0, 0, 0, 0, 0, 0, 0, 0]
                 },
                 carTable: {
-                    key: ['', '小客车', '中客车', '大客车', '公交', '校车', '小货车', '中货车', '大货车', '拖挂车', '特种车辆', '摩托车', '非机动车', '畜力车', '总数'],
-                        value: ['数量', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                    key: ['', '小客车', '中客车', '大客车', '公交', '校车', '小货车', '中货车', '大货车', '拖挂车', '特种车', '摩托车', '非机动车', '畜力车', '总数'],
+                    value: ['数量（起）', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                 }
             };
             this.isChartShow = false;
         },
         getAccObj: function (data) {
-            var obj = ['数量'];
+            var obj = ['数量（起）'];
             data.severity.forEach(function (item, index, arr) {
                 switch (item.keyRes){
                     case '仅财损':{
@@ -626,7 +627,7 @@ var app = new Vue({
         },
         getAccHObj: function (data) {
             var obj = {
-                name: '事故严重类型',
+                name: '事故严重程度类型',
                 data: []
             };
             obj.data.push(data.totalNum);
@@ -700,7 +701,7 @@ var app = new Vue({
             return obj;
         },
         getAccTObj: function (data) {
-            var obj = ['数量'];
+            var obj = ['数量（起）'];
             //'撞人、撞机动车或其他非固定物', '碰撞固定物', '非碰撞'
             data.accidentType.forEach(function (item, index, arr) {
                 switch (item.keyRes){
@@ -757,7 +758,7 @@ var app = new Vue({
                 var temp;
                 switch (item.keyRes){
                     case '撞人、撞机动车或其他非固定物':{
-                        temp = ['撞人、撞机动车或其他非固定物'];
+                        temp = ['碰撞非固定物'];
                         temp.push(item.num / data.totalNum);
                         obj[0] = temp;
                         break;
@@ -796,7 +797,7 @@ var app = new Vue({
                 };
                 switch (item){
                     case 'propertyLoss':{
-                        o.name = '仅财伤';
+                        o.name = '仅财损';
                         break;
                     }
                     case 'slightInjury':{
@@ -881,15 +882,15 @@ var app = new Vue({
                 series.push(obj[value]);
             });
 
-            //  var xAxis = ['总数', '仅损财', '轻伤', '重伤', '死亡', '未知'];
-            this.getLine('timeLine', '各种情况下事故数趋势图', xAxis, series);
+            //  var xAxis = ['总数', '仅财损', '轻伤', '重伤', '死亡', '未知'];
+            this.getLine('timeLine', '各条件下事故数趋势图', xAxis, series);
 
             this.timeShowSelect = false;
             this.timeDownShow = true;
             this.deleteChartLogo();
         },
         getWeaObj: function (data) {
-            var obj = ['数量'];
+            var obj = ['数量（起）'];
             //'晴天', '阴天', '雨', '雾', '雪', '冰雹', '台风'
             data.weather.forEach(function (item, index, arr) {
                 switch (item.keyRes){
@@ -1026,7 +1027,7 @@ var app = new Vue({
             return obj;
         },
         getCarObj: function (data) {
-            var obj = ['数量'];
+            var obj = ['数量（起）'];
             //'小客车', '中客车', '大客车', '公交', '校车', '小货车', '中货车', '大货车', '拖挂车', '特种车辆', '摩托车', '非机动车', '畜力车'
             data.carType.forEach(function (item, index, arr) {
                 switch (item.keyRes){
@@ -1217,7 +1218,7 @@ var app = new Vue({
                         break;
                     }
                     case '特种车辆':{
-                        temp = ['特种车辆'];
+                        temp = ['特种车'];
                         temp.push(item.num / data.totalNum);
                         obj[9] = temp;
                         break;
@@ -1256,44 +1257,44 @@ var app = new Vue({
             //事故数、事故严重程度汇总
             this.$set(this.singleShowData.accTable, 'value', this.getAccObj(data));
             //事故数、事故严重程度柱状图
-            var xAxis = ['总数', '仅损财', '轻伤', '重伤', '死亡', '未知'];
-            this.getHistogram('accHistogram', '各事故严重程度下事故数柱状图', xAxis, [this.getAccHObj(data)]);
+            var xAxis = ['总数', '仅财损', '轻伤', '重伤', '死亡', '未知'];
+            this.getHistogram('accHistogram', '各严重程度类型事故柱状图', xAxis, [this.getAccHObj(data)]);
             //事故数、事故严重程度扇形图
-            this.getPie('accPie', '各事故严重程度下事故数扇形图', {
+            this.getPie('accPie', '各严重程度类型事故扇形图', {
                 title: '事故严重程度',
                 value: ['仅财损', '轻伤', '重伤', '死亡', '未知']
             }, {
                 title: '事故数'
             }, [{
                 type: 'pie',
-                name: '所属严重程度事故数占比',
+                name: '所属严重程度类型事故数占比',
                 data: this.getAccPObj(data)
             }]);
 
             //事故类型汇总
             this.$set(this.singleShowData.accTypeTable, 'value', this.getAccTObj(data));
             //事故类型柱状图
-            xAxis = ['总数', '撞人、撞机动车或其他非固定物', '碰撞固定物', '非碰撞'];
-            this.getHistogram('accTypeHistogram', '各事故类型下事故数柱状图', xAxis, [this.getAccTHObj(data)]);
+            xAxis = ['总数', '碰撞非固定物', '碰撞固定物', '非碰撞'];
+            this.getHistogram('accTypeHistogram', '各事故类型事故柱状图', xAxis, [this.getAccTHObj(data)]);
             //事故类型扇形图
-            this.getPie('accTypePie', '各事故类型下事故数扇形图', {
+            this.getPie('accTypePie', '各事故类型事故扇形图', {
                 title: '事故类型',
-                value: ['撞人、撞机动车或其他非固定物', '碰撞固定物', '非碰撞']
+                value: ['碰撞非固定物', '碰撞固定物', '非碰撞']
             }, {
                 title: '事故数'
             }, [{
                 type: 'pie',
                 name: '所属事故类型事故数占比',
-                data: this.getAccPObj(data)
+                data: this.getAccTPObj(data)
             }]);
 
             //天气情况事故汇总
             this.$set(this.singleShowData.weaTable, 'value', this.getWeaObj(data));
             //天气情况事故柱状图
             xAxis = ['总数', '晴天', '阴天', '雨', '雾', '雪', '冰雹', '台风'];
-            this.getHistogram('weaHistogram', '各天气情况下事故数柱状图', xAxis, [this.getWeaHObj(data)]);
+            this.getHistogram('weaHistogram', '各天气类型事故柱状图', xAxis, [this.getWeaHObj(data)]);
             //天气情况事故扇形图
-            this.getPie('weaPie', '各天气情况下事故数扇形图', {
+            this.getPie('weaPie', '各天气类型事故扇形图', {
                 title: '事故类型',
                 value: ['晴天', '阴天', '雨', '雾', '雪', '冰雹', '台风']
             }, {
@@ -1307,12 +1308,12 @@ var app = new Vue({
             //车辆事故汇总
             this.$set(this.singleShowData.carTable, 'value', this.getCarObj(data));
             //车辆事故柱状图
-            xAxis = ['总数', '小客车', '中客车', '大客车', '公交', '校车', '小货车', '中货车', '大货车', '拖挂车', '特种车辆', '摩托车', '非机动车', '畜力车'];
-            this.getHistogram('carHistogram', '车辆事故柱状图', xAxis, [this.getCarHObj(data)]);
+            xAxis = ['总数', '小客车', '中客车', '大客车', '公交', '校车', '小货车', '中货车', '大货车', '拖挂车', '特种车', '摩托车', '非机动车', '畜力车'];
+            this.getHistogram('carHistogram', '各车辆类型事故柱状图', xAxis, [this.getCarHObj(data)]);
             //车辆事故扇形图
-            this.getPie('carPie', '车辆事故扇形图', {
+            this.getPie('carPie', '各车辆类型事故扇形图', {
                 title: '事故类型',
-                value: ['小客车', '中客车', '大客车', '公交', '校车', '小货车', '中货车', '大货车', '拖挂车', '特种车辆', '摩托车', '非机动车', '畜力车']
+                value: ['小客车', '中客车', '大客车', '公交', '校车', '小货车', '中货车', '大货车', '拖挂车', '特种车', '摩托车', '非机动车', '畜力车']
             }, {
                 title: '事故数'
             }, [{
@@ -1591,6 +1592,7 @@ var app = new Vue({
         },
         singleChartPrint: function () {
             var printDiv = document.getElementById('singlePrintId');
+            localStorage.title = this.getNowTime() + '单点分析报告';
             localStorage.obj = printDiv.innerHTML;
             localStorage.width = printDiv.offsetWidth;
             window.open('http://' + location.host + "/roadCheck/print.jsp", "_blank");
@@ -1640,6 +1642,7 @@ var app = new Vue({
         },
         timeChartPrint: function () {
             var printDiv = document.getElementById('timePrintId');
+            localStorage.title = this.getNowTime() + '时间分析报告';
             localStorage.obj = printDiv.innerHTML;
             localStorage.width = printDiv.offsetWidth;
             window.open('http://' + location.host + "/roadCheck/print.jsp", "_blank");
@@ -1919,6 +1922,12 @@ var app = new Vue({
                     size--;
                 }
             }
+        },
+        getNowTime: function () {
+            var nowDate = new Date();
+            var str =  nowDate.getFullYear() + '年' + (nowDate.getMonth() + 1) + '月' + nowDate.getDate() + '日';
+            str += nowDate.getHours() + '时' + nowDate.getMinutes() + '分' + nowDate.getSeconds() + '秒';
+            return str;
         }
     },
     computed: {
