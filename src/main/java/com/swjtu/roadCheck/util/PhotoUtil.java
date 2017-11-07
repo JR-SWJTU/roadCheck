@@ -61,9 +61,16 @@ public class PhotoUtil {
             //得到上传文件的扩展名
             String fileExtName = filename.substring(filename.lastIndexOf(".") + 1);
             //如果需要限制上传的文件类型，那么可以通过文件的扩展名来判断上传的文件类型是否合法
-            System.out.println("上传的文件的扩展名是：" + fileExtName);
+            System.out.println("上传的文件的扩展名是1：" + fileExtName);
+            System.out.println("上传的文件的扩展名是2：" + filename);
+          //  filename = "e:\\"+filename;
+            System.out.println("上传的文件的扩展名是3：" + filename);
             //判断文件类型
-            if (!(fileExtName.length() != 0 && ("MP4".equals(fileExtName.toUpperCase())||"3gp".equals(fileExtName.toUpperCase()) || "JPG".equals(fileExtName.toUpperCase())))) {
+
+            if (!(fileExtName.length() != 0 && ("MP4".equals(fileExtName.toUpperCase())||"3GP".equals(fileExtName.toUpperCase()) ||"PNG".equals(fileExtName.toUpperCase()) || "JPG".equals(fileExtName.toUpperCase())))) {
+                System.out.println("文件类型不符合fileExtNamelength：" + fileExtName.length());
+                System.out.println("文件类型不符合fileExtNametoUpperCase：" + fileExtName.toUpperCase());
+                System.out.println("文件类型不符合：" + filename);
                 message = "文件类型不符合";
                 return picUrl;
             }
@@ -75,6 +82,7 @@ public class PhotoUtil {
             //拼接路径形成图片的绝对路径
             String realSavePath = savePath + "\\" +"images" + docPos +  "\\" + saveFilename;
             //File既可以代表文件也可以代表目录
+            System.out.println("绝对路径：" + realSavePath);
             File temp = new File(realSavePath);
             //如果目录不存在
             if (!temp.exists()) {
