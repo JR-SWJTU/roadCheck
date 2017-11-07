@@ -217,7 +217,7 @@ function getContent(options,yMin,yMax) {
             dis[i] = "none";
         } else {
             dis[i] = "block";
-            width += 20;
+            width += 10;
         }
     }
     console.log(width)

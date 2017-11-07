@@ -95,7 +95,7 @@
 
 .mapbar{
     width: 150px;
-    height: 80px;
+    height: 50px;
 }
 .barparent{
     position: relative;
@@ -106,7 +106,7 @@
 }
 .barchild{
     width: auto;
-    height: 50px;
+    height: 30px;
     margin: auto;
 //	background: gold;
 }
