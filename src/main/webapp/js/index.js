@@ -15,6 +15,8 @@ var app = new Vue({
         spaceShowSelect: true,
         timeShowSelect: true,
 
+        showDialogLoading: false,
+
         basicData: {
             analysisObj: ['交叉口', '路段'],
             accidentalSev: ['仅财损', '轻伤', '重伤', '死亡'],
@@ -225,12 +227,14 @@ var app = new Vue({
         },
         loginConfirm: function () {
             //loginInfor.userName, loginInfor.password
+            this.showDialogLoading = true;
             var that = this;
             var url = webBase + '/admin/login';
             axios.post(url, {
                 name: that.loginInfor.userName,
                 password: that.loginInfor.password
             }).then(function (response) {
+                that.showDialogLoading = false;
                 if(response.data == ''){
                     that.messageTop = "账号或密码输入错误，请重新登录！";
                     that.textFlag = false;
@@ -1663,8 +1667,8 @@ var app = new Vue({
             var url = webBase + '/accidentDatas/blackPointDiagnosis/exportaion';
             var json = {};
             var flag = this.checkInput(json);
-            console.log(json);
             if(flag){
+                this.showDialogLoading = true;
                 axios.post(url, json).then(function (response) {
                     var allData = response.data;
                     if(allData.code == 200){
@@ -1674,17 +1678,27 @@ var app = new Vue({
                         document.body.appendChild(a);
                         a.click();
                         document.body.removeChild(a);
+
+                        that.showDialogLoading = false;
+
                         that.messageTop = "下载请求成功！";
                         that.textFlag = true;
                         that.showMessageTop = true;
                         // that.blackShowSelect = false;
                     }
                     else{
+                        that.showDialogLoading = false;
+
                         that.messageTop = allData.message;
                         that.textFlag = false;
                         that.showMessageTop = true;
                     }
                 }).catch(function (error) {
+                    that.showDialogLoading = false;
+
+                    that.messageTop = '系统错误！';
+                    that.textFlag = false;
+                    that.showMessageTop = true;
                     console.log(error);
                 });
             }
@@ -1701,8 +1715,8 @@ var app = new Vue({
             var url = webBase + '/accidentDatas/analyseData/areaAnalyseDataExport';
             var json = {};
             var flag = this.checkInput(json);
-            console.log(json);
             if(flag){
+                this.showDialogLoading = true;
                 axios.post(url, json).then(function (response) {
                     var allData = response.data;
                     if(allData.code == 200){
@@ -1712,30 +1726,27 @@ var app = new Vue({
                         document.body.appendChild(a);
                         a.click();
                         document.body.removeChild(a);
+
+                        that.showDialogLoading = false;
+
                         that.messageTop = "下载请求成功！";
                         that.textFlag = true;
                         that.showMessageTop = true;
                         // that.spaceShowSelect = false;
                     }
                     else{
+                        that.showDialogLoading = false;
+
                         that.messageTop = allData.message;
                         that.textFlag = false;
                         that.showMessageTop = true;
                     }
-                    // console.log(response);
-                    // console.log(response.data);
-                    // var allData = response.data;
-                    // var blob = new self.Blob([allData], {type: 'application/vnd.ms-excel;charset=utf-8'});
-                    // console.log(blob);
-                    // var a = document.createElement('a');
-                    // a.download = '文件' + '.xls';
-                    // a.href = window.URL.createObjectURL(blob);
-                    // a.addEventListener('click', function () {
-                    // });
-                    // document.body.appendChild(a);
-                    // a.click();
-                    // document.body.removeChild(a);
                 }).catch(function (error) {
+                    that.showDialogLoading = false;
+
+                    that.messageTop = '系统错误！';
+                    that.textFlag = false;
+                    that.showMessageTop = true;
                     console.log(error);
                 });
             }
@@ -1754,11 +1765,14 @@ var app = new Vue({
             var flag = this.checkInput(json);
             console.log(json);
             if(flag){
+                this.showDialogLoading = true;
                 axios.post(url, json).then(function (response) {
                     var allData = response.data;
                     if(allData.code == 200){
                         console.log(allData.data);
                         if(allData.data.arr.length == 0){
+                            that.showDialogLoading = false;
+
                             that.messageTop = "未查找到相应数据项！";
                             that.textFlag = false;
                             that.showMessageTop = true;
@@ -1767,13 +1781,22 @@ var app = new Vue({
                         clearMarker(blackPointMap);
                         that.getBlackMarkers(that.selectData.yType, that.selectData.analysisObj, allData.data.allnum, allData.data.arr);
                         that.blackShowSelect = false;
+
+                        that.showDialogLoading = false;
                     }
                     else{
-                        this.messageTop = allData.message;
-                        this.textFlag = false;
-                        this.showMessageTop = true;
+                        that.showDialogLoading = false;
+
+                        that.messageTop = allData.message;
+                        that.textFlag = false;
+                        that.showMessageTop = true;
                     }
                 }).catch(function (error) {
+                    that.showDialogLoading = false;
+
+                    that.messageTop = '系统错误！';
+                    that.textFlag = false;
+                    that.showMessageTop = true;
                     console.log(error);
                 });
             }
@@ -1783,20 +1806,29 @@ var app = new Vue({
             var url = webBase + '/accidentDatas/analyseData/singlePointAnalyseDataQuery';
             var json = {};
             var flag = this.checkInput(json);
-            console.log(json);
             if(flag){
+                this.showDialogLoading = true;
                 axios.post(url, json).then(function (response) {
                     var allData = response.data;
                     if(allData.code == 200){
                         that.preChartShowData = allData.data;
                         that.singleShow(allData.data);
+
+                        that.showDialogLoading = false;
                     }
                     else{
-                        this.messageTop = allData.message;
-                        this.textFlag = false;
-                        this.showMessageTop = true;
+                        that.showDialogLoading = false;
+
+                        that.messageTop = allData.message;
+                        that.textFlag = false;
+                        that.showMessageTop = true;
                     }
                 }).catch(function (error) {
+                    that.showDialogLoading = false;
+
+                    that.messageTop = '系统错误！';
+                    that.textFlag = false;
+                    that.showMessageTop = true;
                     console.log(error);
                 });
             }
@@ -1806,48 +1838,60 @@ var app = new Vue({
             var url = webBase + '/accidentDatas/analyseData/areaMultiConditionQuery';
             var json = {};
             var flag = this.checkInput(json);
-            console.log(json);
             if(flag){
+                this.showDialogLoading = true;
                 axios.post(url, json).then(function (response) {
                     var allData = response.data;
                     if(allData.code == 200){
                         console.log(allData.data);
                         if(allData.data.arr.length == 0){
-                            this.messageTop = "未查找到相应数据项！";
-                            this.textFlag = false;
-                            this.showMessageTop = true;
+                            that.showDialogLoading = false;
+
+                            that.messageTop = "未查找到相应数据项！";
+                            that.textFlag = false;
+                            that.showMessageTop = true;
                             return;
                         }
                         clearMarker(spaceMap);
                         that.getSpaceMarkers(that.selectData.yType, that.selectData.analysisObj, allData.data.allnum, allData.data.arr);
                         that.spaceShowSelect = false;
+
+                        that.showDialogLoading = false;
                     }
                     else{
-                        this.messageTop = allData.message;
-                        this.textFlag = false;
-                        this.showMessageTop = true;
+                        that.showDialogLoading = false;
+
+                        that.messageTop = allData.message;
+                        that.textFlag = false;
+                        that.showMessageTop = true;
                     }
                 }).catch(function (error) {
+                    that.showDialogLoading = false;
+
+                    that.messageTop = '系统错误！';
+                    that.textFlag = false;
+                    that.showMessageTop = true;
                     console.log(error);
                 });
             }
         },
         timeGet: function () {
-            console.log("enter timeGer....")
             var that = this;
             var url = webBase + '/accidentDatas/analyseData/timeMultiConditionQuery';
             var json = {};
             var flag = this.checkInput(json);
-            console.log(json);
             if(flag){
+                this.showDialogLoading = true;
                 axios.post(url, json).then(function (response) {
                     var allData = response.data;
                     if(allData.code == 200){
                         console.log(allData.data.arr);
                         if(allData.data.arr.length == 0){
-                            this.messageTop = "未查找到相应数据项！";
-                            this.textFlag = false;
-                            this.showMessageTop = true;
+                            that.showDialogLoading = false;
+
+                            that.messageTop = "未查找到相应数据项！";
+                            that.textFlag = false;
+                            that.showMessageTop = true;
                             return;
                         }
                         /*
@@ -1905,7 +1949,6 @@ var app = new Vue({
                                 });
                             })
 
-                            console.log(yearNumbers);
                             that.showLine(yearNumbers, json.timePrecision, yStr, json.startTime, json.endTime);
                         }
                         if (json.timePrecision == 2) {
@@ -1937,8 +1980,6 @@ var app = new Vue({
                                 });
                             });
 
-                            console.log(monthNumbers);
-                            //data,roadType,type,sDate,eDate,width
                             that.showLine(monthNumbers, json.timePrecision, yStr, json.startTime, json.endTime);
                         }
                         if (json.timePrecision == 3) {
@@ -2000,16 +2041,24 @@ var app = new Vue({
                                 });
                             });
 
-                            console.log(dayNumbers);
                             that.showLine(dayNumbers, json.timePrecision, yStr, json.startTime, json.endTime);
                         }
+
+                        that.showDialogLoading = false;
                     }
                     else{
-                        this.messageTop = allData.message;
-                        this.textFlag = false;
-                        this.showMessageTop = true;
+                        that.showDialogLoading = false;
+
+                        that.messageTop = allData.message;
+                        that.textFlag = false;
+                        that.showMessageTop = true;
                     }
                 }).catch(function (error) {
+                    that.showDialogLoading = false;
+
+                    that.messageTop = '系统错误！';
+                    that.textFlag = false;
+                    that.showMessageTop = true;
                     console.log(error);
                 });
             }

@@ -252,26 +252,26 @@
                 <div id="spaceMap" class="map">
 
                 </div>
-                <div v-show="selectData.yType == 'accidentLevel'" style="position: absolute;left:300px;top:50px;height: 50px;">
+                <div v-show="selectData.yType == 'accidentLevel'" style="position: absolute; left: 60px; top: 50px; height: 50px;">
                     <div class="mapbarchild">
-                        <div style="margin:auto;width:30px;height:20px;background: red;"></div>
-                        <p style="margin:auto;text-align: center;color: white">总数</p>
+                        <div style="margin: auto; width: 30px; height: 20px; background: red;"></div>
+                        <p style="margin: auto; text-align: center; color: white;">总数</p>
                     </div>
                     <div class="mapbarchild" style="left: 50px;">
-                        <div style="margin:auto;width:30px;height:20px;background: lightgreen;"></div>
-                        <p style="margin:auto;text-align: center;color: white;">财损</p>
+                        <div style="margin: auto; width: 30px; height: 20px; background: lightgreen;"></div>
+                        <p style="margin: auto; text-align: center; color: white;">财损</p>
                     </div>
                     <div class="mapbarchild" style="left: 90px;">
-                        <div style="margin:auto;width:30px;height:20px;background: rgb(255,0,255);"></div>
-                        <p style="margin:auto;text-align: center;color: white;">轻伤</p>
+                        <div style="margin: auto; width: 30px; height: 20px; background: rgb(255,0,255);"></div>
+                        <p style="margin: auto; text-align: center; color: white;">轻伤</p>
                     </div>
                     <div class="mapbarchild" style="left: 130px;">
-                        <div style="margin:auto;width:30px;height:20px;background: yellow;"></div>
-                        <p style="margin:auto;text-align: center;color: white;">重伤</p>
+                        <div style="margin: auto; width: 30px; height: 20px; background: yellow;"></div>
+                        <p style="margin: auto; text-align: center; color: white;">重伤</p>
                     </div>
                     <div class="mapbarchild" style="left: 170px;">
-                        <div style="margin:auto;width:30px;height:20px;background: lightcoral;"></div>
-                        <p style="margin:auto;text-align: center;color: white;">死亡</p>
+                        <div style="margin: auto; width: 30px; height: 20px; background: lightcoral;"></div>
+                        <p style="margin: auto; text-align: center; color: white;">死亡</p>
                     </div>
                 </div>
             </div>
@@ -369,6 +369,26 @@
     <mu-popup position="top" v-cloak :overlay="false" :open="showMessageTop" class="no-print" popup-class="popup-top">
         <span :class="{'succeed-text': textFlag, 'failure-text': !textFlag}">{{ messageTop }}</span>
     </mu-popup>
+
+    <div v-show="showDialogLoading" v-cloak class="dialog-loading ">
+        <table style="width: 100%; height: 100%;">
+            <tr>
+                <td>
+                    <div class="sk-cube-grid">
+                        <div class="sk-cube sk-cube1"></div>
+                        <div class="sk-cube sk-cube2"></div>
+                        <div class="sk-cube sk-cube3"></div>
+                        <div class="sk-cube sk-cube4"></div>
+                        <div class="sk-cube sk-cube5"></div>
+                        <div class="sk-cube sk-cube6"></div>
+                        <div class="sk-cube sk-cube7"></div>
+                        <div class="sk-cube sk-cube8"></div>
+                        <div class="sk-cube sk-cube9"></div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
 </div>
 
 <script src="libs/vue/vue.min.js"></script>
