@@ -87,7 +87,7 @@
     width:100px;
     margin: auto;
 }
- .mapbarchild{
+.mapbarchild{
     width: 40px;
     position: absolute;
     bottom: 0;
@@ -102,7 +102,7 @@
     height: 70%;
     width:100%;
     margin: auto;
- //background: bisque;
+//background: bisque;
 }
 .barchild{
     width: auto;
@@ -121,7 +121,7 @@
     height: auto;
     position: absolute;
     bottom: 0;
-	//background: blue;
+//background: blue;
 }
 .show-name{
     margin: auto;

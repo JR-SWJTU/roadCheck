@@ -1,5 +1,8 @@
 package com.swjtu.roadCheck.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties({"password"})
 public class Admin {
     private Integer adminId;
 
@@ -9,7 +12,7 @@ public class Admin {
 
     private Integer teamId;
 
-    private Byte issuper;
+    private Byte issuper;   //管理员权限，true为超级管理员，false为一般管理员，超级管理员可以新添加一般管理员
 
     public Integer getAdminId() {
         return adminId;
