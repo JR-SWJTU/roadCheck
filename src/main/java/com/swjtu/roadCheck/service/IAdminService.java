@@ -13,13 +13,13 @@ public interface IAdminService {
      * 注册
      * @param admin
      */
-    void register(Admin admin);
+    void register(Admin admin) throws Exception;
 
     /**
      * 登录
      * @param admin
      */
-    Admin login(Admin admin);
+    Admin login(Admin admin) throws Exception;
 
     /**
      * 添加一条管理员记录到数据库
