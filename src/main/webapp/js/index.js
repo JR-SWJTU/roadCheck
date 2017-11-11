@@ -391,9 +391,9 @@ var app = new Vue({
                 },
                 accidentalSev: [], //'仅财损',
                 workDay: false,
-                    dateTime: {
+                dateTime: {
                     start: '',
-                        end: ''
+                    end: ''
                 },
                 yType: 'accidentCount',
                 timePrecision: 1,
@@ -1595,7 +1595,7 @@ var app = new Vue({
                     yMax = item.num;
                 }
             });
-           // console.log(yMin+" ymax:"+yMax)
+            // console.log(yMin+" ymax:"+yMax)
             data.forEach(function (item, index, arr) {
                 var obj = {
                     map: spaceMap,
@@ -1897,9 +1897,9 @@ var app = new Vue({
                             return;
                         }
                         /*
-                        * 统计年、月、日中人数
-                        *
-                        * */
+                         * 统计年、月、日中人数
+                         *
+                         * */
                         //获取时间跨度
                         var eDate = json.endTime.split("-");
                         var sDate = json.startTime.split("-");
@@ -1926,7 +1926,7 @@ var app = new Vue({
                         }
 
                         /*展示方式
-                        * */
+                         * */
                         var data = allData.data.arr;
                         var basicDay, basicMonth, basicYear;
                         if (json.timePrecision == 1) {
