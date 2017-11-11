@@ -1,8 +1,5 @@
 package com.swjtu.roadCheck.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-@JsonIgnoreProperties({"password"})
 public class Admin {
     private Integer adminId;
 

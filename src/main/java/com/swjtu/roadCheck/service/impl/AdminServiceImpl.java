@@ -67,8 +67,10 @@ public class AdminServiceImpl implements IAdminService {
             throw new CustomException("账号不存在");
         }
 
+
         //密码不正确
         Admin res = list.get(0);
+        System.out.println(res.getPassword() + admin.getPassword());
         if(!res.getPassword().equals(admin.getPassword())){
             throw  new PasswdIncorException();
         }

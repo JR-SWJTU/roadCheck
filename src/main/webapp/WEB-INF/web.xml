@@ -92,4 +92,15 @@
     </filter-mapping>
 
 
+    <!--log4j配置文件加载-->
+    <!--<listener>-->
+        <!--<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>-->
+    <!--</listener>-->
+    <!--&lt;!&ndash;spring log4j监听器&ndash;&gt;-->
+    <!--<context-param>-->
+        <!--<param-name>log4jConfigLocation</param-name>-->
+        <!--<param-value>src/main/resources/log4j.properties</param-value>-->
+    <!--</context-param>-->
+
+
 </web-app>

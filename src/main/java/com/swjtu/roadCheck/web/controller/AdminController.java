@@ -6,6 +6,7 @@ import com.swjtu.roadCheck.service.IAdminService;
 import com.swjtu.roadCheck.util.JsonResult;
 import com.swjtu.roadCheck.util.PageResult;
 import com.swjtu.roadCheck.util.enums.StatusCode;
+import net.sf.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,9 +36,11 @@ public class AdminController {
     }
 
     @RequestMapping(value="/login", method = RequestMethod.POST)
-    public Admin login(@RequestBody Admin admin) throws  Exception{
+    public JsonResult login(@RequestBody Admin admin) throws  Exception{
         Admin admin1 = adminService.login(admin);
-        return admin1;
+        JSONObject jsonObject = JSONObject.fromObject(admin1);
+        jsonObject.remove("password");
+        return JsonResult.build(StatusCode.SUCCESS,jsonObject);
     }
 
     /**
