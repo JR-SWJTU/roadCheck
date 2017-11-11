@@ -89,8 +89,8 @@ function setMarker(options,yMin,yMax) {
     }
     //获取展示内容
     var content;
-    console.log("helllllll-------");
-    console.log(getHeight(options.accidentNumbers,yMin,yMax));
+    // console.log("helllllll-------");
+    // console.log(getHeight(options.accidentNumbers,yMin,yMax));
     if (options.type == 0) {
         content = setIntersectionContent(options,yMin,yMax);
     }else {
@@ -170,8 +170,8 @@ function setIntersectionContent(options,yMin,yMax) {
              options.accidentNumbers+"</p></div>\n" +
         " <div class='showmap-name'>      <p style=\"width:100%;margin: auto;background-color:'rgba(255, 255, 255, 0)';text-align: center;color:white;\">"+options.name+"</p>\n" +
         "</div></div>";
-    console.log("helllllll-------");
-    console.log(getHeight(options.accidentNumbers,yMin,yMax));
+    // console.log("helllllll-------");
+    // console.log(getHeight(options.accidentNumbers,yMin,yMax));
     if (options.isChenDu) {
         return getContent(options,yMin,yMax);
     }
@@ -220,7 +220,7 @@ function getContent(options,yMin,yMax) {
             width += 10;
         }
     }
-    console.log(width)
+    // console.log(width);
 
  //   width + 2;
     var conten3 = "<div class=\"mapbar\">\n" +
@@ -447,7 +447,7 @@ function hasClass(tagStr, classStr)
     return false;
 }
 function clearMarker(amap) {
-    console.log("mapmarker:"+mapMarkers.length);
+    // console.log("mapmarker:"+mapMarkers.length);
     amap.remove(mapMarkers);
     mapMarkers = [];
     // mapMarkers.clear();

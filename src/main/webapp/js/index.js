@@ -39,14 +39,14 @@ var app = new Vue({
             carCollisionType: ['null', '追尾碰撞', '正面碰撞', '侧面碰撞', '直角碰撞', '刮擦', '其它'],
             weather: ['null', '晴天', '阴天', '雨', '雾', '雪', '冰雹', '台风'],
             workZone: {
-                flag: ['是', '否'],
+                flag: ['null', '是', '否'],
                 controlMode: ['单向车道关闭', '单向车道压缩'],
                 worker: ['是', '否'],
                 lawEnfor: ['无', '有']
             },
             intersectionType: ['null', '非交叉口', '十字', 'T形', 'Y形', '环岛', '多路交叉口' ,'立交'],
             vehicleType: ['null', '小客车', '中客车', '大客车', '公交', '校车', '小货车', '中货车', '大货车', '拖挂车', '特种车辆', '摩托车', '非机动车', '畜力车'],
-            hitAndRun: ['是', '否'],
+            hitAndRun: ['null', '是', '否'],
 
             bali: []
         },
@@ -77,14 +77,14 @@ var app = new Vue({
             carCollisionType: 'null', //'追尾碰撞',
             weather: 'null', //'晴天',
             workZone: {
-                flag: '否',
+                flag: 'null',
                 controlMode: '',
                 worker: '',
                 lawEnfor: ''
             },
             intersectionType: 'null', //'非交叉口',
             vehicleType: 'null', //'小客车',
-            hitAndRun: '否', //'是'
+            hitAndRun: 'null', //'是'
         },
 
         timeDownShow: false,
@@ -215,8 +215,8 @@ var app = new Vue({
         },
 
         checkLogin: function () {
-            // this.isLogin = false;
-            // this.loginDialog = true;
+            this.isLogin = false;
+            this.loginDialog = true;
         },
         login: function () {
             this.loginDialog = true;
@@ -406,14 +406,14 @@ var app = new Vue({
                 carCollisionType: 'null', //'追尾碰撞',
                 weather: 'null', //'晴天',
                 workZone: {
-                    flag: '否',
+                    flag: 'null',
                     controlMode: '',
                     worker: '',
                     lawEnfor: ''
                 },
                 intersectionType: 'null', //'非交叉口',
                 vehicleType: 'null', //'小客车',
-                hitAndRun: '否' //'是'
+                hitAndRun: 'null' //'是'
             };
         },
         checkInput: function (json) {
@@ -589,6 +589,8 @@ var app = new Vue({
             if(this.nowFuc == 'time'){
                 json.timePrecision = this.selectData.timePrecision;
             }
+
+            console.log(json);
             return true;
         },
         resetSingleShowData: function () {
@@ -1658,7 +1660,7 @@ var app = new Vue({
                     });
 
                 }
-                console.log(yMax+"ym:"+yMin)
+                // console.log(yMax+"ym:"+yMin)
                 setMarker(obj,yMin,yMax);
             });
         },
@@ -1769,7 +1771,7 @@ var app = new Vue({
                 axios.post(url, json).then(function (response) {
                     var allData = response.data;
                     if(allData.code == 200){
-                        console.log(allData.data);
+                        // console.log(allData.data);
                         if(allData.data.arr.length == 0){
                             that.showDialogLoading = false;
 
@@ -1843,7 +1845,7 @@ var app = new Vue({
                 axios.post(url, json).then(function (response) {
                     var allData = response.data;
                     if(allData.code == 200){
-                        console.log(allData.data);
+                        // console.log(allData.data);
                         if(allData.data.arr.length == 0){
                             that.showDialogLoading = false;
 
@@ -1885,7 +1887,7 @@ var app = new Vue({
                 axios.post(url, json).then(function (response) {
                     var allData = response.data;
                     if(allData.code == 200){
-                        console.log(allData.data.arr);
+                        // console.log(allData.data.arr);
                         if(allData.data.arr.length == 0){
                             that.showDialogLoading = false;
 
