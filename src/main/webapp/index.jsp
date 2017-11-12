@@ -22,6 +22,9 @@
         <mu-appbar title="功能列表">
         </mu-appbar>
         <mu-list class="list-class">
+            <mu-list-item v-if="isSupper" title="用户管理" :class="{'item-active': nowFuc=='supper-user'}" @click="userAdmin">
+                <mu-icon slot="left" value="send"></mu-icon>
+            </mu-list-item>
             <mu-list-item title="事故黑点诊断" :class="{'item-active': nowFuc=='black-point'}" @click="blackPointDiagnose">
                 <mu-icon slot="left" value="send"></mu-icon>
             </mu-list-item>
@@ -45,13 +48,51 @@
     <mu-appbar title="泸州市交通事故数据分析系统" class="main-header no-print" :class="{'header-class-open': isFirstLoad && isShowItems, 'header-class-close': isFirstLoad && !isShowItems}">
         <mu-icon-button icon="view_list" slot="left" href="javascript: void(0);" @click="toggleFuc"></mu-icon-button>
         <mu-flat-button v-if="!isLogin" label="登录" slot="right" @click="login"></mu-flat-button>
-        <mu-flat-button v-if="isLogin" label="个人信息" slot="right" @click="information"></mu-flat-button>
-        <mu-flat-button v-if="isLogin" label="退出登录" slot="right" @click="logout"></mu-flat-button>
+        <%--<mu-flat-button v-if="isLogin" label="个人信息" slot="right" @click="information"></mu-flat-button>--%>
+        <mu-flat-button v-if="isLogin" label="账号切换" slot="right" @click="logout"></mu-flat-button>
     </mu-appbar>
     <div class="no-print" style="height: 64px"></div>
     <div class="main-body" :class="{'header-class-open': isFirstLoad && isShowItems, 'header-class-close': isFirstLoad && !isShowItems}">
-        <div v-if="nowFuc == 'main-page'" v-cloak :style="bodyContent">
-
+        <div v-if="nowFuc == 'supper-user'" v-cloak :style="bodyContent">
+            <div class="body-right" :style="rightStyle">
+                <div class="table-class supper-user-class">
+                    <div class="title-class">用户信息管理</div>
+                    <hr/>
+                    <mu-table :selectable="false" :show-checkbox="false" :fixed-header="true" @cell-click="cellUserClick">
+                        <mu-thead slot="header">
+                            <mu-tr>
+                                <mu-th v-for="item, index in userPage.title" :key="index">{{item}}</mu-th>
+                                <mu-th class="icon-td">修改</mu-th>
+                                <mu-th class="icon-td">删除</mu-th>
+                            </mu-tr>
+                        </mu-thead>
+                        <mu-tbody>
+                            <mu-tr v-for="item, index in userPage.list" :key="index">
+                                <mu-td>{{item.adminId}}</mu-td>
+                                <mu-td>{{item.name}}</mu-td>
+                                <mu-td>{{item.password}}</mu-td>
+                                <mu-td>{{item.teamName}}</mu-td>
+                                <mu-td>{{item.issuper == 1 ? '是' : '否'}}</mu-td>
+                                <mu-td name="update" class="icon-td">
+                                    <mu-icon-button icon="mode_edit" class="user-page-btn"></mu-icon-button>
+                                </mu-td>
+                                <mu-td name="delete" class="icon-td">
+                                    <mu-icon-button icon="delete" class="user-page-btn"></mu-icon-button>
+                                </mu-td>
+                            </mu-tr>
+                        </mu-tbody>
+                    </mu-table>
+                    <div class="page-loading">
+                        <div class="page-left">
+                            <mu-icon-button icon="add" class="user-page-btn" @click="addUserDialogClick"></mu-icon-button>
+                        </div>
+                        <div class="page-right">
+                            <mu-icon-button icon="navigate_before" :disabled="pageBefore" class="user-page-btn" @click="pageBeforeClick"></mu-icon-button>
+                            <mu-icon-button icon="navigate_next" :disabled="pageNext" class="user-page-btn" @click="pageNextClick"></mu-icon-button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div v-show="nowFuc == 'black-point'"  v-cloak :style="bodyContent">
             <div class="time-body-left time-body-left-float no-print" :class="{'left-float-open': isFirstLoad && isShowItems, 'left-float-close': isFirstLoad && !isShowItems}">
@@ -331,13 +372,13 @@
         </div>
     </div>
 
-    <mu-dialog :open="loginDialog" title="泸州市交通事故数据分析系统" class="no-print" dialog-class="dialog" title-class="dialog-title" body-class="dialog-body" >
+    <mu-dialog v-cloak :open="loginDialog" title="泸州市交通事故数据分析系统" class="no-print" dialog-class="dialog" title-class="dialog-title" body-class="dialog-body" >
         <mu-text-field label="请输入您的用户名|警号" :full-width="true" label-float v-model="loginInfor.userName"></mu-text-field>
         <mu-text-field label="请输入您的密码" type="password" :full-width="true" label-float v-model="loginInfor.password"></mu-text-field>
         <mu-flat-button slot="actions" primary @click="loginConfirm" label="登录"></mu-flat-button>
     </mu-dialog>
 
-    <mu-dialog :open="detailDialog" title="交通事故细节筛选" class="no-print" dialog-class="dialog" title-class="dialog-title" body-class="dialog-body" @close="detailClose">
+    <mu-dialog v-cloak :open="detailDialog" title="交通事故细节筛选" class="no-print" dialog-class="dialog" title-class="dialog-title" body-class="dialog-body" @close="detailClose">
         <mu-select-field v-model="selectData.roadGrade" :full-width="true" label="道路等级">
             <mu-menu-item v-for="text,index in basicData.roadGrade" :key="index" :value="text" :title="text" ></mu-menu-item>
         </mu-select-field>
@@ -364,6 +405,40 @@
         </mu-select-field>
         <mu-flat-button slot="actions" primary @click="detailClose" label="取消"></mu-flat-button>
         <mu-flat-button slot="actions" primary @click="detailConfirm" label="确认"></mu-flat-button>
+    </mu-dialog>
+
+    <mu-dialog v-cloak :open="updateUserDialog" title="添加用户" class="no-print" dialog-class="dialog" title-class="dialog-title" body-class="dialog-body" @close="updateUserClose">
+        <mu-text-field v-model="userObj.name" label="用户名" :full-width="true" hint-text="null"></mu-text-field>
+        <mu-text-field v-model="userObj.password" label="密码" :full-width="true" hint-text="null"></mu-text-field>
+        <mu-select-field max-height="300" scroller hint-text="null" v-model="userObj.gruppe" :full-width="true" label="所属大队">
+            <mu-menu-item v-for="text,index in basicData.area.gruppe" :key="index" :value="text" :title="text" ></mu-menu-item>
+        </mu-select-field>
+        <mu-select-field v-model="userObj.isSupper" :full-width="true" hint-text="null" label="用户类型">
+            <mu-menu-item value="0" title="普通用户" ></mu-menu-item>
+            <mu-menu-item value="1" title="管理员" ></mu-menu-item>
+        </mu-select-field>
+        <mu-flat-button slot="actions" primary @click="updateUserClose" label="取消"></mu-flat-button>
+        <mu-flat-button slot="actions" primary @click="updateUserConfirm" label="确认"></mu-flat-button>
+    </mu-dialog>
+
+    <mu-dialog v-cloak :open="addUserDialog" title="添加用户" class="no-print" dialog-class="dialog" title-class="dialog-title" body-class="dialog-body" @close="addUserClose">
+        <mu-text-field v-model="userObj.name" label="用户名" :full-width="true" hint-text="null"></mu-text-field>
+        <mu-text-field v-model="userObj.password" type="password" label="密码" :full-width="true" hint-text="null"></mu-text-field>
+        <mu-text-field v-model="userObj.repassword" type="password" label="密码确认" :full-width="true" hint-text="null"></mu-text-field>
+        <mu-select-field max-height="300" scroller hint-text="null" v-model="userObj.gruppe" :full-width="true" label="所属大队">
+            <mu-menu-item v-for="text,index in basicData.area.gruppe" :key="index" :value="text" :title="text" ></mu-menu-item>
+        </mu-select-field>
+        <mu-select-field v-model="userObj.isSupper" :full-width="true" hint-text="null" label="用户类型">
+            <mu-menu-item value="0" title="普通用户" ></mu-menu-item>
+            <mu-menu-item value="1" title="管理员" ></mu-menu-item>
+        </mu-select-field>
+        <mu-flat-button slot="actions" primary @click="addUserClose" label="取消"></mu-flat-button>
+        <mu-flat-button slot="actions" primary @click="addUserConfirm" label="确认"></mu-flat-button>
+    </mu-dialog>
+
+    <mu-dialog v-cloak :open="deleteUserDialog" title="确定删除该用户" class="no-print" dialog-class="dialog" title-class="dialog-title" body-class="dialog-body" @close="deleteUserClose">
+        <mu-flat-button slot="actions" primary @click="deleteUserClose" label="取消"></mu-flat-button>
+        <mu-flat-button slot="actions" primary @click="deleteUserConfirm" label="确认"></mu-flat-button>
     </mu-dialog>
 
     <mu-popup position="top" v-cloak :overlay="false" :open="showMessageTop" class="no-print" popup-class="popup-top">
