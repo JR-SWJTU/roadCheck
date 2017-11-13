@@ -2,8 +2,11 @@ package com.swjtu.roadCheck.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.swjtu.roadCheck.entity.TeamExample;
+import com.swjtu.roadCheck.entity.Admin;
+import com.swjtu.roadCheck.entity.AdminExample;
 import com.swjtu.roadCheck.entity.Team;
+import com.swjtu.roadCheck.entity.TeamExample;
+import com.swjtu.roadCheck.mapper.AdminMapper;
 import com.swjtu.roadCheck.mapper.TeamMapper;
 import com.swjtu.roadCheck.service.ITeamService;
 import com.swjtu.roadCheck.util.PageResult;
