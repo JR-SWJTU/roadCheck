@@ -44,7 +44,7 @@ public class TeamServiceImpl implements ITeamService {
         TeamExample teamExample = new TeamExample();
         teamExample.createCriteria().andTeamNameEqualTo(team.getTeamName());
         if(teamMapper.selectByExample(teamExample).size() != 0){
-            throw new CustomException("该用户名已经存在");
+            throw new CustomException("该大队已经存在");
         }else {
             teamMapper.insert(team);
         }
@@ -98,8 +98,15 @@ public class TeamServiceImpl implements ITeamService {
      *
      * @param team 大队对象
      */
-    @Transactional
     public void updateTeam(Team team) {
+
+        TeamExample teamExample = new TeamExample();
+        teamExample.createCriteria().andTeamNameEqualTo(team.getTeamName());
+        if(teamMapper.selectByExample(teamExample).size() != 0){
+            throw new CustomException("该大队名称已经存在");
+        }
+
         teamMapper.updateByPrimaryKey(team);
+
     }
 }
