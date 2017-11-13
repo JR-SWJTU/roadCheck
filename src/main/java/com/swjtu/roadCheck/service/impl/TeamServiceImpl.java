@@ -10,6 +10,7 @@ import com.swjtu.roadCheck.util.PageResult;
 import com.swjtu.roadCheck.web.exception.base.CustomException;
 import com.swjtu.roadCheck.web.exception.base.ReqParmIncorException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -97,6 +98,7 @@ public class TeamServiceImpl implements ITeamService {
      *
      * @param team 大队对象
      */
+    @Transactional
     public void updateTeam(Team team) {
         teamMapper.updateByPrimaryKey(team);
     }

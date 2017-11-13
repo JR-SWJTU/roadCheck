@@ -5,6 +5,7 @@ import com.swjtu.roadCheck.util.enums.StatusCode;
 import com.swjtu.roadCheck.web.exception.base.*;
 import com.swjtu.roadCheck.web.exception.base.CustomException;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -20,7 +21,7 @@ import java.sql.SQLException;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(GlobalExceptionHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(value = AccountNotExistException.class)
     @ResponseBody
