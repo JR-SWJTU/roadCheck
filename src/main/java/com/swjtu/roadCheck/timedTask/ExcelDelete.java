@@ -13,7 +13,7 @@ public class ExcelDelete {
 
     private static  final String rootPath = "E:\\roadCheck\\";
 
-    private static Logger _log = LoggerFactory.getLogger(ExcelDelete.class);
+    private static final Logger _log = LoggerFactory.getLogger(ExcelDelete.class);
 
     //定时任务
     public void execute() throws Exception{

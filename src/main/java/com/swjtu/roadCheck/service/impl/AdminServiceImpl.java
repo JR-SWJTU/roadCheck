@@ -67,10 +67,8 @@ public class AdminServiceImpl implements IAdminService {
             throw new CustomException("账号不存在");
         }
 
-
         //密码不正确
         Admin res = list.get(0);
-        System.out.println(res.getPassword() + admin.getPassword());
         if(!res.getPassword().equals(admin.getPassword())){
             throw  new PasswdIncorException();
         }
@@ -143,6 +141,17 @@ public class AdminServiceImpl implements IAdminService {
      * @param admin 管理员对象
      */
     public void updateAdmin(Admin admin) {
+
+        AdminExample adminExample = new AdminExample();
+        adminExample.createCriteria().andNameEqualTo(admin.getName());
+        List<Admin> list = new ArrayList<Admin>();
+        list = adminMapper.selectByExample(adminExample);
+
+        //账号存在
+        if(list.size() != 0){
+            throw new CustomException("用户名已经存在");
+        }
+
         adminMapper.updateByPrimaryKey(admin);
     }
 
