@@ -151,7 +151,7 @@ public class AdminServiceImpl implements IAdminService {
         list = adminMapper.selectByExample(adminExample);
 
         //账号存在
-        if(list.size() != 0){
+        if(list.size() >= 2){
             throw new CustomException("用户名已经存在");
         }
 

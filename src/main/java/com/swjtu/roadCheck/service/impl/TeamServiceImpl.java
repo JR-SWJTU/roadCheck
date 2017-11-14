@@ -108,7 +108,7 @@ public class TeamServiceImpl implements ITeamService {
 
         TeamExample teamExample = new TeamExample();
         teamExample.createCriteria().andTeamNameEqualTo(team.getTeamName());
-        if(teamMapper.selectByExample(teamExample).size() != 0){
+        if(teamMapper.selectByExample(teamExample).size() >= 2){
             throw new CustomException("该大队名称已经存在");
         }
 
