@@ -25,28 +25,28 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = AccountNotExistException.class)
     @ResponseBody
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.OK)
     public JsonResult handUserNotFountException(AccountNotExistException e) {
         return JsonResult.build(StatusCode.FAIL_ACCOUNT_NOT_EXIST);
     }
 
     @ExceptionHandler(value = NotAuthException.class)
     @ResponseBody
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.OK)
     public JsonResult handNotAuthException(NotAuthException e) {
         return JsonResult.build(StatusCode.FAIL_NOT_AUTH);
     }
 
     @ExceptionHandler(value = PasswdIncorException.class)
     @ResponseBody
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.OK)
     public JsonResult handPasswdIncorException(PasswdIncorException e) {
         return JsonResult.build(StatusCode.FAIL_PASSWD_INCOR);
     }
 
     @ExceptionHandler(value = PicValiIncorException.class)
     @ResponseBody
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.OK)
     public JsonResult handPicValiIncorException(PicValiIncorException e) {
         return JsonResult.build(StatusCode.FAIL_PIC_VALI_INCOR);
     }
@@ -97,7 +97,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = CustomException.class)
     @ResponseBody
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.OK)
     public JsonResult handCustomException(Exception e) {
         LOGGER.error(e.getMessage(), e);
         return JsonResult.customBuild(e.getMessage());

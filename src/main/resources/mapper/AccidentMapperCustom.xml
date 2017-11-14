@@ -13,81 +13,10 @@
         count(*) AS num,diMingBeiZhu,lat,lng
         FROM
 
-        (
-        SELECT
-        *
-        FROM
-        <if test="roadLevel!=null || weather!=null || workPlaceRel != null || intersectionType != null">
-            (
-            SELECT
-            *
-            FROM
-            (
-            SELECT
-            e.emnumber
-            FROM
-            emdata e
-            <where>
-                <if test="roadLevel!=null">
-                    e.luMianLev = #{roadLevel}
-                </if>
-                <if test="weather!=null">
-                    AND e.Tianqicondition = #{weather}
-                </if>
-                <if test="workPlaceRel != null">
-                    AND e.workPlaceRel = #{workPlaceRel}
-                </if>
-                <if test="intersectionType != null">
-                    AND e.Jcktype = #{intersectionType}
-                </if>
-            </where>
-            ) eResult INNER JOIN
-        </if>
-
-        <if test="teamName!=null || startTime!=null || endTime!=null">
-            (
-            SELECT
-            *
-            FROM
-            accidencecollectiondata
-            <where>
-                <if test="teamName!=null">
-                    team_name in
-                    <foreach collection="teamName" index="index" item="teamName" open="(" separator="," close=")">
-                        #{teamName}
-                    </foreach>
-                </if>
-                <if test="startTime!=null">
-                    AND riqi <![CDATA[ >= ]]> #{startTime}
-                </if>
-                <if test="endTime!=null">
-                    AND riqi <![CDATA[ <= ]]> #{endTime}
-                </if>
-            </where>
-            ) acd
-        </if>
-
-
-        <if test="roadLevel!=null || weather!=null || workPlaceRel != null || intersectionType != null">
-            ON eResult.emnumber = acd.environmentnumber
-            ) acdResult
-        </if>
-
-
-        <if test="teamName!=null || startTime!=null || endTime!=null">
-            INNER JOIN
-        </if>
-
-        (
-        SELECT
-        accidencnumber,
-        diMingBeiZhu,
-        lat,lng
-        FROM
         accidentdata
         <where>
             <if test="carCollisionType!=null">
-                accidentdata.carCollisionType = #{carCollisionType}
+                carCollisionType = #{carCollisionType}
             </if>
             <if test="troEscape!=null">
                 AND accidentdata.taoYi = #{troEscape}
@@ -98,35 +27,40 @@
             <if test="isWorkDay!=null">
                 AND accidentdata.is_workday = #{isWorkDay}
             </if>
+
+            <if test="roadLevel!=null">
+                and e.luMianLev = #{roadLevel}
+            </if>
+            <if test="weather!=null">
+                AND e.Tianqicondition = #{weather}
+            </if>
+            <if test="workPlaceRel != null">
+                AND e.workPlaceRel = #{workPlaceRel}
+            </if>
+            <if test="intersectionType != null">
+                AND e.Jcktype = #{intersectionType}
+            </if>
+
+            <if test="teamName!=null">
+                and team_name in
+                <foreach collection="teamName" index="index" item="teamName" open="(" separator="," close=")">
+                    #{teamName}
+                </foreach>
+            </if>
+            <if test="startTime!=null">
+                AND riqi <![CDATA[ >= ]]> #{startTime}
+            </if>
+            <if test="endTime!=null">
+                AND riqi <![CDATA[ <= ]]> #{endTime}
+            </if>
+
+            <if test="carType!= null">
+                and Leixing = #{carType}
+            </if>
         </where>
-        ) aResult
 
-        <if test="teamName!=null || startTime!=null || endTime!=null">
-            <if test="roadLevel==null and weather==null and workPlaceRel == null and intersectionType == null">
-                ON acd.shigunumber = aResult.accidencnumber
-            </if>
-            <if test="roadLevel!=null || weather!=null || workPlaceRel != null || intersectionType != null">
-                ON acdResult.shigunumber = aResult.accidencnumber
-            </if>
-        </if>
-        ) res1
-
-        <if test="carType!= null">
-            INNER JOIN (
-            SELECT
-            carnumber
-            FROM
-            cardata
-            <where>
-                <if test="carType!= null">
-                    Leixing = #{carType}
-                </if>
-            </where>
-            ) carResult ON res1.carnumber = carResult.carnumber
-        </if>
         GROUP BY diMingBeiZhu
     </select>
-
 
 
     <!--事故分析中的空间分析，多重搜索条件下某路段发生的不同事故严重程度的事故的统计-->
@@ -470,8 +404,8 @@
         </if>
 
         <if test="yType==false">
-        )res  GROUP BY diMingBeiZhu
-        )lastRes
+            )res GROUP BY diMingBeiZhu
+            )lastRes
         </if>
     </select>
 

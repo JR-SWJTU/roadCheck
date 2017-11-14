@@ -43,5 +43,5 @@ public interface ITeamService {
      * 更新大队数据
      * @param team 大队对象
      */
-    public void updateTeam(Team team);
+    public void updateTeam(Team team) throws Exception;
 }

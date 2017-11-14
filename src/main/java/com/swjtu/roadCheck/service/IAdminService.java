@@ -52,5 +52,5 @@ public interface IAdminService {
      * 更新管理员数据
      * @param admin 管理员对象
      */
-    public void updateAdmin(Admin admin);
+    public void updateAdmin(Admin admin) throws Exception;
 }

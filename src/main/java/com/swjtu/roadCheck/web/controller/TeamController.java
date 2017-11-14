@@ -71,7 +71,7 @@ public class TeamController {
      * @return
      */
     @RequestMapping(value = "", method = RequestMethod.PATCH)
-    public JsonResult updateTeam(@RequestBody Team team){
+    public JsonResult updateTeam(@RequestBody Team team)throws Exception{
         teamService.updateTeam(team);
         return JsonResult.build(StatusCode.SUCCESS);
     }

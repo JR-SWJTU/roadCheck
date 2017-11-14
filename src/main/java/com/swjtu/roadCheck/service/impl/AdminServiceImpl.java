@@ -140,7 +140,10 @@ public class AdminServiceImpl implements IAdminService {
      *
      * @param admin 管理员对象
      */
-    public void updateAdmin(Admin admin) {
+    public void updateAdmin(Admin admin) throws Exception{
+
+        if(admin.getAdminId() == null)
+            throw new ReqParmIncorException();
 
         AdminExample adminExample = new AdminExample();
         adminExample.createCriteria().andNameEqualTo(admin.getName());
