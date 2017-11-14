@@ -22,8 +22,14 @@
         <mu-appbar title="功能列表">
         </mu-appbar>
         <mu-list class="list-class">
-            <mu-list-item v-if="isSupper" title="用户管理" :class="{'item-active': nowFuc=='supper-user'}" @click="userAdmin">
+            <mu-list-item v-if="isSupper" v-cloak title="信息管理" :class="{'items-active': nowFuc=='supper-user' || nowFuc == 'gruppe-infor'}" :toggle-nested="true">
                 <mu-icon slot="left" value="send"></mu-icon>
+                <mu-list-item slot="nested" title="用户信息" :class="{'item-active': nowFuc=='supper-user'}" @click="userAdmin">
+                    <mu-icon slot="left" value="grade"></mu-icon>
+                </mu-list-item>
+                <mu-list-item slot="nested" title="空间分析" :class="{'item-active': nowFuc=='gruppe-infor'}" @click="gruppeInfor">
+                    <mu-icon slot="left" value="grade"></mu-icon>
+                </mu-list-item>
             </mu-list-item>
             <mu-list-item title="事故黑点诊断" :class="{'item-active': nowFuc=='black-point'}" @click="blackPointDiagnose">
                 <mu-icon slot="left" value="send"></mu-icon>
@@ -87,8 +93,42 @@
                             <mu-icon-button icon="add" class="user-page-btn" @click="addUserDialogClick"></mu-icon-button>
                         </div>
                         <div class="page-right">
-                            <mu-icon-button icon="navigate_before" :disabled="pageBefore" class="user-page-btn" @click="pageBeforeClick"></mu-icon-button>
-                            <mu-icon-button icon="navigate_next" :disabled="pageNext" class="user-page-btn" @click="pageNextClick"></mu-icon-button>
+                            <mu-icon-button v-cloak icon="navigate_before" :disabled="userPageBefore" class="user-page-btn" @click="userPageBeforeClick"></mu-icon-button>
+                            <mu-icon-button v-cloak icon="navigate_next" :disabled="userPageNext" class="user-page-btn" @click="userPageNextClick"></mu-icon-button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div v-if="nowFuc == 'gruppe-infor'" v-cloak :style="bodyContent">
+            <div class="body-right" :style="rightStyle">
+                <div class="table-class supper-user-class">
+                    <div class="title-class">大队信息管理</div>
+                    <hr/>
+                    <mu-table :selectable="false" :show-checkbox="false" :fixed-header="true" @cell-click="cellGruppeClick">
+                        <mu-thead slot="header">
+                            <mu-tr>
+                                <mu-th v-for="item, index in gruppePage.title" :key="index">{{item}}</mu-th>
+                                <mu-th class="icon-td">修改</mu-th>
+                            </mu-tr>
+                        </mu-thead>
+                        <mu-tbody>
+                            <mu-tr v-for="item, index in gruppePage.list" :key="index">
+                                <mu-td>{{item.id}}</mu-td>
+                                <mu-td>{{item.teamName}}</mu-td>
+                                <mu-td name="update" class="icon-td">
+                                    <mu-icon-button icon="mode_edit" class="user-page-btn"></mu-icon-button>
+                                </mu-td>
+                            </mu-tr>
+                        </mu-tbody>
+                    </mu-table>
+                    <div class="page-loading" >
+                        <div class="page-left">
+                            <mu-icon-button icon="add" class="user-page-btn" @click="addGruppeDialogClick"></mu-icon-button>
+                        </div>
+                        <div class="page-right">
+                            <mu-icon-button v-cloak icon="navigate_before" :disabled="gruppePageBefore" class="user-page-btn" @click="gruppePageBeforeClick"></mu-icon-button>
+                            <mu-icon-button v-cloak icon="navigate_next" :disabled="gruppePageNext" class="user-page-btn" @click="gruppePageNextClick"></mu-icon-button>
                         </div>
                     </div>
                 </div>
@@ -96,21 +136,21 @@
         </div>
         <div v-show="nowFuc == 'black-point'"  v-cloak :style="bodyContent">
             <div class="time-body-left time-body-left-float no-print" :class="{'left-float-open': isFirstLoad && isShowItems, 'left-float-close': isFirstLoad && !isShowItems}">
-                <div v-if="!blackShowSelect">
-                    <mu-icon-button icon="navigate_next" tooltip-position="bottom-right" tooltip="筛选条件" class="single-open-btn" @click="openBlackShow"></mu-icon-button>
+                <div v-show="!blackShowSelect" v-cloak>
+                    <mu-icon-button v-cloak icon="navigate_next" tooltip-position="bottom-right" tooltip="筛选条件" class="single-open-btn" @click="openBlackShow"></mu-icon-button>
                 </div>
-                <div v-if="blackShowSelect" class="single-select-left">
-                    <mu-icon-button icon="navigate_before" tooltip-position="bottom-right" tooltip="收起" class="single-close-btn" @click="closeBlackShow"></mu-icon-button>
+                <div v-show="blackShowSelect" v-cloak class="single-select-left">
+                    <mu-icon-button v-cloak icon="navigate_before" tooltip-position="bottom-right" tooltip="收起" class="single-close-btn" @click="closeBlackShow"></mu-icon-button>
                     <mu-select-field v-model="selectData.analysisObj" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="选择交叉口或路段">
                         <mu-menu-item v-for="text,index in basicData.analysisObj" :key="index" :value="text" :title="text" ></mu-menu-item>
                     </mu-select-field>
                     <div class="mu-text-field-label label-class">选择分析的区域</div>
                     <mu-radio label="行政区" name="area1" native-value="administrative" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 20px;" @change="areaRadioChange"></mu-radio>
                     <mu-radio label="大队" max-height="10px" scroller name="area1" native-value="gruppe" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 50px;" @change="areaRadioChange"></mu-radio>
-                    <mu-select-field v-if="selectData.area.type == 'gruppe'" max-height="300" scroller hint-text="null" v-model="selectData.area.gruppeVal" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="大队管辖区" multiple>
+                    <mu-select-field v-cloak v-show="selectData.area.type == 'gruppe'" max-height="300" scroller hint-text="null" v-model="selectData.area.gruppeVal" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="大队管辖区" multiple>
                         <mu-menu-item v-for="text,index in basicData.area.gruppe" :key="index" :value="text" :title="text" ></mu-menu-item>
                     </mu-select-field>
-                    <mu-select-field v-if="selectData.area.type == 'administrative'" max-height="300" scroller hint-text="null" v-model="selectData.area.adminiVal" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="行政管辖区">
+                    <mu-select-field v-cloak v-show="selectData.area.type == 'administrative'" max-height="300" scroller hint-text="null" v-model="selectData.area.adminiVal" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="行政管辖区">
                         <mu-menu-item v-for="text,index in basicData.area.administrative" :key="index" :value="text" :title="text" ></mu-menu-item>
                     </mu-select-field>
                     <div class="mu-text-field-label label-class" style="padding-top: 12px;">选择分析的时间段</div>
@@ -129,22 +169,22 @@
         </div>
         <div v-show="nowFuc == 'single-point'" v-cloak :style="bodyContent">
             <div class="single-body-left single-body-left-float no-print" :class="{'left-float-open': isFirstLoad && isShowItems, 'left-float-close': isFirstLoad && !isShowItems}">
-                <div v-if="!singleShowSelect">
-                    <mu-icon-button icon="navigate_next" tooltip-position="bottom-right" tooltip="筛选条件" class="single-open-btn" @click="openSingleShow"></mu-icon-button>
-                    <mu-icon-button v-show="chartPrintShow" tooltip="导出当前pdf报告" tooltip-position="bottom-right" icon="print" class="single-open-btn" class="right-btn" @click="singleChartPrint" style="margin-left: 10px;"></mu-icon-button>
+                <div v-show="!singleShowSelect" v-cloak>
+                    <mu-icon-button v-cloak icon="navigate_next" tooltip-position="bottom-right" tooltip="筛选条件" class="single-open-btn" @click="openSingleShow"></mu-icon-button>
+                    <mu-icon-button v-cloak v-show="chartPrintShow" tooltip="导出当前pdf报告" tooltip-position="bottom-right" icon="print" class="single-open-btn" class="right-btn" @click="singleChartPrint" style="margin-left: 10px;"></mu-icon-button>
                 </div>
-                <div v-if="singleShowSelect" class="single-select-left">
-                    <mu-icon-button icon="navigate_before" tooltip-position="bottom-right" tooltip="收起" class="single-close-btn" @click="closeSingleShow"></mu-icon-button>
-                    <mu-select-field v-if="singleTab == 'gruppe'" max-height="300" scroller hint-text="null" v-model="selectData.area.adminiVal" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="大队管辖区">
+                <div v-cloak v-show="singleShowSelect" class="single-select-left">
+                    <mu-icon-button v-cloak icon="navigate_before" tooltip-position="bottom-right" tooltip="收起" class="single-close-btn" @click="closeSingleShow"></mu-icon-button>
+                    <mu-select-field v-cloak v-show="singleTab == 'gruppe'" max-height="300" scroller hint-text="null" v-model="selectData.area.adminiVal" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="大队管辖区">
                         <mu-menu-item v-for="text,index in basicData.area.gruppe" :key="index" :value="text" :title="text" ></mu-menu-item>
                     </mu-select-field>
-                    <mu-select-field v-if="singleTab == 'administrative'" max-height="300" scroller hint-text="null" v-model="selectData.area.adminiVal" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="行政区">
-                        <mu-menu-item v-if="index != 0" v-for="text,index in basicData.area.administrative" :key="index" :value="text" :title="text" ></mu-menu-item>
+                    <mu-select-field v-cloak v-show="singleTab == 'administrative'" max-height="300" scroller hint-text="null" v-model="selectData.area.adminiVal" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="行政区">
+                        <mu-menu-item v-cloak v-show="index != 0" v-for="text,index in basicData.area.administrative" :key="index" :value="text" :title="text" ></mu-menu-item>
                     </mu-select-field>
-                    <mu-select-field v-if="singleTab == 'intersection'" max-height="300" scroller hint-text="null" v-model="selectData.area.adminiVal" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="交叉口">
+                    <mu-select-field v-cloak v-show="singleTab == 'intersection'" max-height="300" scroller hint-text="null" v-model="selectData.area.adminiVal" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="交叉口">
                         <mu-menu-item v-for="text,index in basicData.area.intersection" :key="index" :value="text" :title="text" ></mu-menu-item>
                     </mu-select-field>
-                    <mu-select-field v-if="singleTab == 'crossing'" max-height="300" scroller hint-text="null" v-model="selectData.area.adminiVal" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="路段">
+                    <mu-select-field v-cloak v-show="singleTab == 'crossing'" max-height="300" scroller hint-text="null" v-model="selectData.area.adminiVal" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="路段">
                         <mu-menu-item v-for="text,index in basicData.area.crossing" :key="index" :value="text" :title="text" ></mu-menu-item>
                     </mu-select-field>
                     <div class="mu-text-field-label label-class" style="padding-top: 12px;">选择分析的时间段</div>
@@ -184,8 +224,8 @@
                                     </mu-tbody>
                                 </mu-table>
                             </div>
-                            <div v-show="isChartShow" id="accHistogram" class="chart-class"></div>
-                            <div v-show="isChartShow" id="accPie" class="chart-class"></div>
+                            <div v-cloak v-show="isChartShow" id="accHistogram" class="chart-class"></div>
+                            <div v-cloak v-show="isChartShow" id="accPie" class="chart-class"></div>
                         </div>
                     <%--事故类型--%>
                         <div class="chart-type-class page-next" :style="chartStyle">
@@ -205,8 +245,8 @@
                                     </mu-tbody>
                                 </mu-table>
                             </div>
-                            <div v-show="isChartShow" id="accTypeHistogram" class="chart-class"></div>
-                            <div v-show="isChartShow" id="accTypePie" class="chart-class"></div>
+                            <div v-cloak v-show="isChartShow" id="accTypeHistogram" class="chart-class"></div>
+                            <div v-cloak v-show="isChartShow" id="accTypePie" class="chart-class"></div>
                         </div>
                     <%--天气--%>
                         <div class="chart-type-class page-next" :style="chartStyle">
@@ -226,8 +266,8 @@
                                     </mu-tbody>
                                 </mu-table>
                             </div>
-                            <div v-show="isChartShow" id="weaHistogram" class="chart-class"></div>
-                            <div v-show="isChartShow" id="weaPie" class="chart-class"></div>
+                            <div v-cloak v-show="isChartShow" id="weaHistogram" class="chart-class"></div>
+                            <div v-cloak v-show="isChartShow" id="weaPie" class="chart-class"></div>
                         </div>
                     <%--车辆类型--%>
                         <div class="chart-type-class page-next" :style="chartStyle">
@@ -247,29 +287,29 @@
                                     </mu-tbody>
                                 </mu-table>
                             </div>
-                            <div v-show="isChartShow" id="carHistogram" class="chart-class"></div>
-                            <div v-show="isChartShow" id="carPie" class="chart-class"></div>
+                            <div v-cloak v-show="isChartShow" id="carHistogram" class="chart-class"></div>
+                            <div v-cloak v-show="isChartShow" id="carPie" class="chart-class"></div>
                         </div>
                 </div>
             </div>
         </div>
         <div v-show="nowFuc == 'space'" v-cloak :style="bodyContent">
             <div class="time-body-left time-body-left-float no-print" :class="{'left-float-open': isFirstLoad && isShowItems, 'left-float-close': isFirstLoad && !isShowItems}">
-                <div v-if="!spaceShowSelect">
-                    <mu-icon-button icon="navigate_next" tooltip-position="bottom-right" tooltip="筛选条件" class="single-open-btn" @click="openSpaceShow"></mu-icon-button>
+                <div v-cloak v-show="!spaceShowSelect">
+                    <mu-icon-button v-cloak icon="navigate_next" tooltip-position="bottom-right" tooltip="筛选条件" class="single-open-btn" @click="openSpaceShow"></mu-icon-button>
                 </div>
-                <div v-if="spaceShowSelect" class="single-select-left">
-                    <mu-icon-button icon="navigate_before" tooltip-position="bottom-right" tooltip="收起" class="single-close-btn" @click="closeSpaceShow"></mu-icon-button>
+                <div v-cloak v-show="spaceShowSelect" class="single-select-left">
+                    <mu-icon-button v-cloak icon="navigate_before" tooltip-position="bottom-right" tooltip="收起" class="single-close-btn" @click="closeSpaceShow"></mu-icon-button>
                     <mu-select-field v-model="selectData.analysisObj" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="选择交叉口或路段">
                         <mu-menu-item v-for="text,index in basicData.analysisObj" :key="index" :value="text" :title="text" ></mu-menu-item>
                     </mu-select-field>
                     <div class="mu-text-field-label label-class">选择分析的区域</div>
                     <mu-radio label="行政区" name="area3" native-value="administrative" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 20px;" @change="areaRadioChange"></mu-radio>
                     <mu-radio label="大队" name="area3" native-value="gruppe" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 50px;" @change="areaRadioChange"></mu-radio>
-                    <mu-select-field v-if="selectData.area.type == 'gruppe'" max-height="300" scroller hint-text="null" v-model="selectData.area.gruppeVal" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="大队管辖区" multiple>
+                    <mu-select-field v-cloak v-show="selectData.area.type == 'gruppe'" max-height="300" scroller hint-text="null" v-model="selectData.area.gruppeVal" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="大队管辖区" multiple>
                         <mu-menu-item v-for="text,index in basicData.area.gruppe" :key="index" :value="text" :title="text" ></mu-menu-item>
                     </mu-select-field>
-                    <mu-select-field v-if="selectData.area.type == 'administrative'" max-height="300" scroller hint-text="null" v-model="selectData.area.adminiVal" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="行政管辖区">
+                    <mu-select-field v-cloak v-show="selectData.area.type == 'administrative'" max-height="300" scroller hint-text="null" v-model="selectData.area.adminiVal" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="行政管辖区">
                         <mu-menu-item v-for="text,index in basicData.area.administrative" :key="index" :value="text" :title="text" ></mu-menu-item>
                     </mu-select-field>
                     <div class="mu-text-field-label label-class" style="padding-top: 12px; display: inline-block">选择分析的时间段</div>
@@ -279,10 +319,10 @@
                     <div class="mu-text-field-label label-class">图形纵坐标选择</div>
                     <mu-radio label="事故数" name="ordinate1" native-value="accidentCount" :icon-class="{'icon-class': true}" v-model="selectData.yType"></mu-radio>
                     <mu-radio label="事故严重程度" name="ordinate1" native-value="accidentLevel" :icon-class="{'icon-class': true}" v-model="selectData.yType" style="margin-left: 20px;" @change="accidentLChange"></mu-radio>
-                    <mu-select-field v-if="selectData.yType == 'accidentLevel'" v-model="selectData.accidentalSev" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="事故严重程度" hint-text="null" multiple>
+                    <mu-select-field v-cloak v-show="selectData.yType == 'accidentLevel'" v-model="selectData.accidentalSev" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="事故严重程度" hint-text="null" multiple>
                         <mu-menu-item v-for="text,index in basicData.accidentalSev" :key="index" :value="text" :title="text" ></mu-menu-item>
                     </mu-select-field>
-                    <div v-if="selectData.yType == 'accidentCount'" style="height: 10px;"></div>
+                    <div v-cloak v-show="selectData.yType == 'accidentCount'" style="height: 10px;"></div>
                     <mu-raised-button label="细节筛选" icon="widgets" label-position="before" primary class="detail-two-btn" @click="details"></mu-raised-button>
                     <mu-icon-button tooltip="筛选结果" tooltip-position="bottom-right" icon="call_merge" class="right-btn" @click="spaceGet"></mu-icon-button>
                     <mu-icon-button tooltip="下载excel报告" tooltip-position="bottom-right" icon="file_download" class="right-btn" @click="spaceDown" style="margin-right: 13px;"></mu-icon-button>
@@ -293,7 +333,7 @@
                 <div id="spaceMap" class="map">
 
                 </div>
-                <div v-show="selectData.yType == 'accidentLevel'" style="position: absolute; left: 60px; top: 50px; height: 50px;">
+                <div v-cloak v-show="selectData.yType == 'accidentLevel'" style="position: absolute; left: 60px; top: 50px; height: 50px;">
                     <div class="mapbarchild">
                         <div style="margin: auto; width: 30px; height: 20px; background: red;"></div>
                         <p style="margin: auto; text-align: center; color: white;">总数</p>
@@ -319,22 +359,22 @@
         </div>
         <div v-show="nowFuc == 'time'" v-cloak :style="bodyContent">
             <div class="time-body-left time-body-left-float no-print" :class="{'left-float-open': isFirstLoad && isShowItems, 'left-float-close': isFirstLoad && !isShowItems}">
-                <div v-if="!timeShowSelect">
-                    <mu-icon-button icon="navigate_next" tooltip-position="bottom-right" tooltip="筛选条件" class="single-open-btn" @click="openTimeShow"></mu-icon-button>
-                    <mu-icon-button v-show="timeDownShow" tooltip="导出当前pdf报告" tooltip-position="bottom-right" icon="print" class="single-open-btn" class="right-btn" @click="timeChartPrint" style="margin-left: 10px;"></mu-icon-button>
+                <div v-cloak v-show="!timeShowSelect">
+                    <mu-icon-button v-cloak icon="navigate_next" tooltip-position="bottom-right" tooltip="筛选条件" class="single-open-btn" @click="openTimeShow"></mu-icon-button>
+                    <mu-icon-button v-cloak v-show="timeDownShow" tooltip="导出当前pdf报告" tooltip-position="bottom-right" icon="print" class="single-open-btn" class="right-btn" @click="timeChartPrint" style="margin-left: 10px;"></mu-icon-button>
                 </div>
-                <div v-if="timeShowSelect" class="single-select-left">
-                    <mu-icon-button icon="navigate_before" tooltip-position="bottom-right" tooltip="收起" class="single-close-btn" @click="closeTimeShow"></mu-icon-button>
+                <div v-cloak v-show="timeShowSelect" class="single-select-left">
+                    <mu-icon-button v-cloak icon="navigate_before" tooltip-position="bottom-right" tooltip="收起" class="single-close-btn" @click="closeTimeShow"></mu-icon-button>
                     <mu-select-field v-model="selectData.analysisObj" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="选择交叉口或路段">
                         <mu-menu-item v-for="text,index in basicData.analysisObj" :key="index" :value="text" :title="text" ></mu-menu-item>
                     </mu-select-field>
                     <div class="mu-text-field-label label-class">选择分析的区域</div>
                     <mu-radio label="行政区" name="area4" native-value="administrative" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 20px;" @change="areaRadioChange"></mu-radio>
                     <mu-radio label="大队" name="area4" native-value="gruppe" :icon-class="{'icon-class': true}" v-model="selectData.area.type" style="margin-left: 50px;" @change="areaRadioChange"></mu-radio>
-                    <mu-select-field v-if="selectData.area.type == 'gruppe'" max-height="300" scroller hint-text="null" v-model="selectData.area.gruppeVal" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="大队管辖区" multiple>
+                    <mu-select-field v-cloak v-show="selectData.area.type == 'gruppe'" max-height="300" scroller hint-text="null" v-model="selectData.area.gruppeVal" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="大队管辖区" multiple>
                         <mu-menu-item v-for="text,index in basicData.area.gruppe" :key="index" :value="text" :title="text" ></mu-menu-item>
                     </mu-select-field>
-                    <mu-select-field v-if="selectData.area.type == 'administrative'" max-height="300" scroller hint-text="null" v-model="selectData.area.adminiVal" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="行政管辖区">
+                    <mu-select-field v-cloak v-show="selectData.area.type == 'administrative'" max-height="300" scroller hint-text="null" v-model="selectData.area.adminiVal" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="行政管辖区">
                         <mu-menu-item v-for="text,index in basicData.area.administrative" :key="index" :value="text" :title="text" ></mu-menu-item>
                     </mu-select-field>
                     <div class="mu-text-field-label label-class" style="padding-top: 12px;">选择分析的时间段</div>
@@ -343,10 +383,10 @@
                     <div class="mu-text-field-label label-class">图形分析纵坐标选择</div>
                     <mu-radio label="事故数" name="ordinate2" native-value="accidentCount" :icon-class="{'icon-class': true}" v-model="selectData.yType"></mu-radio>
                     <mu-radio label="事故严重程度" name="ordinate2" native-value="accidentLevel" :icon-class="{'icon-class': true}" v-model="selectData.yType" style="margin-left: 20px;" @change="accidentLChange"></mu-radio>
-                    <mu-select-field v-if="selectData.yType == 'accidentLevel'" v-model="selectData.accidentalSev" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="事故严重程度" hint-text="null" multiple>
+                    <mu-select-field v-cloak v-show="selectData.yType == 'accidentLevel'" v-model="selectData.accidentalSev" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="事故严重程度" hint-text="null" multiple>
                         <mu-menu-item v-for="text,index in basicData.accidentalSev" :key="index" :value="text" :title="text" ></mu-menu-item>
                     </mu-select-field>
-                    <div v-if="selectData.yType == 'accidentCount'" style="height: 10px;"></div>
+                    <div v-cloak v-show="selectData.yType == 'accidentCount'" style="height: 10px;"></div>
                     <div class="mu-text-field-label label-class">图形分析时间精度选取</div>
                     <mu-radio label="年" name="timePre" native-value="1" :icon-class="{'icon-class': true}" v-model="selectData.timePrecision"></mu-radio>
                     <mu-radio label="月" name="timePre" native-value="2" :icon-class="{'icon-class': true}" v-model="selectData.timePrecision" style="margin-left: 35px;"></mu-radio>
@@ -375,6 +415,7 @@
     <mu-dialog v-cloak :open="loginDialog" title="泸州市交通事故数据分析系统" class="no-print" dialog-class="dialog" title-class="dialog-title" body-class="dialog-body" >
         <mu-text-field label="请输入您的用户名|警号" :full-width="true" label-float v-model="loginInfor.userName"></mu-text-field>
         <mu-text-field label="请输入您的密码" type="password" :full-width="true" label-float v-model="loginInfor.password"></mu-text-field>
+        <mu-flat-button v-show="isLogin" v-cloak slot="actions" primary @click="loginCancel" label="取消"></mu-flat-button>
         <mu-flat-button slot="actions" primary @click="loginConfirm" label="登录"></mu-flat-button>
     </mu-dialog>
 
@@ -407,7 +448,7 @@
         <mu-flat-button slot="actions" primary @click="detailConfirm" label="确认"></mu-flat-button>
     </mu-dialog>
 
-    <mu-dialog v-cloak :open="updateUserDialog" title="添加用户" class="no-print" dialog-class="dialog" title-class="dialog-title" body-class="dialog-body" @close="updateUserClose">
+    <mu-dialog v-cloak :open="updateUserDialog" title="修改用户信息" class="no-print" dialog-class="dialog" title-class="dialog-title" body-class="dialog-body" @close="updateUserClose">
         <mu-text-field v-model="userObj.name" label="用户名" :full-width="true" hint-text="null"></mu-text-field>
         <mu-text-field v-model="userObj.password" label="密码" :full-width="true" hint-text="null"></mu-text-field>
         <mu-select-field max-height="300" scroller hint-text="null" v-model="userObj.gruppe" :full-width="true" label="所属大队">
@@ -419,6 +460,12 @@
         </mu-select-field>
         <mu-flat-button slot="actions" primary @click="updateUserClose" label="取消"></mu-flat-button>
         <mu-flat-button slot="actions" primary @click="updateUserConfirm" label="确认"></mu-flat-button>
+    </mu-dialog>
+
+    <mu-dialog v-cloak :open="updateGruppeDialog" title="修改大队信息" class="no-print" dialog-class="dialog" title-class="dialog-title" body-class="dialog-body" @close="updateGruppeClose">
+        <mu-text-field v-model="gruppeObj.teamName" label="用户名" :full-width="true" hint-text="null"></mu-text-field>
+        <mu-flat-button slot="actions" primary @click="updateGruppeClose" label="取消"></mu-flat-button>
+        <mu-flat-button slot="actions" primary @click="updateGruppeConfirm" label="确认"></mu-flat-button>
     </mu-dialog>
 
     <mu-dialog v-cloak :open="addUserDialog" title="添加用户" class="no-print" dialog-class="dialog" title-class="dialog-title" body-class="dialog-body" @close="addUserClose">
@@ -436,6 +483,12 @@
         <mu-flat-button slot="actions" primary @click="addUserConfirm" label="确认"></mu-flat-button>
     </mu-dialog>
 
+    <mu-dialog v-cloak :open="addGruppeDialog" title="添加大队" class="no-print" dialog-class="dialog" title-class="dialog-title" body-class="dialog-body" @close="addGruppeClose">
+        <mu-text-field v-model="gruppeObj.teamName" label="用户名" :full-width="true" hint-text="null"></mu-text-field>
+        <mu-flat-button slot="actions" primary @click="addGruppeClose" label="取消"></mu-flat-button>
+        <mu-flat-button slot="actions" primary @click="addGruppeConfirm" label="确认"></mu-flat-button>
+    </mu-dialog>
+
     <mu-dialog v-cloak :open="deleteUserDialog" title="确定删除该用户" class="no-print" dialog-class="dialog" title-class="dialog-title" body-class="dialog-body" @close="deleteUserClose">
         <mu-flat-button slot="actions" primary @click="deleteUserClose" label="取消"></mu-flat-button>
         <mu-flat-button slot="actions" primary @click="deleteUserConfirm" label="确认"></mu-flat-button>
@@ -445,7 +498,7 @@
         <span :class="{'succeed-text': textFlag, 'failure-text': !textFlag}">{{ messageTop }}</span>
     </mu-popup>
 
-    <div v-show="showDialogLoading" v-cloak class="dialog-loading ">
+    <div v-if="showDialogLoading" v-cloak class="dialog-loading ">
         <table style="width: 100%; height: 100%;">
             <tr>
                 <td>

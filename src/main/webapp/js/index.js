@@ -117,6 +117,7 @@ var app = new Vue({
             password: ''
         },
         userInfor: null,
+        oldUserInfor: null,
         userObj: {
             name: '',
             password: '',
@@ -132,8 +133,8 @@ var app = new Vue({
             title: ['ID', '用户名', '密码', '所属大队', '管理员'],
             list: null
         },
-        pageBefore: true,
-        pageNext: true,
+        userPageBefore: true,
+        userPageNext: true,
         addUserDialog: false,
         deleteUserDialog: false,
         courseUser: {
@@ -141,6 +142,24 @@ var app = new Vue({
             obj: null
         },
         updateUserDialog: false,
+
+        gruppeObj: {
+            teamName: ''
+        },
+        courseGruppe: {
+            index: -1,
+            obj: null
+        },
+        gruppePage: {
+            num: 1,
+            size: 5,
+            title: ['ID', '大队名称'],
+            list: null
+        },
+        gruppePageBefore: true,
+        gruppePageNext: true,
+        addGruppeDialog: false,
+        updateGruppeDialog: false,
 
         isFirstLoad: true,
         isShowItems: true,
@@ -252,21 +271,21 @@ var app = new Vue({
                 that.showDialogLoading = false;
                 if(allData.code == 200){
                     if(that.userPage.size * that.userPage.num >= allData.data.total){
-                        that.pageNext = true;
+                        that.userPageNext = true;
                     }
                     else{
-                        that.pageNext = false;
+                        that.userPageNext = false;
                     }
                     if(that.userPage.num = 1){
-                        that.pageBefore = true;
+                        that.userPageBefore = true;
                     }
                     else{
-                        that.pageBefore = false;
+                        that.userPageBefore = false;
                     }
                     that.$set(that.userPage, 'list', allData.data.rows);
                 }
                 else{
-                    that.messageTop = '数据获取失败！';
+                    that.messageTop = allData.message;
                     that.textFlag = false;
                     that.showMessageTop = true;
                 }
@@ -355,7 +374,7 @@ var app = new Vue({
                     that.getPageUser(that.userPage.num, that.userPage.size);
                 }
                 else{
-                    that.messageTop = '用户添加失败！';
+                    that.messageTop = allData.message;
                     that.textFlag = false;
                     that.showMessageTop = true;
                 }
@@ -387,7 +406,6 @@ var app = new Vue({
                 }
             }).then(function (response) {
                 var allData = response.data;
-                console.log(allData);
                 that.showDialogLoading = false;
                 if(allData.code == 200){
                     that.addUserDialog = false;
@@ -397,7 +415,7 @@ var app = new Vue({
                     that.getPageUser(that.userPage.num, that.userPage.size);
                 }
                 else{
-                    that.messageTop = '用户删除失败！';
+                    that.messageTop = allData.message;
                     that.textFlag = false;
                     that.showMessageTop = true;
                 }
@@ -454,7 +472,7 @@ var app = new Vue({
                     that.userPage.list[that.courseUser.index].teamName = that.userObj.gruppe;
                 }
                 else{
-                    that.messageTop = '用户修改失败！';
+                    that.messageTop = allData.message;
                     that.textFlag = false;
                     that.showMessageTop = true;
                 }
@@ -473,18 +491,174 @@ var app = new Vue({
             });
         },
 
-        pageBeforeClick: function () {
+        getPageGruppe: function (pageNum, pageSize) {
+            this.showDialogLoading = true;
+            var that = this;
+            var url = webBase + '/teams';
+            axios.get(url, {
+                params: {
+                    pageNum : pageNum,
+                    pageSize: pageSize
+                }
+            }).then(function (response) {
+                var allData = response.data;
+                that.showDialogLoading = false;
+                if(allData.code == 200){
+                    if(that.gruppePage.size * that.gruppePage.num >= that.basicData.area.gruppe.length){
+                        that.gruppePageNext = true;
+                    }
+                    else{
+                        that.gruppePageNext = false;
+                    }
+                    if(that.gruppePage.num = 1){
+                        that.gruupePageBefore = true;
+                    }
+                    else{
+                        that.gruupePageBefore = false;
+                    }
+                    that.$set(that.gruppePage, 'list', allData.data);
+                }
+                else{
+                    that.messageTop = allData.message;
+                    that.textFlag = false;
+                    that.showMessageTop = true;
+                }
+            }).catch(function (error) {
+                that.showDialogLoading = false;
+
+                that.messageTop = '系统错误！';
+                that.textFlag = false;
+                that.showMessageTop = true;
+                console.log(error);
+            });
+        },
+        resetGruppeObj: function () {
+            this.gruppeObj = {
+                teamName: ''
+            };
+        },
+        checkGruppeObj: function () {
+            if(this.gruppeObj.teamName == ''){
+                this.messageTop = "大队名称不可为空！";
+                this.textFlag = false;
+                this.showMessageTop = true;
+                return false;
+            }
+            return true;
+        },
+        addGruppeDialogClick: function () {
+            this.resetGruppeObj();
+            this.addGruppeDialog = true;
+        },
+        addGruppeClose: function () {
+            this.addGruppeDialog = false;
+        },
+        addGruppeConfirm: function () {
+            if(this.checkGruppeObj()){
+                this.addGruppe();
+            }
+        },
+        addGruppe: function () {
+            this.showDialogLoading = true;
+            var that = this;
+            var url = webBase + '/teams';
+            var obj = {
+                teamName: this.gruppeObj.teamName
+            };
+            axios.post(url, obj).then(function (response) {
+                var allData = response.data;
+                console.log(allData);
+                that.showDialogLoading = false;
+                if(allData.code == 200){
+                    that.addGruppeDialog = false;
+                    that.messageTop = '大队添加成功！';
+                    that.textFlag = true;
+                    that.showMessageTop = true;
+                    that.basicData.area.gruppe.length++;
+                    that.getTeams();
+                    that.getPageGruppe(that.gruppePage.num, that.gruppePage.size);
+                }
+                else{
+                    that.messageTop = allData.message;
+                    that.textFlag = false;
+                    that.showMessageTop = true;
+                }
+            }).catch(function (error) {
+                that.showDialogLoading = false;
+
+                that.messageTop = '大队添加失败！';
+                that.textFlag = false;
+                that.showMessageTop = true;
+                console.log(error);
+            });
+        },
+        updateGruppeClose: function () {
+            this.updateGruppeDialog = false;
+        },
+        updateGruppeConfirm: function () {
+            this.updateGruppeDialog = false;
+            this.updateGruppe();
+        },
+        updateGruppe: function () {
+            this.showDialogLoading = true;
+            var that = this;
+            var url = webBase + '/teams';
+            var obj = {
+                id: this.courseGruppe.obj.id,
+                teamName: this.gruppeObj.teamName
+            };
+            axios.patch(url, obj).then(function (response) {
+                var allData = response.data;
+                console.log(allData);
+                that.showDialogLoading = false;
+                if(allData.code == 200){
+                    that.updateGruppeDialog = false;
+                    that.messageTop = '大队修改成功！';
+                    that.textFlag = true;
+                    that.showMessageTop = true;
+                    that.gruppePage.list[that.courseGruppe.index].teamName = that.gruppeObj.teamName;
+                    that.getTeams();
+                }
+                else{
+                    that.messageTop = allData.message;
+                    that.textFlag = false;
+                    that.showMessageTop = true;
+                }
+
+                that.courseGruppe.index = -1;
+                that.courseGruppe.obj = null;
+            }).catch(function (error) {
+                that.showDialogLoading = false;
+
+                that.messageTop = '用户修改失败！';
+                that.textFlag = false;
+                that.showMessageTop = true;
+                console.log(error);
+
+                that.courseGruppe.index = -1;
+                that.courseGruppe.obj = null;
+            });
+        },
+
+        userPageBeforeClick: function () {
             this.userPage.num++;
             this.getPageUser(this.userPage.num, this.userPage.size);
         },
-        pageNextClick: function () {
+        userPageNextClick: function () {
             this.userPage.num--;
             this.getPageUser(this.userPage.num, this.userPage.size);
+        },
+        gruppePageBeforeClick: function () {
+            this.gruppePage.num++;
+            this.getPageGruppe(this.gruppePage.num, this.gruppePage.size);
+        },
+        gruppePageNextClick: function () {
+            this.gruppePage.num--;
+            this.getPageGruppe(this.gruppePage.num, this.gruppePage.size);
         },
 
         cellUserClick: function (rowIndex, columnName, td, tr) {
             var user = this.userPage.list[rowIndex];
-            console.log(user);
             if(columnName == 'delete'){
                 this.courseUser.index = rowIndex;
                 this.courseUser.obj = user;
@@ -500,6 +674,16 @@ var app = new Vue({
                 this.updateUserDialog = true;
             }
         },
+        cellGruppeClick: function (rowIndex, columnName, td, tr) {
+            var gruppe = this.gruppePage.list[rowIndex];
+            console.log(gruppe);
+            if(columnName == 'update'){
+                this.courseGruppe.index = rowIndex;
+                this.courseGruppe.obj = gruppe;
+                this.gruppeObj.teamName = gruppe.teamName;
+                this.updateGruppeDialog = true;
+            }
+        },
 
         checkLogin: function () {
             if(this.userInfor == null){
@@ -511,9 +695,12 @@ var app = new Vue({
             this.loginDialog = true;
         },
         logout: function () {
-            this.userInfor = null;
-            this.isSupper = false;
-            this.isLogin = false;
+            this.oldUserInfor = {
+                userName: this.loginInfor.userName,
+                password: this.loginInfor.password
+            };
+            // this.userInfor = null;
+            // this.isLogin = false;
             this.loginDialog = true;
         },
         loginConfirm: function () {
@@ -527,13 +714,16 @@ var app = new Vue({
             }).then(function (response) {
                 that.showDialogLoading = false;
                 if(response.data.code != 200){
-                    that.messageTop = "账号或密码输入错误，请重新登录！";
+                    that.messageTop = allData.message;
                     that.textFlag = false;
                     that.showMessageTop = true;
+                    this.isSupper = false;
+                    that.isLogin = false;
                 }
                 else{
                     that.userInfor = response.data.data;
                     that.isSupper = that.userInfor.issuper == 1 ? true : false;
+                    that.nowFuc = 'black-point';
                     that.loginDialog = false;
                     that.isLogin = true;
                     that.messageTop = "登录成功！";
@@ -542,7 +732,9 @@ var app = new Vue({
                 }
             }).catch(function (error) {
                 that.showDialogLoading = false;
+                this.isSupper = false;
 
+                that.isLogin = false;
                 that.messageTop = '系统错误！';
                 that.textFlag = false;
                 that.showMessageTop = true;
@@ -551,6 +743,7 @@ var app = new Vue({
         },
         loginCancel: function () {
             this.loginDialog = false;
+            this.loginInfor = this.oldUserInfor;
         },
         details: function () {
             this.detailDialog = true;
@@ -575,6 +768,12 @@ var app = new Vue({
             if(this.nowFuc != 'supper-user'){
                 this.nowFuc = 'supper-user';
                 this.getPageUser(1, this.userPage.size);
+            }
+        },
+        gruppeInfor: function () {
+            if(this.nowFuc != 'gruppe-infor'){
+                this.nowFuc = 'gruppe-infor';
+                this.getPageGruppe(1, this.gruppePage.size);
             }
         },
         blackPointDiagnose: function () {
@@ -2396,6 +2595,7 @@ var app = new Vue({
         },
         rightStyle: function () {
             this.userPage.size = parseInt((this.wrapHeight - 15 - 20 - 50 - 57 - 50) / 48);
+            this.gruppePage.size = this.userPage.size;
             return {
                 'width': this.wrapWidth - 30 - (this.isShowItems ? 256 : 8) + 'px',
                 'height': this.wrapHeight - 15 + 'px'
