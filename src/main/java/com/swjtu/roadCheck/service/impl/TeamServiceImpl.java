@@ -101,7 +101,10 @@ public class TeamServiceImpl implements ITeamService {
      *
      * @param team 大队对象
      */
-    public void updateTeam(Team team) {
+    public void updateTeam(Team team) throws  Exception{
+
+        if(team.getId() == null)
+            throw new ReqParmIncorException();
 
         TeamExample teamExample = new TeamExample();
         teamExample.createCriteria().andTeamNameEqualTo(team.getTeamName());

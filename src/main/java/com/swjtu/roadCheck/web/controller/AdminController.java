@@ -81,7 +81,7 @@ public class AdminController {
      * @return
      */
     @RequestMapping(value = "", method = RequestMethod.PATCH)
-    public JsonResult updateAdmin(@RequestBody Admin admin){
+    public JsonResult updateAdmin(@RequestBody Admin admin) throws Exception{
         adminService.updateAdmin(admin);
         return JsonResult.build(StatusCode.SUCCESS);
     }
