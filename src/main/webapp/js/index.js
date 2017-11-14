@@ -276,7 +276,7 @@ var app = new Vue({
                     else{
                         that.userPageNext = false;
                     }
-                    if(that.userPage.num = 1){
+                    if(that.userPage.num <= 1){
                         that.userPageBefore = true;
                     }
                     else{
@@ -437,7 +437,6 @@ var app = new Vue({
             this.updateUserDialog = false;
         },
         updateUserConfirm: function () {
-            this.updateUserDialog = false;
             this.updateUser();
         },
         updateUser: function () {
@@ -476,8 +475,6 @@ var app = new Vue({
                     that.textFlag = false;
                     that.showMessageTop = true;
                 }
-                that.courseUser.index = -1;
-                that.courseUser.obj = null;
             }).catch(function (error) {
                 that.showDialogLoading = false;
 
@@ -485,16 +482,13 @@ var app = new Vue({
                 that.textFlag = false;
                 that.showMessageTop = true;
                 console.log(error);
-
-                that.courseUser.index = -1;
-                that.courseUser.obj = null;
             });
         },
 
         getPageGruppe: function (pageNum, pageSize) {
             this.showDialogLoading = true;
             var that = this;
-            var url = webBase + '/teams';
+            var url = webBase + '/teams/pageQuery';
             axios.get(url, {
                 params: {
                     pageNum : pageNum,
@@ -504,19 +498,19 @@ var app = new Vue({
                 var allData = response.data;
                 that.showDialogLoading = false;
                 if(allData.code == 200){
-                    if(that.gruppePage.size * that.gruppePage.num >= that.basicData.area.gruppe.length){
+                    if(that.gruppePage.size * that.gruppePage.num >= allData.data.total){
                         that.gruppePageNext = true;
                     }
                     else{
                         that.gruppePageNext = false;
                     }
-                    if(that.gruppePage.num = 1){
-                        that.gruupePageBefore = true;
+                    if(that.gruppePage.num <= 1){
+                        that.gruppePageBefore = true;
                     }
                     else{
-                        that.gruupePageBefore = false;
+                        that.gruppePageBefore = false;
                     }
-                    that.$set(that.gruppePage, 'list', allData.data);
+                    that.$set(that.gruppePage, 'list', allData.data.rows);
                 }
                 else{
                     that.messageTop = allData.message;
@@ -596,7 +590,6 @@ var app = new Vue({
             this.updateGruppeDialog = false;
         },
         updateGruppeConfirm: function () {
-            this.updateGruppeDialog = false;
             this.updateGruppe();
         },
         updateGruppe: function () {
@@ -624,9 +617,6 @@ var app = new Vue({
                     that.textFlag = false;
                     that.showMessageTop = true;
                 }
-
-                that.courseGruppe.index = -1;
-                that.courseGruppe.obj = null;
             }).catch(function (error) {
                 that.showDialogLoading = false;
 
@@ -634,26 +624,23 @@ var app = new Vue({
                 that.textFlag = false;
                 that.showMessageTop = true;
                 console.log(error);
-
-                that.courseGruppe.index = -1;
-                that.courseGruppe.obj = null;
             });
         },
 
         userPageBeforeClick: function () {
-            this.userPage.num++;
-            this.getPageUser(this.userPage.num, this.userPage.size);
-        },
-        userPageNextClick: function () {
             this.userPage.num--;
             this.getPageUser(this.userPage.num, this.userPage.size);
         },
+        userPageNextClick: function () {
+            this.userPage.num++;
+            this.getPageUser(this.userPage.num, this.userPage.size);
+        },
         gruppePageBeforeClick: function () {
-            this.gruppePage.num++;
+            this.gruppePage.num--;
             this.getPageGruppe(this.gruppePage.num, this.gruppePage.size);
         },
         gruppePageNextClick: function () {
-            this.gruppePage.num--;
+            this.gruppePage.num++;
             this.getPageGruppe(this.gruppePage.num, this.gruppePage.size);
         },
 
@@ -712,6 +699,7 @@ var app = new Vue({
                 name: that.loginInfor.userName,
                 password: that.loginInfor.password
             }).then(function (response) {
+                var allData = response.data;
                 that.showDialogLoading = false;
                 if(response.data.code != 200){
                     that.messageTop = allData.message;
@@ -721,7 +709,7 @@ var app = new Vue({
                     that.isLogin = false;
                 }
                 else{
-                    that.userInfor = response.data.data;
+                    that.userInfor = allData.data;
                     that.isSupper = that.userInfor.issuper == 1 ? true : false;
                     that.nowFuc = 'black-point';
                     that.loginDialog = false;

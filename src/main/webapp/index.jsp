@@ -27,7 +27,7 @@
                 <mu-list-item slot="nested" title="用户信息" :class="{'item-active': nowFuc=='supper-user'}" @click="userAdmin">
                     <mu-icon slot="left" value="grade"></mu-icon>
                 </mu-list-item>
-                <mu-list-item slot="nested" title="空间分析" :class="{'item-active': nowFuc=='gruppe-infor'}" @click="gruppeInfor">
+                <mu-list-item slot="nested" title="大队信息" :class="{'item-active': nowFuc=='gruppe-infor'}" @click="gruppeInfor">
                     <mu-icon slot="left" value="grade"></mu-icon>
                 </mu-list-item>
             </mu-list-item>
