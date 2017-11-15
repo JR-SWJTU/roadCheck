@@ -15,6 +15,18 @@ public class Accidentdata {
 
     private String carcollisiontype;
 
+    private String teamName;
+
+    private String lumianlev;
+
+    private String jcktype;
+
+    private String tianqicondition;
+
+    private String workplacerel;
+
+    private String leixing;
+
     private String accidencnumber;
 
     private String city;
@@ -103,6 +115,54 @@ public class Accidentdata {
 
     public void setCarcollisiontype(String carcollisiontype) {
         this.carcollisiontype = carcollisiontype == null ? null : carcollisiontype.trim();
+    }
+
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public void setTeamName(String teamName) {
+        this.teamName = teamName == null ? null : teamName.trim();
+    }
+
+    public String getLumianlev() {
+        return lumianlev;
+    }
+
+    public void setLumianlev(String lumianlev) {
+        this.lumianlev = lumianlev == null ? null : lumianlev.trim();
+    }
+
+    public String getJcktype() {
+        return jcktype;
+    }
+
+    public void setJcktype(String jcktype) {
+        this.jcktype = jcktype == null ? null : jcktype.trim();
+    }
+
+    public String getTianqicondition() {
+        return tianqicondition;
+    }
+
+    public void setTianqicondition(String tianqicondition) {
+        this.tianqicondition = tianqicondition == null ? null : tianqicondition.trim();
+    }
+
+    public String getWorkplacerel() {
+        return workplacerel;
+    }
+
+    public void setWorkplacerel(String workplacerel) {
+        this.workplacerel = workplacerel == null ? null : workplacerel.trim();
+    }
+
+    public String getLeixing() {
+        return leixing;
+    }
+
+    public void setLeixing(String leixing) {
+        this.leixing = leixing == null ? null : leixing.trim();
     }
 
     public String getAccidencnumber() {
@@ -285,6 +345,13 @@ public class Accidentdata {
         sb.append(", lng=").append(lng);
         sb.append(", isWorkday=").append(isWorkday);
         sb.append(", carcollisiontype=").append(carcollisiontype);
+
+        sb.append(", teamName=").append(teamName);
+        sb.append(", lumianlev=").append(lumianlev);
+        sb.append(", jcktype=").append(jcktype);
+        sb.append(", tianqicondition=").append(tianqicondition);
+        sb.append(", workplacerel=").append(workplacerel);
+        sb.append(", leixing=").append(leixing);
         sb.append(", accidencnumber=").append(accidencnumber);
         sb.append(", city=").append(city);
         sb.append(", xianqu=").append(xianqu);
@@ -328,6 +395,14 @@ public class Accidentdata {
             && (this.getLng() == null ? other.getLng() == null : this.getLng().equals(other.getLng()))
             && (this.getIsWorkday() == null ? other.getIsWorkday() == null : this.getIsWorkday().equals(other.getIsWorkday()))
             && (this.getCarcollisiontype() == null ? other.getCarcollisiontype() == null : this.getCarcollisiontype().equals(other.getCarcollisiontype()))
+
+            && (this.getTeamName() == null ? other.getTeamName() == null : this.getTeamName().equals(other.getTeamName()))
+            && (this.getLumianlev() == null ? other.getLumianlev() == null : this.getLumianlev().equals(other.getLumianlev()))
+            && (this.getJcktype() == null ? other.getJcktype() == null : this.getJcktype().equals(other.getJcktype()))
+            && (this.getTianqicondition() == null ? other.getTianqicondition() == null : this.getTianqicondition().equals(other.getTianqicondition()))
+            && (this.getWorkplacerel() == null ? other.getWorkplacerel() == null : this.getWorkplacerel().equals(other.getWorkplacerel()))
+            && (this.getLeixing() == null ? other.getLeixing() == null : this.getLeixing().equals(other.getLeixing()))
+
             && (this.getAccidencnumber() == null ? other.getAccidencnumber() == null : this.getAccidencnumber().equals(other.getAccidencnumber()))
             && (this.getCity() == null ? other.getCity() == null : this.getCity().equals(other.getCity()))
             && (this.getXianqu() == null ? other.getXianqu() == null : this.getXianqu().equals(other.getXianqu()))
@@ -361,6 +436,13 @@ public class Accidentdata {
         result = prime * result + ((getLng() == null) ? 0 : getLng().hashCode());
         result = prime * result + ((getIsWorkday() == null) ? 0 : getIsWorkday().hashCode());
         result = prime * result + ((getCarcollisiontype() == null) ? 0 : getCarcollisiontype().hashCode());
+
+        result = prime * result + ((getTeamName() == null) ? 0 : getTeamName().hashCode());
+        result = prime * result + ((getLumianlev() == null) ? 0 : getLumianlev().hashCode());
+        result = prime * result + ((getJcktype() == null) ? 0 : getJcktype().hashCode());
+        result = prime * result + ((getTianqicondition() == null) ? 0 : getTianqicondition().hashCode());
+        result = prime * result + ((getWorkplacerel() == null) ? 0 : getWorkplacerel().hashCode());
+        result = prime * result + ((getLeixing() == null) ? 0 : getLeixing().hashCode());
         result = prime * result + ((getAccidencnumber() == null) ? 0 : getAccidencnumber().hashCode());
         result = prime * result + ((getCity() == null) ? 0 : getCity().hashCode());
         result = prime * result + ((getXianqu() == null) ? 0 : getXianqu().hashCode());
