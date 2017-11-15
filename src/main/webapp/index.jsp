@@ -444,7 +444,7 @@
         <mu-select-field v-model="selectData.hitAndRun" :full-width="true" label="肇事逃逸">
             <mu-menu-item v-for="text,index in basicData.hitAndRun" :key="index" :value="text" :title="text" ></mu-menu-item>
         </mu-select-field>
-        <mu-flat-button slot="actions" primary @click="detailClose" label="取消"></mu-flat-button>
+        <mu-flat-button slot="actions" primary @click="detailClose" label="清空"></mu-flat-button>
         <mu-flat-button slot="actions" primary @click="detailConfirm" label="确认"></mu-flat-button>
     </mu-dialog>
 

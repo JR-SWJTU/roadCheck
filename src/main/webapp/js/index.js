@@ -266,7 +266,7 @@ var app = new Vue({
             else if(val == '路段'){
                 this.isIntersectionType = true;
             }
-            this.selectData.intersectionType = 'null';
+            this.selectData.intersectionType = 'null'
         },
 
         getPageUser: function (pageNum, pageSize) {
@@ -752,6 +752,13 @@ var app = new Vue({
             this.detailDialog = false;
         },
         detailClose: function () {
+            this.selectData.roadGrade = 'null';
+            this.selectData.carCollisionType = 'null';
+            this.selectData.weather = 'null';
+            this.selectData.workZone.flag = 'null';
+            this.selectData.intersectionType = 'null';
+            this.selectData.vehicleType = 'null';
+            this.selectData.hitAndRun = 'null';
             this.detailDialog = false;
         },
         information: function () {
