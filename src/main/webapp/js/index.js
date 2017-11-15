@@ -17,6 +17,8 @@ var app = new Vue({
 
         showDialogLoading: false,
 
+        isIntersectionType: false,
+
         basicData: {
             analysisObj: ['交叉口', '路段'],
             accidentalSev: ['仅财损', '轻伤', '重伤', '死亡'],
@@ -255,6 +257,16 @@ var app = new Vue({
             }).catch(function (error) {
                 console.log(error);
             });
+        },
+
+        analysisObjChange: function (val) {
+            if(val == '交叉口'){
+                this.isIntersectionType = false;
+            }
+            else if(val == '路段'){
+                this.isIntersectionType = true;
+            }
+            this.selectData.intersectionType = 'null'
         },
 
         getPageUser: function (pageNum, pageSize) {
@@ -740,13 +752,13 @@ var app = new Vue({
             this.detailDialog = false;
         },
         detailClose: function () {
-            this.selectData.roadGrade = null;
-            this.selectData.carCollisionType = null;
-            this.selectData.weather = null;
-            this.selectData.workZone.flag = '否'
-            this.selectData.intersectionType = null;
-            this.selectData.vehicleType = null;
-            this.selectData.hitAndRun = '否';
+            this.selectData.roadGrade = 'null';
+            this.selectData.carCollisionType = 'null';
+            this.selectData.weather = 'null';
+            this.selectData.workZone.flag = 'null';
+            this.selectData.intersectionType = 'null';
+            this.selectData.vehicleType = 'null';
+            this.selectData.hitAndRun = 'null';
             this.detailDialog = false;
         },
         information: function () {
@@ -873,6 +885,7 @@ var app = new Vue({
             }
         },
         resetObj: function () {
+            this.isIntersectionType = false;
             this.selectData = {
                 analysisObj: '交叉口', //'交叉口',
                 area: {
