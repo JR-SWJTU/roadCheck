@@ -147,11 +147,8 @@ public class AdminServiceImpl implements IAdminService {
 
         AdminExample adminExample = new AdminExample();
         adminExample.createCriteria().andNameEqualTo(admin.getName());
-        List<Admin> list = new ArrayList<Admin>();
-        list = adminMapper.selectByExample(adminExample);
-
         //账号存在
-        if(list.size() >= 2){
+        if(adminMapper.selectByExample(adminExample).size() >= 1 ){
             throw new CustomException("用户名已经存在");
         }
 
