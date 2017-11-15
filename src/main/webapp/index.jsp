@@ -300,7 +300,7 @@
                 </div>
                 <div v-cloak v-show="spaceShowSelect" class="single-select-left">
                     <mu-icon-button v-cloak icon="navigate_before" tooltip-position="bottom-right" tooltip="收起" class="single-close-btn" @click="closeSpaceShow"></mu-icon-button>
-                    <mu-select-field v-model="selectData.analysisObj" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="选择交叉口或路段">
+                    <mu-select-field v-model="selectData.analysisObj" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="选择交叉口或路段" @change="analysisObjChange">
                         <mu-menu-item v-for="text,index in basicData.analysisObj" :key="index" :value="text" :title="text" ></mu-menu-item>
                     </mu-select-field>
                     <div class="mu-text-field-label label-class">选择分析的区域</div>
@@ -365,7 +365,7 @@
                 </div>
                 <div v-cloak v-show="timeShowSelect" class="single-select-left">
                     <mu-icon-button v-cloak icon="navigate_before" tooltip-position="bottom-right" tooltip="收起" class="single-close-btn" @click="closeTimeShow"></mu-icon-button>
-                    <mu-select-field v-model="selectData.analysisObj" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="选择交叉口或路段">
+                    <mu-select-field v-model="selectData.analysisObj" :label-class="{'label-class': true}" :underline-class="{'underline-class': true}" :drop-down-icon-class="{'drop-down-icon-class': true}" label="选择交叉口或路段" @change="analysisObjChange">
                         <mu-menu-item v-for="text,index in basicData.analysisObj" :key="index" :value="text" :title="text" ></mu-menu-item>
                     </mu-select-field>
                     <div class="mu-text-field-label label-class">选择分析的区域</div>
@@ -435,7 +435,7 @@
         <mu-select-field v-model="selectData.workZone.flag" :full-width="true" label="作业区">
             <mu-menu-item v-for="text,index in basicData.workZone.flag" :key="index" :value="text" :title="text" ></mu-menu-item>
         </mu-select-field>
-        <mu-select-field v-model="selectData.intersectionType" :full-width="true" label="交叉口类型">
+        <mu-select-field v-model="selectData.intersectionType" :full-width="true" label="交叉口类型" :disabled="isIntersectionType">
             <mu-menu-item v-for="text,index in basicData.intersectionType" :key="index" :value="text" :title="text" ></mu-menu-item>
         </mu-select-field>
         <mu-select-field v-model="selectData.vehicleType" :full-width="true" label="车辆类型">
