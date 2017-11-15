@@ -4,19 +4,22 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.swjtu.roadCheck.mapper.AccidentMapperCustom">
 
-
-    <!--多重搜索条件下某路段发生的事故数量搜索-->
-    <select id="multiConditionQueryAccidentForSGS" parameterType="Map"
-            resultType="com.swjtu.roadCheck.dto.Accident">
-
-        SELECT
-        count(*) AS num,diMingBeiZhu,lat,lng
-        FROM
-
-        accidentdata
+    <sql id="queryConditionSet">
         <where>
+            <if test="propertyLoss!=null">
+                accidentdata.yanZhongCd = '仅财损'
+            </if>
+            <if test="slightInjury!=null">
+                OR accidentdata.yanZhongCd = '轻伤'
+            </if>
+            <if test="severInjury!=null">
+                OR accidentdata.yanZhongCd = '重伤'
+            </if>
+            <if test="dead!=null">
+                OR accidentdata.yanZhongCd = '死亡'
+            </if>
             <if test="carCollisionType!=null">
-                carCollisionType = #{carCollisionType}
+                and carCollisionType = #{carCollisionType}
             </if>
             <if test="troEscape!=null">
                 AND accidentdata.taoYi = #{troEscape}
@@ -29,16 +32,19 @@
             </if>
 
             <if test="roadLevel!=null">
-                and e.luMianLev = #{roadLevel}
+                and luMianLev = #{roadLevel}
             </if>
             <if test="weather!=null">
-                AND e.Tianqicondition = #{weather}
+                AND Tianqicondition = #{weather}
             </if>
             <if test="workPlaceRel != null">
-                AND e.workPlaceRel = #{workPlaceRel}
+                AND workPlaceRel = #{workPlaceRel}
             </if>
             <if test="intersectionType != null">
-                AND e.Jcktype = #{intersectionType}
+                AND Jcktype = #{intersectionType}
+            </if>
+            <if test="intersectionType == null">
+                AND Jcktype != '非交叉口'
             </if>
 
             <if test="teamName!=null">
@@ -58,7 +64,17 @@
                 and Leixing = #{carType}
             </if>
         </where>
+    </sql>
 
+    <!--多重搜索条件下某路段发生的事故数量搜索-->
+    <select id="multiConditionQueryAccidentForSGS" parameterType="Map"
+            resultType="com.swjtu.roadCheck.dto.Accident">
+
+        SELECT
+        count(*) AS num,diMingBeiZhu,lat,lng
+        FROM
+        accidentdata
+        <include refid="queryConditionSet"/>
         GROUP BY diMingBeiZhu
     </select>
 
@@ -82,131 +98,8 @@
         SELECT
         count(*) as num,diMingBeiZhu,yanZhongCd,lat,lng
         FROM
-
-        (
-        SELECT
-        *
-        FROM
-        <if test="roadLevel!=null || weather!=null || workPlaceRel != null || intersectionType != null">
-            (
-            SELECT
-            *
-            FROM
-            (
-            SELECT
-            e.emnumber
-            FROM
-            emdata e
-            <where>
-                <if test="roadLevel!=null">
-                    e.luMianLev = #{roadLevel}
-                </if>
-                <if test="weather!=null">
-                    AND e.Tianqicondition = #{weather}
-                </if>
-                <if test="workPlaceRel != null">
-                    AND e.workPlaceRel = #{workPlaceRel}
-                </if>
-                <if test="intersectionType != null">
-                    AND e.Jcktype = #{intersectionType}
-                </if>
-            </where>
-            ) eResult INNER JOIN
-        </if>
-
-        <if test="teamName!=null || startTime!=null || endTime!=null">
-            (
-            SELECT
-            *
-            FROM
-            accidencecollectiondata
-            <where>
-                <if test="teamName!=null">
-                    team_name in
-                    <foreach collection="teamName" index="index" item="teamName" open="(" separator="," close=")">
-                        #{teamName}
-                    </foreach>
-                </if>
-                <if test="startTime!=null">
-                    AND riqi <![CDATA[ >= ]]> #{startTime}
-                </if>
-                <if test="endTime!=null">
-                    AND riqi <![CDATA[ <= ]]> #{endTime}
-                </if>
-            </where>
-            ) acd
-        </if>
-
-
-        <if test="roadLevel!=null || weather!=null || workPlaceRel != null || intersectionType != null">
-            ON eResult.emnumber = acd.environmentnumber
-            ) acdResult
-        </if>
-
-
-        <if test="teamName!=null || startTime!=null || endTime!=null">
-            INNER JOIN
-        </if>
-
-        (
-        SELECT
-        accidencnumber,
-        diMingBeiZhu,
-        yanZhongCd,lat,lng
-        FROM
         accidentdata
-        <where>
-            <if test="propertyLoss!=null">
-                accidentdata.yanZhongCd = '仅财损'
-            </if>
-            <if test="slightInjury!=null">
-                OR accidentdata.yanZhongCd = '轻伤'
-            </if>
-            <if test="severInjury!=null">
-                OR accidentdata.yanZhongCd = '重伤'
-            </if>
-            <if test="dead!=null">
-                OR accidentdata.yanZhongCd = '死亡'
-            </if>
-
-            <if test="carCollisionType!=null">
-                and accidentdata.carCollisionType = #{carCollisionType}
-            </if>
-            <if test="troEscape!=null">
-                AND accidentdata.taoYi = #{troEscape}
-            </if>
-            <if test="areaName!=null">
-                AND accidentdata.xianQu = #{areaName}
-            </if>
-            <if test="isWorkDay!=null">
-                AND accidentdata.is_workday = #{isWorkDay}
-            </if>
-        </where>
-        ) aResult
-
-        <if test="teamName!=null || startTime!=null || endTime!=null">
-            <if test="roadLevel==null and weather==null and workPlaceRel == null and intersectionType == null">
-                ON acd.shigunumber = aResult.accidencnumber
-            </if>
-            <if test="roadLevel!=null || weather!=null || workPlaceRel != null || intersectionType != null">
-                ON acdResult.shigunumber = aResult.accidencnumber
-            </if>
-        </if>
-        ) res1
-
-        <if test="carType!= null">
-            INNER JOIN (
-            SELECT
-            carnumber
-            FROM
-            cardata
-            <where>
-                <if test="carType!= null">
-                    Leixing = #{carType}
-                </if>
-            </where>
-            ) carResult ON res1.carnumber = carResult.carnumber
-        </if>
+        <include refid="queryConditionSet"/>
         GROUP BY diMingBeiZhu,yanZhongCd
         )res GROUP BY diMingBeiZhu
         )lastRes
@@ -264,134 +157,11 @@
             ,DAY(riqi) as dayRes
         </if>
         FROM
-
-        (
-        SELECT
-        *
-        FROM
-        <if test="roadLevel!=null || weather!=null || workPlaceRel != null || intersectionType != null">
-            (
-            SELECT
-            *
-            FROM
-            (
-            SELECT
-            e.emnumber
-            FROM
-            emdata e
-            <where>
-                <if test="roadLevel!=null">
-                    e.luMianLev = #{roadLevel}
-                </if>
-                <if test="weather!=null">
-                    AND e.Tianqicondition = #{weather}
-                </if>
-                <if test="workPlaceRel != null">
-                    AND e.workPlaceRel = #{workPlaceRel}
-                </if>
-                <if test="intersectionType != null">
-                    AND e.Jcktype = #{intersectionType}
-                </if>
-            </where>
-            ) eResult INNER JOIN
-        </if>
-
-        <if test="teamName!=null || startTime!=null || endTime!=null">
-            (
-            SELECT
-            *
-            FROM
-            accidencecollectiondata
-            <where>
-                <if test="teamName!=null">
-                    team_name in
-                    <foreach collection="teamName" index="index" item="teamName" open="(" separator="," close=")">
-                        #{teamName}
-                    </foreach>
-                </if>
-                <if test="startTime!=null">
-                    AND riqi <![CDATA[ >= ]]> #{startTime}
-                </if>
-                <if test="endTime!=null">
-                    AND riqi <![CDATA[ <= ]]> #{endTime}
-                </if>
-            </where>
-            ) acd
-        </if>
-
-
-        <if test="roadLevel!=null || weather!=null || workPlaceRel != null || intersectionType != null">
-            ON eResult.emnumber = acd.environmentnumber
-            ) acdResult
-        </if>
-
-
-        <if test="teamName!=null || startTime!=null || endTime!=null">
-            INNER JOIN
-        </if>
-
-        (
-        SELECT
-        accidencnumber,
-        diMingBeiZhu,
-        yanZhongCd,lat,lng
-        FROM
         accidentdata
-        <where>
-            <if test="propertyLoss!=null">
-                accidentdata.yanZhongCd = '仅财损'
-            </if>
-            <if test="slightInjury!=null">
-                OR accidentdata.yanZhongCd = '轻伤'
-            </if>
-            <if test="severInjury!=null">
-                OR accidentdata.yanZhongCd = '重伤'
-            </if>
-            <if test="dead!=null">
-                OR accidentdata.yanZhongCd = '死亡'
-            </if>
-
-            <if test="carCollisionType!=null">
-                and accidentdata.carCollisionType = #{carCollisionType}
-            </if>
-            <if test="troEscape!=null">
-                AND accidentdata.taoYi = #{troEscape}
-            </if>
-            <if test="areaName!=null">
-                AND accidentdata.xianQu = #{areaName}
-            </if>
-            <if test="isWorkDay!=null">
-                AND accidentdata.is_workday = #{isWorkDay}
-            </if>
-        </where>
-        ) aResult
-
-        <if test="teamName!=null || startTime!=null || endTime!=null">
-            <if test="roadLevel==null and weather==null and workPlaceRel == null and intersectionType == null">
-                ON acd.shigunumber = aResult.accidencnumber
-            </if>
-            <if test="roadLevel!=null || weather!=null || workPlaceRel != null || intersectionType != null">ON
-                acdResult.shigunumber = aResult.accidencnumber
-            </if>
-        </if>
-        ) res1
-
-        <if test="carType!= null">
-            INNER JOIN (
-            SELECT
-            carnumber
-            FROM
-            cardata
-            <where>
-                <if test="carType!= null">
-                    Leixing = #{carType}
-                </if>
-            </where>
-            ) carResult ON res1.carnumber = carResult.carnumber
-        </if>
-
+        <include refid="queryConditionSet"/>
         GROUP BY diMingBeiZhu
-        <if test="yType==false">,yanZhongCd
+        <if test="yType==false">
+            ,yanZhongCd
         </if>
         <if test="timePrecision==0 || timePrecision>=1">
             ,YEAR (riqi)
@@ -416,17 +186,7 @@
         SELECT
         count(*) AS num
         FROM
-        (
-
-        SELECT
-        *
-        FROM
-        (
-
-        SELECT
-        *
-        FROM
-        accidencecollectiondata
+        accidentdata
         <where>
             <if test="teamName!=null">
                 team_name in
@@ -440,26 +200,13 @@
             <if test="endTime!=null">
                 AND riqi <![CDATA[ <= ]]> #{endTime}
             </if>
-        </where>
-        ) acdResult
-
-        <if test="areaName!=null || roadType !=null">
-            INNER JOIN (
-            SELECT
-            accidencnumber
-            FROM
-            accidentdata
-            WHERE
             <if test="areaName!=null">
-                accidentdata.xianQu = #{areaName}
+                and xianQu = #{areaName}
             </if>
             <if test="roadType!=null">
-                diMingBeiZhu = #{roadType}
+                and diMingBeiZhu = #{roadType}
             </if>
-            ) aResult ON acdResult.shigunumber = aResult.accidencnumber
-        </if>
-
-        ) res1
+        </where>
 
     </select>
 
@@ -471,17 +218,7 @@
         count(*) AS num,
         yanZhongCd as keyRes
         FROM
-        (
-
-        SELECT
-        *
-        FROM
-        (
-
-        SELECT
-        *
-        FROM
-        accidencecollectiondata
+        accidentdata
         <where>
             <if test="teamName!=null">
                 team_name in
@@ -495,27 +232,13 @@
             <if test="endTime!=null">
                 AND riqi <![CDATA[ <= ]]> #{endTime}
             </if>
-        </where>
-        ) acdResult
-
-        INNER JOIN (
-        SELECT
-        accidencnumber,
-        yanZhongCd
-        FROM
-        accidentdata
-        <where>
             <if test="areaName!=null">
-                accidentdata.xianQu = #{areaName}
+                and xianQu = #{areaName}
             </if>
             <if test="roadType!=null">
-                diMingBeiZhu = #{roadType}
+                and diMingBeiZhu = #{roadType}
             </if>
         </where>
-        ) aResult ON acdResult.shigunumber = aResult.accidencnumber
-
-        ) res1
-
         GROUP BY yanZhongCd
 
     </select>
@@ -528,17 +251,7 @@
         count(*) AS num,
         shigu as keyRes
         FROM
-        (
-
-        SELECT
-        *
-        FROM
-        (
-
-        SELECT
-        *
-        FROM
-        accidencecollectiondata
+        accidentdata
         <where>
             <if test="teamName!=null">
                 team_name in
@@ -552,26 +265,13 @@
             <if test="endTime!=null">
                 AND riqi <![CDATA[ <= ]]> #{endTime}
             </if>
-        </where>
-        ) acdResult
-
-        INNER JOIN (
-        SELECT
-        accidencnumber,
-        shigu
-        FROM
-        accidentdata
-        <where>
             <if test="areaName!=null">
-                accidentdata.xianQu = #{areaName}
+                and xianQu = #{areaName}
             </if>
             <if test="roadType!=null">
-                diMingBeiZhu = #{roadType}
+                and diMingBeiZhu = #{roadType}
             </if>
         </where>
-        ) aResult ON acdResult.shigunumber = aResult.accidencnumber
-
-        ) res1
 
         GROUP BY shigu
     </select>
@@ -585,27 +285,7 @@
         count(*) AS num,
         Tianqicondition as keyRes
         FROM
-        (
-
-        SELECT
-        *
-        FROM
-        (
-        SELECT
-        *
-        FROM
-        (
-        SELECT
-        e.emnumber,
-        e.Tianqicondition
-        FROM
-        emdata e
-        ) eResult
-        INNER JOIN (
-        SELECT
-        *
-        FROM
-        accidencecollectiondata
+        accidentdata
         <where>
             <if test="teamName!=null">
                 team_name in
@@ -619,27 +299,13 @@
             <if test="endTime!=null">
                 AND riqi <![CDATA[ <= ]]> #{endTime}
             </if>
-        </where>
-        ) acd ON eResult.emnumber = acd.environmentnumber
-        ) acdResult
-
-        <if test="areaName!=null || roadType !=null">
-            INNER JOIN (
-            SELECT
-            accidencnumber
-            FROM
-            accidentdata
-            WHERE
             <if test="areaName!=null">
-                accidentdata.xianQu = #{areaName}
+                and accidentdata.xianQu = #{areaName}
             </if>
             <if test="roadType!=null">
-                diMingBeiZhu = #{roadType}
+                and diMingBeiZhu = #{roadType}
             </if>
-            ) aResult ON acdResult.shigunumber = aResult.accidencnumber
-        </if>
-
-        ) res1
+        </where>
 
         GROUP BY Tianqicondition
     </select>
@@ -653,17 +319,7 @@
         count(*) AS num,
         Leixing as keyRes
         FROM
-        (
-
-        SELECT
-        *
-        FROM
-        (
-
-        SELECT
-        *
-        FROM
-        accidencecollectiondata
+        accidentdata
         <where>
             <if test="teamName!=null">
                 team_name in
@@ -677,35 +333,13 @@
             <if test="endTime!=null">
                 AND riqi <![CDATA[ <= ]]> #{endTime}
             </if>
-        </where>
-        ) acdResult
-
-        <if test="areaName!=null || roadType !=null">
-            INNER JOIN (
-            SELECT
-            accidencnumber
-            FROM
-            accidentdata
-            WHERE
             <if test="areaName!=null">
-                accidentdata.xianQu = #{areaName}
+                and accidentdata.xianQu = #{areaName}
             </if>
             <if test="roadType!=null">
-                diMingBeiZhu = #{roadType}
+                and diMingBeiZhu = #{roadType}
             </if>
-            ) aResult ON acdResult.shigunumber = aResult.accidencnumber
-        </if>
-
-        ) res1
-
-        INNER JOIN (
-        SELECT
-        carnumber,
-        Leixing
-        FROM
-        cardata
-        ) carResult ON res1.carnumber = carResult.carnumber
-
+        </where>
         GROUP BY Leixing
     </select>
 

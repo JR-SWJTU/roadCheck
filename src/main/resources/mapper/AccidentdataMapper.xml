@@ -1,163 +1,167 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.swjtu.roadCheck.mapper.AccidentdataMapper">
-  <resultMap id="BaseResultMap" type="com.swjtu.roadCheck.entity.Accidentdata">
-    <id column="_id" jdbcType="INTEGER" property="id" />
-    <result column="riQI" jdbcType="TIMESTAMP" property="riqi" />
-    <result column="lat" jdbcType="DOUBLE" property="lat" />
-    <result column="lng" jdbcType="DOUBLE" property="lng" />
-    <result column="is_workday" jdbcType="BIT" property="isWorkday" />
-    <result column="carCollisionType" jdbcType="VARCHAR" property="carcollisiontype" />
-    <result column="team_name" jdbcType="VARCHAR" property="teamName" />
-    <result column="luMianLev" jdbcType="VARCHAR" property="lumianlev" />
-    <result column="Jcktype" jdbcType="VARCHAR" property="jcktype" />
-    <result column="Tianqicondition" jdbcType="VARCHAR" property="tianqicondition" />
-    <result column="workPlaceRel" jdbcType="CHAR" property="workplacerel" />
-    <result column="carType" jdbcType="VARCHAR" property="cartype" />
-  </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.swjtu.roadCheck.entity.Accidentdata">
-    <result column="accidencnumber" jdbcType="LONGVARCHAR" property="accidencnumber" />
-    <result column="city" jdbcType="LONGVARCHAR" property="city" />
-    <result column="xianQu" jdbcType="LONGVARCHAR" property="xianqu" />
-    <result column="shangQuan" jdbcType="LONGVARCHAR" property="shangquan" />
-    <result column="diMingBeiZhu" jdbcType="LONGVARCHAR" property="dimingbeizhu" />
-    <result column="shigu" jdbcType="LONGVARCHAR" property="shigu" />
-    <result column="shiguType" jdbcType="LONGVARCHAR" property="shigutype" />
-    <result column="shigu2" jdbcType="LONGVARCHAR" property="shigu2" />
-    <result column="shiguType2" jdbcType="LONGVARCHAR" property="shigutype2" />
-    <result column="yanZhongCd" jdbcType="LONGVARCHAR" property="yanzhongcd" />
-    <result column="carnum" jdbcType="LONGVARCHAR" property="carnum" />
-    <result column="driverNums" jdbcType="LONGVARCHAR" property="drivernums" />
-    <result column="feidriverNums" jdbcType="LONGVARCHAR" property="feidrivernums" />
-    <result column="ssNums" jdbcType="LONGVARCHAR" property="ssnums" />
-    <result column="dieNums" jdbcType="LONGVARCHAR" property="dienums" />
-    <result column="gongjiao" jdbcType="LONGVARCHAR" property="gongjiao" />
-    <result column="taoYi" jdbcType="LONGVARCHAR" property="taoyi" />
-    <result column="Weixianche" jdbcType="LONGVARCHAR" property="weixianche" />
-    <result column="Weixianbz" jdbcType="LONGVARCHAR" property="weixianbz" />
-    <result column="fromWeixianbz" jdbcType="LONGVARCHAR" property="fromweixianbz" />
-    <result column="youHaiWuZhi" jdbcType="LONGVARCHAR" property="youhaiwuzhi" />
-  </resultMap>
-  <sql id="Example_Where_Clause">
-    <where>
-      <foreach collection="oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
+    <resultMap id="BaseResultMap" type="com.swjtu.roadCheck.entity.Accidentdata">
+        <id column="_id" jdbcType="INTEGER" property="id"/>
+        <result column="riQI" jdbcType="TIMESTAMP" property="riqi"/>
+        <result column="lat" jdbcType="DOUBLE" property="lat"/>
+        <result column="lng" jdbcType="DOUBLE" property="lng"/>
+        <result column="is_workday" jdbcType="BIT" property="isWorkday"/>
+        <result column="carCollisionType" jdbcType="VARCHAR" property="carcollisiontype"/>
+        <result column="team_name" jdbcType="VARCHAR" property="teamName"/>
+        <result column="luMianLev" jdbcType="VARCHAR" property="lumianlev"/>
+        <result column="Jcktype" jdbcType="VARCHAR" property="jcktype"/>
+        <result column="Tianqicondition" jdbcType="VARCHAR" property="tianqicondition"/>
+        <result column="workPlaceRel" jdbcType="CHAR" property="workplacerel"/>
+        <result column="Leixing" jdbcType="VARCHAR" property="leixing"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.swjtu.roadCheck.entity.Accidentdata">
+        <result column="accidencnumber" jdbcType="LONGVARCHAR" property="accidencnumber"/>
+        <result column="city" jdbcType="LONGVARCHAR" property="city"/>
+        <result column="xianQu" jdbcType="LONGVARCHAR" property="xianqu"/>
+        <result column="shangQuan" jdbcType="LONGVARCHAR" property="shangquan"/>
+        <result column="diMingBeiZhu" jdbcType="LONGVARCHAR" property="dimingbeizhu"/>
+        <result column="shigu" jdbcType="LONGVARCHAR" property="shigu"/>
+        <result column="shiguType" jdbcType="LONGVARCHAR" property="shigutype"/>
+        <result column="shigu2" jdbcType="LONGVARCHAR" property="shigu2"/>
+        <result column="shiguType2" jdbcType="LONGVARCHAR" property="shigutype2"/>
+        <result column="yanZhongCd" jdbcType="LONGVARCHAR" property="yanzhongcd"/>
+        <result column="carnum" jdbcType="LONGVARCHAR" property="carnum"/>
+        <result column="driverNums" jdbcType="LONGVARCHAR" property="drivernums"/>
+        <result column="feidriverNums" jdbcType="LONGVARCHAR" property="feidrivernums"/>
+        <result column="ssNums" jdbcType="LONGVARCHAR" property="ssnums"/>
+        <result column="dieNums" jdbcType="LONGVARCHAR" property="dienums"/>
+        <result column="gongjiao" jdbcType="LONGVARCHAR" property="gongjiao"/>
+        <result column="taoYi" jdbcType="LONGVARCHAR" property="taoyi"/>
+        <result column="Weixianche" jdbcType="LONGVARCHAR" property="weixianche"/>
+        <result column="Weixianbz" jdbcType="LONGVARCHAR" property="weixianbz"/>
+        <result column="fromWeixianbz" jdbcType="LONGVARCHAR" property="fromweixianbz"/>
+        <result column="youHaiWuZhi" jdbcType="LONGVARCHAR" property="youhaiwuzhi"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
             </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause">
-    <where>
-      <foreach collection="example.oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
             </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Base_Column_List">
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
     _id, riQI, lat, lng, is_workday, carCollisionType, team_name, luMianLev, Jcktype, 
-    Tianqicondition, workPlaceRel, carType
+    Tianqicondition, workPlaceRel, Leixing
   </sql>
-  <sql id="Blob_Column_List">
+    <sql id="Blob_Column_List">
     accidencnumber, city, xianQu, shangQuan, diMingBeiZhu, shigu, shiguType, shigu2, 
     shiguType2, yanZhongCd, carnum, driverNums, feidriverNums, ssNums, dieNums, gongjiao, 
     taoYi, Weixianche, Weixianbz, fromWeixianbz, youHaiWuZhi
   </sql>
-  <select id="selectByExampleWithBLOBs" parameterType="com.swjtu.roadCheck.entity.AccidentdataExample" resultMap="ResultMapWithBLOBs">
-    select
-    <if test="distinct">
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from accidentdata
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null">
-      order by ${orderByClause}
-    </if>
-  </select>
-  <select id="selectByExample" parameterType="com.swjtu.roadCheck.entity.AccidentdataExample" resultMap="BaseResultMap">
-    select
-    <if test="distinct">
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from accidentdata
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null">
-      order by ${orderByClause}
-    </if>
-  </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
-    select 
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from accidentdata
-    where _id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <select id="selectByExampleWithBLOBs" parameterType="com.swjtu.roadCheck.entity.AccidentdataExample"
+            resultMap="ResultMapWithBLOBs">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from accidentdata
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByExample" parameterType="com.swjtu.roadCheck.entity.AccidentdataExample"
+            resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from accidentdata
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from accidentdata
+        where _id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from accidentdata
     where _id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.swjtu.roadCheck.entity.AccidentdataExample">
-    delete from accidentdata
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-  </delete>
-  <insert id="insert" parameterType="com.swjtu.roadCheck.entity.Accidentdata">
+    <delete id="deleteByExample" parameterType="com.swjtu.roadCheck.entity.AccidentdataExample">
+        delete from accidentdata
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.swjtu.roadCheck.entity.Accidentdata">
     insert into accidentdata (_id, riQI, lat, 
       lng, is_workday, carCollisionType, 
       team_name, luMianLev, Jcktype, 
-      Tianqicondition, workPlaceRel, carType, 
+      Tianqicondition, workPlaceRel, Leixing, 
       accidencnumber, city, xianQu, 
       shangQuan, diMingBeiZhu, shigu, 
       shiguType, shigu2, shiguType2, 
@@ -169,7 +173,7 @@
     values (#{id,jdbcType=INTEGER}, #{riqi,jdbcType=TIMESTAMP}, #{lat,jdbcType=DOUBLE}, 
       #{lng,jdbcType=DOUBLE}, #{isWorkday,jdbcType=BIT}, #{carcollisiontype,jdbcType=VARCHAR}, 
       #{teamName,jdbcType=VARCHAR}, #{lumianlev,jdbcType=VARCHAR}, #{jcktype,jdbcType=VARCHAR}, 
-      #{tianqicondition,jdbcType=VARCHAR}, #{workplacerel,jdbcType=CHAR}, #{cartype,jdbcType=VARCHAR}, 
+      #{tianqicondition,jdbcType=VARCHAR}, #{workplacerel,jdbcType=CHAR}, #{leixing,jdbcType=VARCHAR}, 
       #{accidencnumber,jdbcType=LONGVARCHAR}, #{city,jdbcType=LONGVARCHAR}, #{xianqu,jdbcType=LONGVARCHAR}, 
       #{shangquan,jdbcType=LONGVARCHAR}, #{dimingbeizhu,jdbcType=LONGVARCHAR}, #{shigu,jdbcType=LONGVARCHAR}, 
       #{shigutype,jdbcType=LONGVARCHAR}, #{shigu2,jdbcType=LONGVARCHAR}, #{shigutype2,jdbcType=LONGVARCHAR}, 
@@ -179,484 +183,485 @@
       #{weixianbz,jdbcType=LONGVARCHAR}, #{fromweixianbz,jdbcType=LONGVARCHAR}, #{youhaiwuzhi,jdbcType=LONGVARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.swjtu.roadCheck.entity.Accidentdata">
-    insert into accidentdata
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        _id,
-      </if>
-      <if test="riqi != null">
-        riQI,
-      </if>
-      <if test="lat != null">
-        lat,
-      </if>
-      <if test="lng != null">
-        lng,
-      </if>
-      <if test="isWorkday != null">
-        is_workday,
-      </if>
-      <if test="carcollisiontype != null">
-        carCollisionType,
-      </if>
-      <if test="teamName != null">
-        team_name,
-      </if>
-      <if test="lumianlev != null">
-        luMianLev,
-      </if>
-      <if test="jcktype != null">
-        Jcktype,
-      </if>
-      <if test="tianqicondition != null">
-        Tianqicondition,
-      </if>
-      <if test="workplacerel != null">
-        workPlaceRel,
-      </if>
-      <if test="cartype != null">
-        carType,
-      </if>
-      <if test="accidencnumber != null">
-        accidencnumber,
-      </if>
-      <if test="city != null">
-        city,
-      </if>
-      <if test="xianqu != null">
-        xianQu,
-      </if>
-      <if test="shangquan != null">
-        shangQuan,
-      </if>
-      <if test="dimingbeizhu != null">
-        diMingBeiZhu,
-      </if>
-      <if test="shigu != null">
-        shigu,
-      </if>
-      <if test="shigutype != null">
-        shiguType,
-      </if>
-      <if test="shigu2 != null">
-        shigu2,
-      </if>
-      <if test="shigutype2 != null">
-        shiguType2,
-      </if>
-      <if test="yanzhongcd != null">
-        yanZhongCd,
-      </if>
-      <if test="carnum != null">
-        carnum,
-      </if>
-      <if test="drivernums != null">
-        driverNums,
-      </if>
-      <if test="feidrivernums != null">
-        feidriverNums,
-      </if>
-      <if test="ssnums != null">
-        ssNums,
-      </if>
-      <if test="dienums != null">
-        dieNums,
-      </if>
-      <if test="gongjiao != null">
-        gongjiao,
-      </if>
-      <if test="taoyi != null">
-        taoYi,
-      </if>
-      <if test="weixianche != null">
-        Weixianche,
-      </if>
-      <if test="weixianbz != null">
-        Weixianbz,
-      </if>
-      <if test="fromweixianbz != null">
-        fromWeixianbz,
-      </if>
-      <if test="youhaiwuzhi != null">
-        youHaiWuZhi,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="riqi != null">
-        #{riqi,jdbcType=TIMESTAMP},
-      </if>
-      <if test="lat != null">
-        #{lat,jdbcType=DOUBLE},
-      </if>
-      <if test="lng != null">
-        #{lng,jdbcType=DOUBLE},
-      </if>
-      <if test="isWorkday != null">
-        #{isWorkday,jdbcType=BIT},
-      </if>
-      <if test="carcollisiontype != null">
-        #{carcollisiontype,jdbcType=VARCHAR},
-      </if>
-      <if test="teamName != null">
-        #{teamName,jdbcType=VARCHAR},
-      </if>
-      <if test="lumianlev != null">
-        #{lumianlev,jdbcType=VARCHAR},
-      </if>
-      <if test="jcktype != null">
-        #{jcktype,jdbcType=VARCHAR},
-      </if>
-      <if test="tianqicondition != null">
-        #{tianqicondition,jdbcType=VARCHAR},
-      </if>
-      <if test="workplacerel != null">
-        #{workplacerel,jdbcType=CHAR},
-      </if>
-      <if test="cartype != null">
-        #{cartype,jdbcType=VARCHAR},
-      </if>
-      <if test="accidencnumber != null">
-        #{accidencnumber,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="city != null">
-        #{city,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="xianqu != null">
-        #{xianqu,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="shangquan != null">
-        #{shangquan,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="dimingbeizhu != null">
-        #{dimingbeizhu,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="shigu != null">
-        #{shigu,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="shigutype != null">
-        #{shigutype,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="shigu2 != null">
-        #{shigu2,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="shigutype2 != null">
-        #{shigutype2,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="yanzhongcd != null">
-        #{yanzhongcd,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="carnum != null">
-        #{carnum,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="drivernums != null">
-        #{drivernums,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="feidrivernums != null">
-        #{feidrivernums,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="ssnums != null">
-        #{ssnums,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="dienums != null">
-        #{dienums,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="gongjiao != null">
-        #{gongjiao,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="taoyi != null">
-        #{taoyi,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="weixianche != null">
-        #{weixianche,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="weixianbz != null">
-        #{weixianbz,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="fromweixianbz != null">
-        #{fromweixianbz,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="youhaiwuzhi != null">
-        #{youhaiwuzhi,jdbcType=LONGVARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <select id="countByExample" parameterType="com.swjtu.roadCheck.entity.AccidentdataExample" resultType="java.lang.Integer">
-    select count(*) from accidentdata
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-  </select>
-  <update id="updateByExampleSelective" parameterType="map">
-    update accidentdata
-    <set>
-      <if test="record.id != null">
-        _id = #{record.id,jdbcType=INTEGER},
-      </if>
-      <if test="record.riqi != null">
+    <insert id="insertSelective" parameterType="com.swjtu.roadCheck.entity.Accidentdata">
+        insert into accidentdata
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                _id,
+            </if>
+            <if test="riqi != null">
+                riQI,
+            </if>
+            <if test="lat != null">
+                lat,
+            </if>
+            <if test="lng != null">
+                lng,
+            </if>
+            <if test="isWorkday != null">
+                is_workday,
+            </if>
+            <if test="carcollisiontype != null">
+                carCollisionType,
+            </if>
+            <if test="teamName != null">
+                team_name,
+            </if>
+            <if test="lumianlev != null">
+                luMianLev,
+            </if>
+            <if test="jcktype != null">
+                Jcktype,
+            </if>
+            <if test="tianqicondition != null">
+                Tianqicondition,
+            </if>
+            <if test="workplacerel != null">
+                workPlaceRel,
+            </if>
+            <if test="leixing != null">
+                Leixing,
+            </if>
+            <if test="accidencnumber != null">
+                accidencnumber,
+            </if>
+            <if test="city != null">
+                city,
+            </if>
+            <if test="xianqu != null">
+                xianQu,
+            </if>
+            <if test="shangquan != null">
+                shangQuan,
+            </if>
+            <if test="dimingbeizhu != null">
+                diMingBeiZhu,
+            </if>
+            <if test="shigu != null">
+                shigu,
+            </if>
+            <if test="shigutype != null">
+                shiguType,
+            </if>
+            <if test="shigu2 != null">
+                shigu2,
+            </if>
+            <if test="shigutype2 != null">
+                shiguType2,
+            </if>
+            <if test="yanzhongcd != null">
+                yanZhongCd,
+            </if>
+            <if test="carnum != null">
+                carnum,
+            </if>
+            <if test="drivernums != null">
+                driverNums,
+            </if>
+            <if test="feidrivernums != null">
+                feidriverNums,
+            </if>
+            <if test="ssnums != null">
+                ssNums,
+            </if>
+            <if test="dienums != null">
+                dieNums,
+            </if>
+            <if test="gongjiao != null">
+                gongjiao,
+            </if>
+            <if test="taoyi != null">
+                taoYi,
+            </if>
+            <if test="weixianche != null">
+                Weixianche,
+            </if>
+            <if test="weixianbz != null">
+                Weixianbz,
+            </if>
+            <if test="fromweixianbz != null">
+                fromWeixianbz,
+            </if>
+            <if test="youhaiwuzhi != null">
+                youHaiWuZhi,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="riqi != null">
+                #{riqi,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lat != null">
+                #{lat,jdbcType=DOUBLE},
+            </if>
+            <if test="lng != null">
+                #{lng,jdbcType=DOUBLE},
+            </if>
+            <if test="isWorkday != null">
+                #{isWorkday,jdbcType=BIT},
+            </if>
+            <if test="carcollisiontype != null">
+                #{carcollisiontype,jdbcType=VARCHAR},
+            </if>
+            <if test="teamName != null">
+                #{teamName,jdbcType=VARCHAR},
+            </if>
+            <if test="lumianlev != null">
+                #{lumianlev,jdbcType=VARCHAR},
+            </if>
+            <if test="jcktype != null">
+                #{jcktype,jdbcType=VARCHAR},
+            </if>
+            <if test="tianqicondition != null">
+                #{tianqicondition,jdbcType=VARCHAR},
+            </if>
+            <if test="workplacerel != null">
+                #{workplacerel,jdbcType=CHAR},
+            </if>
+            <if test="leixing != null">
+                #{leixing,jdbcType=VARCHAR},
+            </if>
+            <if test="accidencnumber != null">
+                #{accidencnumber,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="city != null">
+                #{city,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="xianqu != null">
+                #{xianqu,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="shangquan != null">
+                #{shangquan,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="dimingbeizhu != null">
+                #{dimingbeizhu,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="shigu != null">
+                #{shigu,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="shigutype != null">
+                #{shigutype,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="shigu2 != null">
+                #{shigu2,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="shigutype2 != null">
+                #{shigutype2,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="yanzhongcd != null">
+                #{yanzhongcd,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="carnum != null">
+                #{carnum,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="drivernums != null">
+                #{drivernums,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="feidrivernums != null">
+                #{feidrivernums,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="ssnums != null">
+                #{ssnums,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="dienums != null">
+                #{dienums,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="gongjiao != null">
+                #{gongjiao,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="taoyi != null">
+                #{taoyi,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="weixianche != null">
+                #{weixianche,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="weixianbz != null">
+                #{weixianbz,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="fromweixianbz != null">
+                #{fromweixianbz,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="youhaiwuzhi != null">
+                #{youhaiwuzhi,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.swjtu.roadCheck.entity.AccidentdataExample"
+            resultType="java.lang.Integer">
+        select count(*) from accidentdata
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update accidentdata
+        <set>
+            <if test="record.id != null">
+                _id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.riqi != null">
+                riQI = #{record.riqi,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.lat != null">
+                lat = #{record.lat,jdbcType=DOUBLE},
+            </if>
+            <if test="record.lng != null">
+                lng = #{record.lng,jdbcType=DOUBLE},
+            </if>
+            <if test="record.isWorkday != null">
+                is_workday = #{record.isWorkday,jdbcType=BIT},
+            </if>
+            <if test="record.carcollisiontype != null">
+                carCollisionType = #{record.carcollisiontype,jdbcType=VARCHAR},
+            </if>
+            <if test="record.teamName != null">
+                team_name = #{record.teamName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.lumianlev != null">
+                luMianLev = #{record.lumianlev,jdbcType=VARCHAR},
+            </if>
+            <if test="record.jcktype != null">
+                Jcktype = #{record.jcktype,jdbcType=VARCHAR},
+            </if>
+            <if test="record.tianqicondition != null">
+                Tianqicondition = #{record.tianqicondition,jdbcType=VARCHAR},
+            </if>
+            <if test="record.workplacerel != null">
+                workPlaceRel = #{record.workplacerel,jdbcType=CHAR},
+            </if>
+            <if test="record.leixing != null">
+                Leixing = #{record.leixing,jdbcType=VARCHAR},
+            </if>
+            <if test="record.accidencnumber != null">
+                accidencnumber = #{record.accidencnumber,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="record.city != null">
+                city = #{record.city,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="record.xianqu != null">
+                xianQu = #{record.xianqu,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="record.shangquan != null">
+                shangQuan = #{record.shangquan,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="record.dimingbeizhu != null">
+                diMingBeiZhu = #{record.dimingbeizhu,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="record.shigu != null">
+                shigu = #{record.shigu,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="record.shigutype != null">
+                shiguType = #{record.shigutype,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="record.shigu2 != null">
+                shigu2 = #{record.shigu2,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="record.shigutype2 != null">
+                shiguType2 = #{record.shigutype2,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="record.yanzhongcd != null">
+                yanZhongCd = #{record.yanzhongcd,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="record.carnum != null">
+                carnum = #{record.carnum,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="record.drivernums != null">
+                driverNums = #{record.drivernums,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="record.feidrivernums != null">
+                feidriverNums = #{record.feidrivernums,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="record.ssnums != null">
+                ssNums = #{record.ssnums,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="record.dienums != null">
+                dieNums = #{record.dienums,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="record.gongjiao != null">
+                gongjiao = #{record.gongjiao,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="record.taoyi != null">
+                taoYi = #{record.taoyi,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="record.weixianche != null">
+                Weixianche = #{record.weixianche,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="record.weixianbz != null">
+                Weixianbz = #{record.weixianbz,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="record.fromweixianbz != null">
+                fromWeixianbz = #{record.fromweixianbz,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="record.youhaiwuzhi != null">
+                youHaiWuZhi = #{record.youhaiwuzhi,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExampleWithBLOBs" parameterType="map">
+        update accidentdata
+        set _id = #{record.id,jdbcType=INTEGER},
         riQI = #{record.riqi,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.lat != null">
         lat = #{record.lat,jdbcType=DOUBLE},
-      </if>
-      <if test="record.lng != null">
         lng = #{record.lng,jdbcType=DOUBLE},
-      </if>
-      <if test="record.isWorkday != null">
         is_workday = #{record.isWorkday,jdbcType=BIT},
-      </if>
-      <if test="record.carcollisiontype != null">
         carCollisionType = #{record.carcollisiontype,jdbcType=VARCHAR},
-      </if>
-      <if test="record.teamName != null">
         team_name = #{record.teamName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.lumianlev != null">
         luMianLev = #{record.lumianlev,jdbcType=VARCHAR},
-      </if>
-      <if test="record.jcktype != null">
         Jcktype = #{record.jcktype,jdbcType=VARCHAR},
-      </if>
-      <if test="record.tianqicondition != null">
         Tianqicondition = #{record.tianqicondition,jdbcType=VARCHAR},
-      </if>
-      <if test="record.workplacerel != null">
         workPlaceRel = #{record.workplacerel,jdbcType=CHAR},
-      </if>
-      <if test="record.cartype != null">
-        carType = #{record.cartype,jdbcType=VARCHAR},
-      </if>
-      <if test="record.accidencnumber != null">
+        Leixing = #{record.leixing,jdbcType=VARCHAR},
         accidencnumber = #{record.accidencnumber,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="record.city != null">
         city = #{record.city,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="record.xianqu != null">
         xianQu = #{record.xianqu,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="record.shangquan != null">
         shangQuan = #{record.shangquan,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="record.dimingbeizhu != null">
         diMingBeiZhu = #{record.dimingbeizhu,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="record.shigu != null">
         shigu = #{record.shigu,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="record.shigutype != null">
         shiguType = #{record.shigutype,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="record.shigu2 != null">
         shigu2 = #{record.shigu2,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="record.shigutype2 != null">
         shiguType2 = #{record.shigutype2,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="record.yanzhongcd != null">
         yanZhongCd = #{record.yanzhongcd,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="record.carnum != null">
         carnum = #{record.carnum,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="record.drivernums != null">
         driverNums = #{record.drivernums,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="record.feidrivernums != null">
         feidriverNums = #{record.feidrivernums,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="record.ssnums != null">
         ssNums = #{record.ssnums,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="record.dienums != null">
         dieNums = #{record.dienums,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="record.gongjiao != null">
         gongjiao = #{record.gongjiao,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="record.taoyi != null">
         taoYi = #{record.taoyi,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="record.weixianche != null">
         Weixianche = #{record.weixianche,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="record.weixianbz != null">
         Weixianbz = #{record.weixianbz,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="record.fromweixianbz != null">
         fromWeixianbz = #{record.fromweixianbz,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="record.youhaiwuzhi != null">
-        youHaiWuZhi = #{record.youhaiwuzhi,jdbcType=LONGVARCHAR},
-      </if>
-    </set>
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExampleWithBLOBs" parameterType="map">
-    update accidentdata
-    set _id = #{record.id,jdbcType=INTEGER},
-      riQI = #{record.riqi,jdbcType=TIMESTAMP},
-      lat = #{record.lat,jdbcType=DOUBLE},
-      lng = #{record.lng,jdbcType=DOUBLE},
-      is_workday = #{record.isWorkday,jdbcType=BIT},
-      carCollisionType = #{record.carcollisiontype,jdbcType=VARCHAR},
-      team_name = #{record.teamName,jdbcType=VARCHAR},
-      luMianLev = #{record.lumianlev,jdbcType=VARCHAR},
-      Jcktype = #{record.jcktype,jdbcType=VARCHAR},
-      Tianqicondition = #{record.tianqicondition,jdbcType=VARCHAR},
-      workPlaceRel = #{record.workplacerel,jdbcType=CHAR},
-      carType = #{record.cartype,jdbcType=VARCHAR},
-      accidencnumber = #{record.accidencnumber,jdbcType=LONGVARCHAR},
-      city = #{record.city,jdbcType=LONGVARCHAR},
-      xianQu = #{record.xianqu,jdbcType=LONGVARCHAR},
-      shangQuan = #{record.shangquan,jdbcType=LONGVARCHAR},
-      diMingBeiZhu = #{record.dimingbeizhu,jdbcType=LONGVARCHAR},
-      shigu = #{record.shigu,jdbcType=LONGVARCHAR},
-      shiguType = #{record.shigutype,jdbcType=LONGVARCHAR},
-      shigu2 = #{record.shigu2,jdbcType=LONGVARCHAR},
-      shiguType2 = #{record.shigutype2,jdbcType=LONGVARCHAR},
-      yanZhongCd = #{record.yanzhongcd,jdbcType=LONGVARCHAR},
-      carnum = #{record.carnum,jdbcType=LONGVARCHAR},
-      driverNums = #{record.drivernums,jdbcType=LONGVARCHAR},
-      feidriverNums = #{record.feidrivernums,jdbcType=LONGVARCHAR},
-      ssNums = #{record.ssnums,jdbcType=LONGVARCHAR},
-      dieNums = #{record.dienums,jdbcType=LONGVARCHAR},
-      gongjiao = #{record.gongjiao,jdbcType=LONGVARCHAR},
-      taoYi = #{record.taoyi,jdbcType=LONGVARCHAR},
-      Weixianche = #{record.weixianche,jdbcType=LONGVARCHAR},
-      Weixianbz = #{record.weixianbz,jdbcType=LONGVARCHAR},
-      fromWeixianbz = #{record.fromweixianbz,jdbcType=LONGVARCHAR},
-      youHaiWuZhi = #{record.youhaiwuzhi,jdbcType=LONGVARCHAR}
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExample" parameterType="map">
-    update accidentdata
-    set _id = #{record.id,jdbcType=INTEGER},
-      riQI = #{record.riqi,jdbcType=TIMESTAMP},
-      lat = #{record.lat,jdbcType=DOUBLE},
-      lng = #{record.lng,jdbcType=DOUBLE},
-      is_workday = #{record.isWorkday,jdbcType=BIT},
-      carCollisionType = #{record.carcollisiontype,jdbcType=VARCHAR},
-      team_name = #{record.teamName,jdbcType=VARCHAR},
-      luMianLev = #{record.lumianlev,jdbcType=VARCHAR},
-      Jcktype = #{record.jcktype,jdbcType=VARCHAR},
-      Tianqicondition = #{record.tianqicondition,jdbcType=VARCHAR},
-      workPlaceRel = #{record.workplacerel,jdbcType=CHAR},
-      carType = #{record.cartype,jdbcType=VARCHAR}
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.swjtu.roadCheck.entity.Accidentdata">
-    update accidentdata
-    <set>
-      <if test="riqi != null">
-        riQI = #{riqi,jdbcType=TIMESTAMP},
-      </if>
-      <if test="lat != null">
-        lat = #{lat,jdbcType=DOUBLE},
-      </if>
-      <if test="lng != null">
-        lng = #{lng,jdbcType=DOUBLE},
-      </if>
-      <if test="isWorkday != null">
-        is_workday = #{isWorkday,jdbcType=BIT},
-      </if>
-      <if test="carcollisiontype != null">
-        carCollisionType = #{carcollisiontype,jdbcType=VARCHAR},
-      </if>
-      <if test="teamName != null">
-        team_name = #{teamName,jdbcType=VARCHAR},
-      </if>
-      <if test="lumianlev != null">
-        luMianLev = #{lumianlev,jdbcType=VARCHAR},
-      </if>
-      <if test="jcktype != null">
-        Jcktype = #{jcktype,jdbcType=VARCHAR},
-      </if>
-      <if test="tianqicondition != null">
-        Tianqicondition = #{tianqicondition,jdbcType=VARCHAR},
-      </if>
-      <if test="workplacerel != null">
-        workPlaceRel = #{workplacerel,jdbcType=CHAR},
-      </if>
-      <if test="cartype != null">
-        carType = #{cartype,jdbcType=VARCHAR},
-      </if>
-      <if test="accidencnumber != null">
-        accidencnumber = #{accidencnumber,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="city != null">
-        city = #{city,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="xianqu != null">
-        xianQu = #{xianqu,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="shangquan != null">
-        shangQuan = #{shangquan,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="dimingbeizhu != null">
-        diMingBeiZhu = #{dimingbeizhu,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="shigu != null">
-        shigu = #{shigu,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="shigutype != null">
-        shiguType = #{shigutype,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="shigu2 != null">
-        shigu2 = #{shigu2,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="shigutype2 != null">
-        shiguType2 = #{shigutype2,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="yanzhongcd != null">
-        yanZhongCd = #{yanzhongcd,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="carnum != null">
-        carnum = #{carnum,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="drivernums != null">
-        driverNums = #{drivernums,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="feidrivernums != null">
-        feidriverNums = #{feidrivernums,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="ssnums != null">
-        ssNums = #{ssnums,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="dienums != null">
-        dieNums = #{dienums,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="gongjiao != null">
-        gongjiao = #{gongjiao,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="taoyi != null">
-        taoYi = #{taoyi,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="weixianche != null">
-        Weixianche = #{weixianche,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="weixianbz != null">
-        Weixianbz = #{weixianbz,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="fromweixianbz != null">
-        fromWeixianbz = #{fromweixianbz,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="youhaiwuzhi != null">
-        youHaiWuZhi = #{youhaiwuzhi,jdbcType=LONGVARCHAR},
-      </if>
-    </set>
-    where _id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.swjtu.roadCheck.entity.Accidentdata">
+        youHaiWuZhi = #{record.youhaiwuzhi,jdbcType=LONGVARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update accidentdata
+        set _id = #{record.id,jdbcType=INTEGER},
+        riQI = #{record.riqi,jdbcType=TIMESTAMP},
+        lat = #{record.lat,jdbcType=DOUBLE},
+        lng = #{record.lng,jdbcType=DOUBLE},
+        is_workday = #{record.isWorkday,jdbcType=BIT},
+        carCollisionType = #{record.carcollisiontype,jdbcType=VARCHAR},
+        team_name = #{record.teamName,jdbcType=VARCHAR},
+        luMianLev = #{record.lumianlev,jdbcType=VARCHAR},
+        Jcktype = #{record.jcktype,jdbcType=VARCHAR},
+        Tianqicondition = #{record.tianqicondition,jdbcType=VARCHAR},
+        workPlaceRel = #{record.workplacerel,jdbcType=CHAR},
+        Leixing = #{record.leixing,jdbcType=VARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.swjtu.roadCheck.entity.Accidentdata">
+        update accidentdata
+        <set>
+            <if test="riqi != null">
+                riQI = #{riqi,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lat != null">
+                lat = #{lat,jdbcType=DOUBLE},
+            </if>
+            <if test="lng != null">
+                lng = #{lng,jdbcType=DOUBLE},
+            </if>
+            <if test="isWorkday != null">
+                is_workday = #{isWorkday,jdbcType=BIT},
+            </if>
+            <if test="carcollisiontype != null">
+                carCollisionType = #{carcollisiontype,jdbcType=VARCHAR},
+            </if>
+            <if test="teamName != null">
+                team_name = #{teamName,jdbcType=VARCHAR},
+            </if>
+            <if test="lumianlev != null">
+                luMianLev = #{lumianlev,jdbcType=VARCHAR},
+            </if>
+            <if test="jcktype != null">
+                Jcktype = #{jcktype,jdbcType=VARCHAR},
+            </if>
+            <if test="tianqicondition != null">
+                Tianqicondition = #{tianqicondition,jdbcType=VARCHAR},
+            </if>
+            <if test="workplacerel != null">
+                workPlaceRel = #{workplacerel,jdbcType=CHAR},
+            </if>
+            <if test="leixing != null">
+                Leixing = #{leixing,jdbcType=VARCHAR},
+            </if>
+            <if test="accidencnumber != null">
+                accidencnumber = #{accidencnumber,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="city != null">
+                city = #{city,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="xianqu != null">
+                xianQu = #{xianqu,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="shangquan != null">
+                shangQuan = #{shangquan,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="dimingbeizhu != null">
+                diMingBeiZhu = #{dimingbeizhu,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="shigu != null">
+                shigu = #{shigu,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="shigutype != null">
+                shiguType = #{shigutype,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="shigu2 != null">
+                shigu2 = #{shigu2,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="shigutype2 != null">
+                shiguType2 = #{shigutype2,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="yanzhongcd != null">
+                yanZhongCd = #{yanzhongcd,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="carnum != null">
+                carnum = #{carnum,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="drivernums != null">
+                driverNums = #{drivernums,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="feidrivernums != null">
+                feidriverNums = #{feidrivernums,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="ssnums != null">
+                ssNums = #{ssnums,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="dienums != null">
+                dieNums = #{dienums,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="gongjiao != null">
+                gongjiao = #{gongjiao,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="taoyi != null">
+                taoYi = #{taoyi,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="weixianche != null">
+                Weixianche = #{weixianche,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="weixianbz != null">
+                Weixianbz = #{weixianbz,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="fromweixianbz != null">
+                fromWeixianbz = #{fromweixianbz,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="youhaiwuzhi != null">
+                youHaiWuZhi = #{youhaiwuzhi,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where _id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.swjtu.roadCheck.entity.Accidentdata">
     update accidentdata
     set riQI = #{riqi,jdbcType=TIMESTAMP},
       lat = #{lat,jdbcType=DOUBLE},
@@ -668,7 +673,7 @@
       Jcktype = #{jcktype,jdbcType=VARCHAR},
       Tianqicondition = #{tianqicondition,jdbcType=VARCHAR},
       workPlaceRel = #{workplacerel,jdbcType=CHAR},
-      carType = #{cartype,jdbcType=VARCHAR},
+      Leixing = #{leixing,jdbcType=VARCHAR},
       accidencnumber = #{accidencnumber,jdbcType=LONGVARCHAR},
       city = #{city,jdbcType=LONGVARCHAR},
       xianQu = #{xianqu,jdbcType=LONGVARCHAR},
@@ -692,10 +697,10 @@
       youHaiWuZhi = #{youhaiwuzhi,jdbcType=LONGVARCHAR}
     where _id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.swjtu.roadCheck.entity.Accidentdata">
+    <update id="updateByPrimaryKey" parameterType="com.swjtu.roadCheck.entity.Accidentdata">
     update accidentdata
     set riQI = #{riqi,jdbcType=TIMESTAMP},
-      lat = #{lat,jdbcType=DOUBLE
+      lat = #{lat,jdbcType=DOUBLE},
       lng = #{lng,jdbcType=DOUBLE},
       is_workday = #{isWorkday,jdbcType=BIT},
       carCollisionType = #{carcollisiontype,jdbcType=VARCHAR},
@@ -704,7 +709,7 @@
       Jcktype = #{jcktype,jdbcType=VARCHAR},
       Tianqicondition = #{tianqicondition,jdbcType=VARCHAR},
       workPlaceRel = #{workplacerel,jdbcType=CHAR},
-      carType = #{cartype,jdbcType=VARCHAR}
+      Leixing = #{leixing,jdbcType=VARCHAR}
     where _id = #{id,jdbcType=INTEGER}
   </update>
 

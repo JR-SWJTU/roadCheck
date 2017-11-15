@@ -25,7 +25,7 @@ public class Accidentdata {
 
     private String workplacerel;
 
-    private String cartype;
+    private String leixing;
 
     private String accidencnumber;
 
@@ -157,12 +157,12 @@ public class Accidentdata {
         this.workplacerel = workplacerel == null ? null : workplacerel.trim();
     }
 
-    public String getCartype() {
-        return cartype;
+    public String getLeixing() {
+        return leixing;
     }
 
-    public void setCartype(String cartype) {
-        this.cartype = cartype == null ? null : cartype.trim();
+    public void setLeixing(String leixing) {
+        this.leixing = leixing == null ? null : leixing.trim();
     }
 
     public String getAccidencnumber() {
@@ -350,7 +350,7 @@ public class Accidentdata {
         sb.append(", jcktype=").append(jcktype);
         sb.append(", tianqicondition=").append(tianqicondition);
         sb.append(", workplacerel=").append(workplacerel);
-        sb.append(", cartype=").append(cartype);
+        sb.append(", leixing=").append(leixing);
         sb.append(", accidencnumber=").append(accidencnumber);
         sb.append(", city=").append(city);
         sb.append(", xianqu=").append(xianqu);
@@ -399,7 +399,7 @@ public class Accidentdata {
             && (this.getJcktype() == null ? other.getJcktype() == null : this.getJcktype().equals(other.getJcktype()))
             && (this.getTianqicondition() == null ? other.getTianqicondition() == null : this.getTianqicondition().equals(other.getTianqicondition()))
             && (this.getWorkplacerel() == null ? other.getWorkplacerel() == null : this.getWorkplacerel().equals(other.getWorkplacerel()))
-            && (this.getCartype() == null ? other.getCartype() == null : this.getCartype().equals(other.getCartype()))
+            && (this.getLeixing() == null ? other.getLeixing() == null : this.getLeixing().equals(other.getLeixing()))
             && (this.getAccidencnumber() == null ? other.getAccidencnumber() == null : this.getAccidencnumber().equals(other.getAccidencnumber()))
             && (this.getCity() == null ? other.getCity() == null : this.getCity().equals(other.getCity()))
             && (this.getXianqu() == null ? other.getXianqu() == null : this.getXianqu().equals(other.getXianqu()))
@@ -438,7 +438,7 @@ public class Accidentdata {
         result = prime * result + ((getJcktype() == null) ? 0 : getJcktype().hashCode());
         result = prime * result + ((getTianqicondition() == null) ? 0 : getTianqicondition().hashCode());
         result = prime * result + ((getWorkplacerel() == null) ? 0 : getWorkplacerel().hashCode());
-        result = prime * result + ((getCartype() == null) ? 0 : getCartype().hashCode());
+        result = prime * result + ((getLeixing() == null) ? 0 : getLeixing().hashCode());
         result = prime * result + ((getAccidencnumber() == null) ? 0 : getAccidencnumber().hashCode());
         result = prime * result + ((getCity() == null) ? 0 : getCity().hashCode());
         result = prime * result + ((getXianqu() == null) ? 0 : getXianqu().hashCode());

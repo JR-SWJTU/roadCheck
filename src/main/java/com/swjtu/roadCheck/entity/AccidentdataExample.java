@@ -825,73 +825,73 @@ public class AccidentdataExample {
             return (Criteria) this;
         }
 
-        public Criteria andCartypeIsNull() {
-            addCriterion("carType is null");
+        public Criteria andLeixingIsNull() {
+            addCriterion("Leixing is null");
             return (Criteria) this;
         }
 
-        public Criteria andCartypeIsNotNull() {
-            addCriterion("carType is not null");
+        public Criteria andLeixingIsNotNull() {
+            addCriterion("Leixing is not null");
             return (Criteria) this;
         }
 
-        public Criteria andCartypeEqualTo(String value) {
-            addCriterion("carType =", value, "cartype");
+        public Criteria andLeixingEqualTo(String value) {
+            addCriterion("Leixing =", value, "leixing");
             return (Criteria) this;
         }
 
-        public Criteria andCartypeNotEqualTo(String value) {
-            addCriterion("carType <>", value, "cartype");
+        public Criteria andLeixingNotEqualTo(String value) {
+            addCriterion("Leixing <>", value, "leixing");
             return (Criteria) this;
         }
 
-        public Criteria andCartypeGreaterThan(String value) {
-            addCriterion("carType >", value, "cartype");
+        public Criteria andLeixingGreaterThan(String value) {
+            addCriterion("Leixing >", value, "leixing");
             return (Criteria) this;
         }
 
-        public Criteria andCartypeGreaterThanOrEqualTo(String value) {
-            addCriterion("carType >=", value, "cartype");
+        public Criteria andLeixingGreaterThanOrEqualTo(String value) {
+            addCriterion("Leixing >=", value, "leixing");
             return (Criteria) this;
         }
 
-        public Criteria andCartypeLessThan(String value) {
-            addCriterion("carType <", value, "cartype");
+        public Criteria andLeixingLessThan(String value) {
+            addCriterion("Leixing <", value, "leixing");
             return (Criteria) this;
         }
 
-        public Criteria andCartypeLessThanOrEqualTo(String value) {
-            addCriterion("carType <=", value, "cartype");
+        public Criteria andLeixingLessThanOrEqualTo(String value) {
+            addCriterion("Leixing <=", value, "leixing");
             return (Criteria) this;
         }
 
-        public Criteria andCartypeLike(String value) {
-            addCriterion("carType like", value, "cartype");
+        public Criteria andLeixingLike(String value) {
+            addCriterion("Leixing like", value, "leixing");
             return (Criteria) this;
         }
 
-        public Criteria andCartypeNotLike(String value) {
-            addCriterion("carType not like", value, "cartype");
+        public Criteria andLeixingNotLike(String value) {
+            addCriterion("Leixing not like", value, "leixing");
             return (Criteria) this;
         }
 
-        public Criteria andCartypeIn(List<String> values) {
-            addCriterion("carType in", values, "cartype");
+        public Criteria andLeixingIn(List<String> values) {
+            addCriterion("Leixing in", values, "leixing");
             return (Criteria) this;
         }
 
-        public Criteria andCartypeNotIn(List<String> values) {
-            addCriterion("carType not in", values, "cartype");
+        public Criteria andLeixingNotIn(List<String> values) {
+            addCriterion("Leixing not in", values, "leixing");
             return (Criteria) this;
         }
 
-        public Criteria andCartypeBetween(String value1, String value2) {
-            addCriterion("carType between", value1, value2, "cartype");
+        public Criteria andLeixingBetween(String value1, String value2) {
+            addCriterion("Leixing between", value1, value2, "leixing");
             return (Criteria) this;
         }
 
-        public Criteria andCartypeNotBetween(String value1, String value2) {
-            addCriterion("carType not between", value1, value2, "cartype");
+        public Criteria andLeixingNotBetween(String value1, String value2) {
+            addCriterion("Leixing not between", value1, value2, "leixing");
             return (Criteria) this;
         }
     }
