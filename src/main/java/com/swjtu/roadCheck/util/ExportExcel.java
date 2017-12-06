@@ -21,7 +21,7 @@ import java.util.Map;
  */
  public final class ExportExcel {
 
-    private static  final String rootPath = "E:\\roadCheck\\";
+    private static  final String rootPath = ConfigUtil.excelSavedPos;
 
     /***
      * 构造方法

@@ -7,6 +7,8 @@ import com.swjtu.roadCheck.entityCustom.BlackPointData;
 import com.swjtu.roadCheck.entityCustom.BlackPointDataForWeb;
 import com.swjtu.roadCheck.mapper.AccidentdataMapper;
 import com.swjtu.roadCheck.service.IAccidentService;
+import com.swjtu.roadCheck.util.ConfigUtil;
+import com.swjtu.roadCheck.util.IPUtil;
 import com.swjtu.roadCheck.util.JsonResult;
 import com.swjtu.roadCheck.util.enums.StatusCode;
 import net.sf.json.JSONObject;
@@ -69,8 +71,8 @@ public class AccidentController {
         System.out.println("导出excel了");
 
         String fileName = accidentService.exportAreaAnalyse(condition, res);
-        String addr = InetAddress.getLocalHost().getHostAddress();
-        String fileUrl = "http://" + addr + ":8080//" + "excel/" + fileName;
+        String addr = ConfigUtil.ip;
+        String fileUrl = "http://" + addr + "/roadCheck/excel/" + fileName;
         System.out.println(fileUrl);
         return JsonResult.build(StatusCode.SUCCESS,fileUrl);
     }
@@ -142,8 +144,8 @@ public class AccidentController {
     public JsonResult exportBlackPoint(@RequestBody Map map) throws Exception{
         List<BlackPointData> blackPointDatas = new ArrayList<BlackPointData>();
         String fileName = accidentService.exportAccidentData(map);
-        String addr = InetAddress.getLocalHost().getHostAddress();
-        String fileUrl = "http://" + addr + ":8080//" + "excel/" + fileName;
+        String addr = ConfigUtil.ip;
+        String fileUrl = "http://" + addr + "/roadCheck/excel/" + fileName;
         System.out.println(fileUrl);
         return JsonResult.build(StatusCode.SUCCESS,fileUrl);
     }

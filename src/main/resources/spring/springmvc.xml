@@ -81,8 +81,8 @@
 
     <bean id="trigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
         <property name="jobDetail" ref="jobDetail"/>
-        <!--表达式，每天凌晨 执行一次-->
-        <property name="cronExpression" value="0 0 1 15 * ?"/>
+        <!--表达式，每天凌晨一点 执行一次-->
+        <property name="cronExpression" value="0 0 1 * * ?"/>
     </bean>
 
     <!--  总管理类如果将lazy-init='false'那么容器启动就会执行调度程序   -->
