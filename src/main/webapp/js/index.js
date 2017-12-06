@@ -2179,7 +2179,7 @@ var app = new Vue({
                     var allData = response.data;
                     if(allData.code == 200){
                         var a = document.createElement('a');
-                        a.download = 'excel' + '.xls';
+                        a.download = allData.data.split('/').pop();
                         a.href = allData.data;
                         document.body.appendChild(a);
                         a.click();
@@ -2227,7 +2227,7 @@ var app = new Vue({
                     var allData = response.data;
                     if(allData.code == 200){
                         var a = document.createElement('a');
-                        a.download = 'excel' + '.xls';
+                        a.download = a.download = allData.data.split('/').pop();
                         a.href = allData.data;
                         document.body.appendChild(a);
                         a.click();
